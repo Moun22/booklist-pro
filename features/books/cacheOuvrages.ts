@@ -1,0 +1,30 @@
+import type { InfiniteData, QueryClient } from '@tanstack/react-query';
+
+import { clesOuvrages } from './cles';
+import type { Ouvrage } from '@/domain/ouvrage';
+import type { Page } from '@/domain/page';
+
+export type DonneesListe = InfiniteData<Page<Ouvrage>>;
+
+export function trouverDansListes(client: QueryClient, id: string): Ouvrage | undefined {
+  const listes = client.getQueriesData<DonneesListe>({ queryKey: clesOuvrages.listes() });
+  for (const [, donnees] of listes) {
+    for (const page of donnees?.pages ?? []) {
+      const trouve = page.items.find((ouvrage) => ouvrage.id === id);
+      if (trouve !== undefined) {
+        return trouve;
+      }
+    }
+  }
+  return undefined;
+}
+
+export function remplacerDansListe(donnees: DonneesListe, ouvrage: Ouvrage): DonneesListe {
+  return {
+    ...donnees,
+    pages: donnees.pages.map((page) => ({
+      ...page,
+      items: page.items.map((item) => (item.id === ouvrage.id ? ouvrage : item)),
+    })),
+  };
+}
