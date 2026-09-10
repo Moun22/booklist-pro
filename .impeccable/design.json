@@ -1,11 +1,11 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T00:00:00Z",
+  "generatedAt": "2026-09-10T12:00:00Z",
   "title": "Design System: BookList Pro",
   "extensions": {
     "colorMeta": {
       "signal": { "role": "primary", "displayName": "Vert bouteille", "canonical": "#1F5C3A", "cssVar": "--bl-signal", "tonalRamp": ["oklch(15% 0.05 155)", "oklch(26% 0.07 155)", "oklch(38% 0.09 155)", "oklch(49% 0.10 155)", "oklch(61% 0.11 155)", "oklch(72% 0.10 155)", "oklch(84% 0.08 155)", "oklch(95% 0.04 155)"] },
-      "on-signal": { "role": "primary", "displayName": "Sur signal", "canonical": "#FFFFFF", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "on-signal": { "role": "primary", "displayName": "Sur signal (défini, sans consommateur)", "canonical": "#FFFFFF", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
       "page": { "role": "neutral", "displayName": "Page", "canonical": "#FFFFFF", "cssVar": "--bl-page", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
       "surface": { "role": "neutral", "displayName": "Surface", "canonical": "#F4F4F2", "cssVar": "--bl-surface", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
       "ink": { "role": "neutral", "displayName": "Encre", "canonical": "#1C1C1C", "cssVar": "--bl-ink", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
@@ -14,7 +14,7 @@
       "skeleton": { "role": "neutral", "displayName": "Squelette", "canonical": "#ECECEA", "cssVar": "--bl-skeleton", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
       "danger": { "role": "neutral", "displayName": "Danger", "canonical": "#B3261E", "cssVar": "--bl-danger", "tonalRamp": ["oklch(15% 0.07 27)", "oklch(26% 0.11 27)", "oklch(38% 0.15 27)", "oklch(49% 0.18 27)", "oklch(61% 0.17 27)", "oklch(72% 0.13 27)", "oklch(84% 0.08 27)", "oklch(95% 0.03 27)"] },
       "signal-dark": { "role": "primary", "displayName": "Vert bouteille (sombre)", "canonical": "#6FBF8E", "cssVar": "--bl-signal", "tonalRamp": ["oklch(15% 0.05 155)", "oklch(26% 0.07 155)", "oklch(38% 0.09 155)", "oklch(49% 0.10 155)", "oklch(61% 0.11 155)", "oklch(72% 0.10 155)", "oklch(84% 0.08 155)", "oklch(95% 0.04 155)"] },
-      "on-signal-dark": { "role": "primary", "displayName": "Sur signal (sombre)", "canonical": "#141414", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "on-signal-dark": { "role": "primary", "displayName": "Sur signal (sombre ; défini, sans consommateur)", "canonical": "#141414", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
       "page-dark": { "role": "neutral", "displayName": "Page (sombre)", "canonical": "#141414", "cssVar": "--bl-page", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
       "surface-dark": { "role": "neutral", "displayName": "Surface (sombre)", "canonical": "#1E1E1D", "cssVar": "--bl-surface", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
       "ink-dark": { "role": "neutral", "displayName": "Encre (sombre)", "canonical": "#EDEDEA", "cssVar": "--bl-ink", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
@@ -24,19 +24,19 @@
       "danger-dark": { "role": "neutral", "displayName": "Danger (sombre)", "canonical": "#F28B82", "cssVar": "--bl-danger", "tonalRamp": ["oklch(15% 0.06 22)", "oklch(26% 0.10 22)", "oklch(38% 0.13 22)", "oklch(49% 0.15 22)", "oklch(61% 0.15 22)", "oklch(72% 0.13 22)", "oklch(84% 0.08 22)", "oklch(95% 0.03 22)"] }
     },
     "typographyMeta": {
-      "title": { "displayName": "Title", "purpose": "Titre de fiche et de vue ; jamais dans la liste." },
-      "lead": { "displayName": "Lead", "purpose": "Titre d'un message d'état, centré, 420 px maximum." },
-      "body": { "displayName": "Body", "purpose": "Saisie de recherche et texte courant." },
-      "body-strong": { "displayName": "Body strong", "purpose": "Titre d'ouvrage dans la liste et libellé de tout bouton texte." },
-      "small": { "displayName": "Small", "purpose": "Auteur · éditeur · année ; description d'un message d'état." },
-      "figure": { "displayName": "Figure", "purpose": "Note d'un ouvrage et ligne de compte ; même métrique que Small, nomme l'intention chiffrée." },
-      "rubric": { "displayName": "Rubric", "purpose": "Capitales espacées de 0,08 em pour les rubriques de navigation et l'état de synchronisation ; jamais un surtitre." }
+      "title": { "displayName": "Title", "purpose": "Titre de la fiche d'ouvrage ; jamais dans la liste." },
+      "lead": { "displayName": "Lead", "purpose": "Titre d'un message d'état, centré, 420 px maximum ; auteur en tête de fiche, en encre secondaire." },
+      "body": { "displayName": "Body", "purpose": "Saisie de recherche, texte courant, valeur d'une ligne de champ et libellé de valeur d'un interrupteur." },
+      "body-strong": { "displayName": "Body strong", "purpose": "Titre d'ouvrage dans la liste et libellé de tout bouton texte, y compris Fonds et Fermer dans l'en-tête de fiche." },
+      "small": { "displayName": "Small", "purpose": "Auteur · éditeur · année ; description d'un message d'état ; message en ligne de retour arrière en danger." },
+      "figure": { "displayName": "Figure", "purpose": "Note d'un ouvrage en liste et ligne de compte ; même métrique que Small, nomme l'intention chiffrée." },
+      "rubric": { "displayName": "Rubric", "purpose": "Capitales espacées de 0,08 em pour trois emplois : rubriques de navigation, état de synchronisation, étiquette de champ sur 112 px dans la fiche ; jamais un surtitre." }
     },
     "shadows": [],
     "motion": [
-      { "name": "quick", "value": "150ms", "purpose": "Durée unique de toute bascule d'état (fond de ligne, filet de rubrique, opacité)." },
+      { "name": "quick", "value": "150ms", "purpose": "Durée unique de toute bascule d'état (fond de ligne, filet de rubrique, bordure de la case à cocher, opacité)." },
       { "name": "ease-etat", "value": "ease-out", "purpose": "Courbe de transitionEtat sur background-color, border-color et opacity ; web uniquement." },
-      { "name": "pressed", "value": "opacity: 0.7", "purpose": "Retour immédiat de tout élément pressé." },
+      { "name": "pressed", "value": "opacity: 0.7", "purpose": "Retour immédiat de tout élément pressé, y compris la ligne d'interrupteur." },
       { "name": "disabled", "value": "opacity: 0.5", "purpose": "État désactivé d'un bouton texte." }
     ],
     "breakpoints": [
@@ -49,11 +49,14 @@
       { "name": "statusColumn", "value": "40px" },
       { "name": "detailPane", "value": "400px" },
       { "name": "touchTarget", "value": "44px" },
+      { "name": "fieldLabel", "value": "112px" },
+      { "name": "iconCase", "value": "20px" },
       { "name": "hairline", "value": "1px" },
       { "name": "iconSize", "value": "16px" }
     ],
     "focus": { "name": "focus-visible", "value": "outline: 2px solid var(--bl-signal); outline-offset: 2px", "purpose": "Anneau de focus clavier global (theme/global.css)." },
-    "selection": { "name": "selection", "value": "background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent)", "purpose": "Sélection de texte." }
+    "selection": { "name": "selection", "value": "background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent)", "purpose": "Sélection de texte." },
+    "keyboard": { "name": "escape", "value": "Escape ferme le volet de fiche (hooks/useEscape.ts, web, mode volet uniquement)", "purpose": "Fermeture clavier du volet à 960 px et plus." }
   },
   "components": [
     {
@@ -105,6 +108,38 @@
       "css": ".ds-syncs { display: flex; flex-wrap: wrap; } .ds-sync { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; min-height: 44px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; font-variant-numeric: tabular-nums; } .ds-sync__dot { width: 8px; height: 8px; border-radius: 4px; box-sizing: border-box; } .ds-sync--online { color: var(--bl-signal); } .ds-sync--online .ds-sync__dot { background: var(--bl-signal); } .ds-sync--offline { color: var(--bl-inkSecondary); } .ds-sync--offline .ds-sync__dot { border: 1px solid var(--bl-inkSecondary); } .ds-sync--pending { color: var(--bl-ink); } .ds-sync--pending .ds-sync__dot { border: 1px solid var(--bl-ink); } .ds-sync--conflict { color: var(--bl-danger); } .ds-sync--conflict .ds-sync__dot { background: var(--bl-danger); }"
     },
     {
+      "name": "Screen header (volet)",
+      "kind": "nav",
+      "refersTo": "screen-header-volet",
+      "description": "En-tête du volet de fiche à 960 px et plus : rangée de 56 px sur page avec son propre filet, qui rejoint celui de la première ligne de la liste ; un seul bouton texte encre « Fermer » à droite.",
+      "html": "<div class=\"ds-header-volet\"><span class=\"ds-header-volet__spacer\"></span><button class=\"ds-header-volet__close\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg>Fermer</button></div>",
+      "css": ".ds-header-volet { display: flex; align-items: center; height: 56px; padding: 0 8px; background: var(--bl-page); border-bottom: 1px solid var(--bl-rule); } .ds-header-volet__spacer { flex: 1; } .ds-header-volet__close { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bl-ink); cursor: pointer; transition: opacity 150ms ease-out; } .ds-header-volet__close:active { opacity: 0.7; } .ds-header-volet__close:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Screen header (écran)",
+      "kind": "nav",
+      "refersTo": "screen-header-ecran",
+      "description": "En-tête de la fiche sous 960 px : bande de 48 px sur surface, bouton texte encre « Fonds » avec chevron à gauche, marque de synchronisation à droite, filet en dessous.",
+      "html": "<div class=\"ds-header-ecran\"><button class=\"ds-header-ecran__back\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"15 18 9 12 15 6\"/></svg>Fonds</button><span class=\"ds-header-ecran__spacer\"></span><span class=\"ds-header-ecran__sync\" role=\"status\"><span class=\"ds-header-ecran__dot\"></span>En ligne</span></div>",
+      "css": ".ds-header-ecran { display: flex; align-items: center; min-height: 48px; padding: 0 8px; background: var(--bl-surface); border-bottom: 1px solid var(--bl-rule); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; } .ds-header-ecran__spacer { flex: 1; } .ds-header-ecran__back { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--bl-ink); cursor: pointer; transition: opacity 150ms ease-out; } .ds-header-ecran__back:active { opacity: 0.7; } .ds-header-ecran__back:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; } .ds-header-ecran__sync { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; min-height: 44px; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--bl-signal); } .ds-header-ecran__dot { width: 8px; height: 8px; border-radius: 4px; background: var(--bl-signal); }"
+    },
+    {
+      "name": "Field row",
+      "kind": "custom",
+      "refersTo": "field-row",
+      "description": "Ligne d'une liste de définitions : étiquette en capitales espacées sur 112 px en encre secondaire, case d'icône fixe de 20 px (coeur en signal quand présent), valeur en Body ; encre secondaire quand la valeur est absente ; filet inférieur.",
+      "html": "<div class=\"ds-fields\"><div class=\"ds-field\"><span class=\"ds-field__label\">Éditeur</span><span class=\"ds-field__value\"><span class=\"ds-field__case\"></span><span class=\"ds-field__text\">Bragelonne</span></span></div><div class=\"ds-field\"><span class=\"ds-field__label\">Note</span><span class=\"ds-field__value\"><span class=\"ds-field__case\"></span><span class=\"ds-field__text ds-field__text--muted\">Sans note</span></span></div><div class=\"ds-field\"><span class=\"ds-field__label\">Coup de coeur</span><span class=\"ds-field__value\"><span class=\"ds-field__case ds-field__case--signal\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"/></svg></span><span class=\"ds-field__text\">Oui</span></span></div></div>",
+      "css": ".ds-fields { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; background: var(--bl-page); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; } .ds-field { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 0; border-bottom: 1px solid var(--bl-rule); box-sizing: border-box; } .ds-field__label { flex: none; width: 112px; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--bl-inkSecondary); } .ds-field__value { display: flex; align-items: center; gap: 8px; flex: 1; } .ds-field__case { display: flex; justify-content: center; align-items: center; width: 20px; flex: none; } .ds-field__case--signal { color: var(--bl-signal); } .ds-field__text { font-size: 14px; line-height: 20px; color: var(--bl-ink); } .ds-field__text--muted { color: var(--bl-inkSecondary); }"
+    },
+    {
+      "name": "Toggle row",
+      "kind": "input",
+      "refersTo": "toggle-row",
+      "description": "Interrupteur qui a la forme d'une ligne de champ : la ligne entière se presse ; case de 20 px à rayon 2 px, bordure encre secondaire vide au repos, bordure encre et coche en encre quand cochée ; jamais un aplat de signal.",
+      "html": "<div class=\"ds-toggles\"><button class=\"ds-toggle\" role=\"switch\" aria-checked=\"true\" aria-label=\"Lecture\"><span class=\"ds-toggle__label\">Lecture</span><span class=\"ds-toggle__value\"><span class=\"ds-toggle__box ds-toggle__box--on\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"20 6 9 17 4 12\"/></svg></span><span class=\"ds-toggle__text\">Lu</span></span></button><button class=\"ds-toggle\" role=\"switch\" aria-checked=\"false\" aria-label=\"Lecture\"><span class=\"ds-toggle__label\">Lecture</span><span class=\"ds-toggle__value\"><span class=\"ds-toggle__box\"></span><span class=\"ds-toggle__text\">Non lu</span></span></button></div>",
+      "css": ".ds-toggles { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; background: var(--bl-page); } .ds-toggle { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 8px 0; background: transparent; border: 0; border-bottom: 1px solid var(--bl-rule); border-radius: 0; box-sizing: border-box; text-align: left; cursor: pointer; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; transition: opacity 150ms ease-out; } .ds-toggle:active { opacity: 0.7; } .ds-toggle:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; } .ds-toggle__label { flex: none; width: 112px; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--bl-inkSecondary); } .ds-toggle__value { display: flex; align-items: center; gap: 8px; flex: 1; } .ds-toggle__box { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex: none; box-sizing: border-box; border: 1px solid var(--bl-inkSecondary); border-radius: 2px; background: transparent; color: var(--bl-ink); transition: border-color 150ms ease-out; } .ds-toggle__box--on { border-color: var(--bl-ink); } .ds-toggle__text { font-size: 14px; line-height: 20px; color: var(--bl-ink); }"
+    },
+    {
       "name": "Tally line",
       "kind": "custom",
       "refersTo": "tally-line",
@@ -124,39 +159,43 @@
       "name": "Skeleton row",
       "kind": "custom",
       "refersTo": "skeleton",
-      "description": "Le chargement rejoue la géométrie exacte de la ligne : rond de 16 px dans la colonne d'état, barres à rayon 2 px, note de 32 px, filet.",
-      "html": "<div class=\"ds-skel-row\" role=\"progressbar\" aria-busy=\"true\" aria-label=\"Chargement du fonds\"><span class=\"ds-skel-row__status\"><span class=\"ds-skel ds-skel--round\"></span></span><span class=\"ds-skel-row__text\"><span class=\"ds-skel\" style=\"width:45%;height:12px\"></span><span class=\"ds-skel\" style=\"width:65%;height:10px\"></span></span><span class=\"ds-skel\" style=\"width:32px;height:10px\"></span></div>",
-      "css": ".ds-skel-row { display: flex; align-items: center; height: 56px; padding: 0 16px; gap: 12px; background: var(--bl-page); border-bottom: 1px solid var(--bl-rule); } .ds-skel-row__status { display: flex; justify-content: center; width: 40px; flex: none; } .ds-skel-row__text { display: flex; flex-direction: column; gap: 8px; flex: 1; } .ds-skel { display: block; background: var(--bl-skeleton); border-radius: 2px; } .ds-skel--round { width: 16px; height: 16px; border-radius: 8px; }"
+      "description": "Le chargement rejoue la géométrie exacte de la ligne : rond de 16 px dans la colonne d'état, barres à rayon 2 px, note de 32 px, filet. La fiche fait de même avec une barre de titre 70 % × 16, une barre d'auteur 45 % × 12 et cinq lignes de champ (étiquette 64 × 10 sur 112 px, valeur 40 % × 10).",
+      "html": "<div class=\"ds-skel-row\" role=\"progressbar\" aria-busy=\"true\" aria-label=\"Chargement du fonds\"><span class=\"ds-skel-row__status\"><span class=\"ds-skel ds-skel--round\"></span></span><span class=\"ds-skel-row__text\"><span class=\"ds-skel\" style=\"width:45%;height:12px\"></span><span class=\"ds-skel\" style=\"width:65%;height:10px\"></span></span><span class=\"ds-skel\" style=\"width:32px;height:10px\"></span></div><div class=\"ds-skel-fiche\" role=\"progressbar\" aria-busy=\"true\" aria-label=\"Chargement de la fiche\"><span class=\"ds-skel\" style=\"width:70%;height:16px\"></span><span class=\"ds-skel ds-skel-fiche__auteur\" style=\"width:45%;height:12px\"></span><span class=\"ds-skel-fiche__ligne\"><span class=\"ds-skel-fiche__etiquette\"><span class=\"ds-skel\" style=\"width:64px;height:10px\"></span></span><span class=\"ds-skel\" style=\"width:40%;height:10px\"></span></span><span class=\"ds-skel-fiche__ligne\"><span class=\"ds-skel-fiche__etiquette\"><span class=\"ds-skel\" style=\"width:64px;height:10px\"></span></span><span class=\"ds-skel\" style=\"width:40%;height:10px\"></span></span></div>",
+      "css": ".ds-skel-row { display: flex; align-items: center; height: 56px; padding: 0 16px; gap: 12px; background: var(--bl-page); border-bottom: 1px solid var(--bl-rule); } .ds-skel-row__status { display: flex; justify-content: center; width: 40px; flex: none; } .ds-skel-row__text { display: flex; flex-direction: column; gap: 8px; flex: 1; } .ds-skel { display: block; background: var(--bl-skeleton); border-radius: 2px; } .ds-skel--round { width: 16px; height: 16px; border-radius: 8px; } .ds-skel-fiche { display: flex; flex-direction: column; gap: 8px; padding: 16px; background: var(--bl-page); } .ds-skel-fiche__auteur { margin-bottom: 12px; } .ds-skel-fiche__ligne { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 0; box-sizing: border-box; border-bottom: 1px solid var(--bl-rule); } .ds-skel-fiche__etiquette { display: block; width: 112px; flex: none; }"
     }
   ],
   "narrative": {
     "northStar": "La page des nouveautés",
-    "overview": "BookList Pro est mis en page comme la page des nouveautés d'un périodique professionnel du livre : une liste typographique serrée, lue au comptoir de caisse en plein jour, où les filets d'un pixel font les lignes et où les capitales espacées font les rubriques. La hiérarchie est portée par la graisse, la taille et le gris de l'encre, jamais par des fonds, des cartes ni des ombres. Chaque ligne d'ouvrage est un article de deux niveaux, titre en graisse puis auteur · éditeur · année en gris, avec sa note en chiffres tabulaires calée à droite comme une colonne de prix.\n\nLa densité est celle d'un outil de métier : 56 px par ouvrage, bandeau de 48 px, ligne de compte de 28 px, tout aligné sur des filets. La couleur est retenue à l'extrême : une seule encre de signal, un vert bouteille, sert à la fois l'action primaire, la rubrique active, le coup de coeur et l'état « en ligne » ; le rouge n'existe que pour le destructif et le conflit. La scène par défaut est claire (la caisse en plein jour) ; le thème sombre suit la préférence système avec la même grammaire et une palette inversée, sans changer une seule règle.\n\nRejets confirmés par la direction et vérifiés dans le rendu : pas de table d'administration à cartes, pas de pastilles arrondies, pas de bouton bleu plein, aucun fond de carte, aucune icône décorative.",
+    "overview": "BookList Pro est mis en page comme la page des nouveautés d'un périodique professionnel du livre : une liste typographique serrée, lue au comptoir de caisse en plein jour, où les filets d'un pixel font les lignes et où les capitales espacées font les rubriques. La hiérarchie est portée par la graisse, la taille et le gris de l'encre, jamais par des fonds, des cartes ni des ombres. Chaque ligne d'ouvrage est un article de deux niveaux, titre en graisse puis auteur · éditeur · année en gris, avec sa note en chiffres tabulaires calée à droite comme une colonne de prix. La fiche d'un ouvrage prolonge la même page : un titre, l'auteur en gris, puis une liste de définitions sur filets où l'étiquette en capitales espacées précède la valeur.\n\nLa densité est celle d'un outil de métier : 56 px par ouvrage, bandeau de 48 px, ligne de compte de 28 px, lignes de champ de 44 px, tout aligné sur des filets. La couleur est retenue à l'extrême : une seule encre de signal, un vert bouteille, sert à la fois l'action primaire, la rubrique active, le coup de coeur et l'état « en ligne » ; le rouge n'existe que pour le destructif, l'erreur et le conflit. La scène par défaut est claire (la caisse en plein jour) ; le thème sombre suit la préférence système avec la même grammaire et une palette inversée, sans changer une seule règle.\n\nRejets confirmés par la direction et vérifiés dans le rendu : pas de table d'administration à cartes, pas de pastilles arrondies, pas de bouton bleu plein, aucun fond de carte, aucune icône décorative, aucun aplat de signal (la case à cocher cochée porte une coche en encre, jamais un fond vert).",
     "keyCharacteristics": [
-      "Filets de 1 px (`hairline = 1`) comme seule structure visible : entre les lignes, sous le bandeau, sous la ligne de compte, et vertical devant la fiche.",
-      "Rubriques en capitales espacées de 11 px, soulignées d'un filet vert de 1 px quand elles sont actives.",
+      "Filets de 1 px (`hairline = 1`) comme seule structure visible : entre les lignes, sous le bandeau, sous la ligne de compte, sous chaque ligne de champ de la fiche, sous l'en-tête du volet, et vertical devant la fiche.",
+      "Rubriques en capitales espacées de 11 px, soulignées d'un filet vert de 1 px quand elles sont actives ; les mêmes capitales, en gris, étiquettent les champs de la fiche.",
       "Chiffres tabulaires (`fontVariant: ['tabular-nums']`) sur tout texte, pas seulement sur les figures.",
       "Un seul signal coloré, vert bouteille, sur ≤ 5 % de l'écran ; le rouge réservé au danger et au conflit.",
       "Pile système (`system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif`) et échelle fixe 11 / 13 / 14 / 16 / 20.",
-      "Icônes Feather à 16 px, trait unique, toujours dans une case fixe de 16 px.",
+      "Icônes Feather à 16 px, trait unique, toujours dans une case fixe : 16 px dans la liste (`iconSize`), 20 px dans la fiche (`layout.iconCase`).",
       "Aucune ombre, aucun rayon supérieur à 2 px ; les bascules d'état durent 150 ms."
     ],
     "rules": [
       { "name": "La règle du signal unique", "body": "Une seule couleur de signal, le vert bouteille, et une seule sémantique : ce qui est actif, recommandé, en ligne ou à faire. Si un nouvel élément a besoin d'une deuxième couleur d'accent, c'est la hiérarchie qui est fausse, pas la palette.", "section": "colors" },
       { "name": "La règle du rouge gardé", "body": "Le rouge n'apparaît que pour une erreur, une destruction ou un conflit de synchronisation. Il n'est jamais un accent, une étoile, ni un compteur.", "section": "colors" },
       { "name": "La règle de la surface sans carte", "body": "`surface` colore le bandeau et la ligne survolée ou sélectionnée. Elle ne délimite jamais un bloc de contenu ; les blocs sont délimités par des filets.", "section": "colors" },
+      { "name": "La règle de la coche en encre", "body": "Un état coché se lit par une coche en encre dans une case bordée d'encre ; jamais par un aplat de signal ni par un texte sur signal. Le vert dit « recommandé ou actif », pas « oui ».", "section": "colors" },
       { "name": "La règle des chiffres tabulaires", "body": "Tout texte est composé en `tabular-nums`, pas seulement les notes : les colonnes de chiffres restent alignées où qu'elles apparaissent, sans variante à activer.", "section": "typography" },
-      { "name": "La règle des capitales espacées", "body": "Les capitales espacées à 11 px sont réservées aux rubriques de navigation et à l'état de synchronisation. Elles nomment une section ou un état ; elles ne servent jamais de surtitre décoratif au-dessus d'un titre.", "section": "typography" },
-      { "name": "La règle du plat", "body": "Pas d'ombre, pas de dégradé, pas de bordure de plus d'un pixel. Un état se lit par un changement de fond (`page` → `surface`), de couleur d'encre ou de filet, en 150 ms.", "section": "elevation" }
+      { "name": "La règle des capitales espacées", "body": "Les capitales espacées à 11 px sont réservées à trois emplois : les rubriques de navigation, l'état de synchronisation et l'étiquette d'un champ dans une liste de définitions. Elles nomment une section, un état ou un champ, toujours à côté ou en ligne ; elles ne servent jamais de surtitre décoratif au-dessus d'un titre.", "section": "typography" },
+      { "name": "La règle du plat", "body": "Pas d'ombre, pas de dégradé, pas de bordure de plus d'un pixel. Un état se lit par un changement de fond (`page` → `surface`), de couleur d'encre ou de filet, en 150 ms.", "section": "elevation" },
+      { "name": "La règle des filets qui se rejoignent", "body": "Quand deux zones se côtoient derrière un filet vertical, leurs filets horizontaux tombent à la même ordonnée : l'en-tête du volet fait la hauteur d'une ligne d'ouvrage (56 px) pour cette seule raison.", "section": "elevation" }
     ],
     "dos": [
       "Do structurer avec des filets de 1 px en `rule` et des fonds `page` / `surface` ; c'est toute la structure visible.",
       "Do réserver le vert bouteille au signal : action primaire en texte, rubrique active, coup de coeur, état en ligne, focus, curseur et sélection.",
       "Do composer tout texte en `tabular-nums` via `AppText` et prendre la couleur dans `theme/tone.ts` ; aucune couleur ni taille en dur dans `components/`.",
-      "Do garder les icônes Feather à 16 px dans une case fixe de 16 px, et n'agrandir à 24 px que l'icône d'un message d'état.",
+      "Do garder les icônes Feather à 16 px dans une case fixe (16 px en liste, 20 px en fiche), et n'agrandir à 24 px que l'icône d'un message d'état.",
       "Do donner 44 px minimum à toute cible interactive et un libellé, un rôle et un état à chaque élément pressable.",
       "Do faire durer toute bascule d'état 150 ms (`transitionEtat`) et signaler le pressé par `opacity 0.7`.",
-      "Do décliner tout nouvel écran dans les deux palettes en lisant `useTheme().colors` ; les valeurs sombres sont dans `theme/tokens.ts`, pas dans les composants."
+      "Do décliner tout nouvel écran dans les deux palettes en lisant `useTheme().colors` ; les valeurs sombres sont dans `theme/tokens.ts`, pas dans les composants.",
+      "Do présenter un détail d'ouvrage comme une liste de définitions sur filets (`FieldRow`, `ToggleRow`) : étiquette Rubric sur 112 px, case d'icône de 20 px, valeur en Body ; et aligner l'en-tête d'un volet sur la première ligne de la liste (56 px, filet propre).",
+      "Do dire « oui » par une coche en encre dans une case bordée d'encre ; réserver le vert au coeur du coup de coeur."
     ],
     "donts": [
       "Don't poser un fond de carte, une ombre, un dégradé ou une bordure de plus d'un pixel autour d'un bloc de contenu.",
@@ -164,7 +203,8 @@
       "Don't employer le rouge ailleurs que pour une erreur, une destruction ou un conflit.",
       "Don't arrondir au-delà de 2 px, sauf le point de 8 px et le rond de squelette qui sont des cercles.",
       "Don't ajouter un filet propre au champ de recherche du bandeau ; le filet du bandeau lui suffit.",
-      "Don't utiliser les capitales espacées comme surtitre au-dessus d'un titre ; elles nomment une rubrique ou un état de synchronisation.",
+      "Don't utiliser les capitales espacées comme surtitre au-dessus d'un titre ; elles nomment une rubrique, un état de synchronisation ou l'étiquette d'un champ, toujours en ligne avec ce qu'elles nomment.",
+      "Don't remplir la case à cocher d'un aplat de signal ni poser du texte en `on-signal` ; aucun aplat de signal n'existe dans le système.",
       "Don't écrire une couleur, une taille ou une chaîne visible en dur dans `components/` ou `features/`."
     ]
   }

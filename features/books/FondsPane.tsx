@@ -1,22 +1,16 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 
+import { FondsListe } from './FondsListe';
+import { RUBRIQUES, estRubrique, versRequeteFonds, type Rubrique } from './rubriques';
+import { useFonds } from './useFonds';
 import { RubricBar } from '@/components/RubricBar';
 import { Rule } from '@/components/Rule';
 import { SearchField } from '@/components/SearchField';
 import { Skeleton } from '@/components/Skeleton';
-import { StateMessage } from '@/components/StateMessage';
 import { SyncMark } from '@/components/SyncMark';
 import { TallyLine } from '@/components/TallyLine';
 import { TextButton } from '@/components/TextButton';
-import { FondsListe } from '@/features/books/FondsListe';
-import {
-  RUBRIQUES,
-  estRubrique,
-  versRequeteFonds,
-  type Rubrique,
-} from '@/features/books/rubriques';
-import { useFonds } from '@/features/books/useFonds';
 import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useTheme } from '@/theme/ThemeProvider';
 import { layout, space } from '@/theme/tokens';
@@ -31,22 +25,25 @@ const labels = {
   ouvrages: 'ouvrages',
   resultats: 'résultats',
   actualisation: 'actualisation',
-  detailTitle: 'Aucun ouvrage ouvert',
-  detailHint: 'Choisissez un ouvrage dans le fonds pour lire sa fiche et ses notes de lecture.',
 };
 
 const DELAI_RECHERCHE_MS = 300;
 
 const rubriques = RUBRIQUES.map((rubrique) => ({ key: rubrique.cle, label: rubrique.libelle }));
 
-export default function FondsScreen() {
+type Props = {
+  selectionId: string | null;
+  onOuvrir: (id: string) => void;
+  detail?: ReactNode;
+};
+
+export function FondsPane({ selectionId, onOuvrir, detail }: Props) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const twoPane = width >= layout.twoPaneMin;
+  const large = width >= layout.twoPaneMin;
 
   const [rubrique, setRubrique] = useState<Rubrique>('tout');
   const [recherche, setRecherche] = useState('');
-  const [selectionId, setSelectionId] = useState<string | null>(null);
   const rechercheRetardee = useDebouncedValue(recherche, DELAI_RECHERCHE_MS);
   const requete = useMemo(
     () => versRequeteFonds(rubrique, rechercheRetardee),
@@ -62,19 +59,11 @@ export default function FondsScreen() {
   const effacerRecherche = useCallback(() => setRecherche(''), []);
   const ajouter = useCallback(() => {}, []);
 
-  const rubricBar = (
-    <RubricBar
-      items={rubriques}
-      activeKey={rubrique}
-      onSelect={choisirRubrique}
-      label={labels.rubrics}
-    />
-  );
   const search = (
     <SearchField
       value={recherche}
       onChangeText={setRecherche}
-      placeholder={twoPane ? labels.search : labels.searchShort}
+      placeholder={large ? labels.search : labels.searchShort}
       label={labels.search}
     />
   );
@@ -91,11 +80,16 @@ export default function FondsScreen() {
       ];
 
   return (
-    <View style={[styles.screen, { backgroundColor: colors.page }]}>
+    <View style={[styles.pane, { backgroundColor: colors.page }]}>
       <View style={{ backgroundColor: colors.surface }}>
-        {twoPane ? (
+        {large ? (
           <View style={styles.chromeRow}>
-            {rubricBar}
+            <RubricBar
+              items={rubriques}
+              activeKey={rubrique}
+              onSelect={choisirRubrique}
+              label={labels.rubrics}
+            />
             <View style={styles.searchSlot}>{search}</View>
             <TextButton label={labels.add} icon="plus" onPress={ajouter} />
             {sync}
@@ -135,21 +129,15 @@ export default function FondsScreen() {
             rubrique={rubrique}
             recherche={rechercheRetardee}
             selectionId={selectionId}
-            onSelection={setSelectionId}
+            onSelection={onOuvrir}
             onEffacerRecherche={effacerRecherche}
             onAjouter={ajouter}
           />
         </View>
-        {twoPane && (
+        {detail !== undefined && (
           <>
             <Rule orientation="vertical" />
-            <View style={styles.detail}>
-              <StateMessage
-                icon="book-open"
-                title={labels.detailTitle}
-                description={labels.detailHint}
-              />
-            </View>
+            <View style={styles.detail}>{detail}</View>
           </>
         )}
       </View>
@@ -158,7 +146,7 @@ export default function FondsScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
+  pane: { flex: 1 },
   chromeRow: {
     flexDirection: 'row',
     alignItems: 'stretch',
@@ -173,5 +161,5 @@ const styles = StyleSheet.create({
   },
   body: { flex: 1, flexDirection: 'row' },
   list: { flex: 1 },
-  detail: { width: layout.detailPane, justifyContent: 'center' },
+  detail: { width: layout.detailPane },
 });

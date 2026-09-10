@@ -62,6 +62,8 @@ export const layout = {
   detailPane: 400,
   twoPaneMin: 960,
   touchTarget: 44,
+  fieldLabel: 112,
+  iconCase: 20,
 } as const;
 
 export const motion = { quick: 150 } as const;

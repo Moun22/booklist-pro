@@ -16,6 +16,7 @@ export function TextButton({ label, onPress, icon, tone = 'signal', disabled = f
   return (
     <Pressable
       role="button"
+      aria-label={label}
       aria-disabled={disabled}
       disabled={disabled}
       onPress={onPress}
