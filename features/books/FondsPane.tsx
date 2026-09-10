@@ -34,10 +34,11 @@ const rubriques = RUBRIQUES.map((rubrique) => ({ key: rubrique.cle, label: rubri
 type Props = {
   selectionId: string | null;
   onOuvrir: (id: string) => void;
+  onAjouter: () => void;
   detail?: ReactNode;
 };
 
-export function FondsPane({ selectionId, onOuvrir, detail }: Props) {
+export function FondsPane({ selectionId, onOuvrir, onAjouter, detail }: Props) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const large = width >= layout.twoPaneMin;
@@ -57,7 +58,6 @@ export function FondsPane({ selectionId, onOuvrir, detail }: Props) {
     }
   }, []);
   const effacerRecherche = useCallback(() => setRecherche(''), []);
-  const ajouter = useCallback(() => {}, []);
 
   const search = (
     <SearchField
@@ -91,14 +91,14 @@ export function FondsPane({ selectionId, onOuvrir, detail }: Props) {
               label={labels.rubrics}
             />
             <View style={styles.searchSlot}>{search}</View>
-            <TextButton label={labels.add} icon="plus" onPress={ajouter} />
+            <TextButton label={labels.add} icon="plus" onPress={onAjouter} />
             {sync}
           </View>
         ) : (
           <>
             <View style={styles.chromeRow}>
               <View style={styles.searchSlot}>{search}</View>
-              <TextButton label={labels.addShort} icon="plus" onPress={ajouter} />
+              <TextButton label={labels.addShort} icon="plus" onPress={onAjouter} />
               {sync}
             </View>
             <View style={styles.chromeRow}>
@@ -131,7 +131,7 @@ export function FondsPane({ selectionId, onOuvrir, detail }: Props) {
             selectionId={selectionId}
             onSelection={onOuvrir}
             onEffacerRecherche={effacerRecherche}
-            onAjouter={ajouter}
+            onAjouter={onAjouter}
           />
         </View>
         {detail !== undefined && (

@@ -1,10 +1,9 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback } from 'react';
-import { useWindowDimensions } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 
 import { StateMessage } from '@/components/StateMessage';
 import { FicheOuvrage } from '@/features/books/FicheOuvrage';
-import { layout } from '@/theme/tokens';
+import { useModeOuvrage } from '@/hooks/useModeOuvrage';
+import { useNavigationOuvrages } from '@/hooks/useNavigationOuvrages';
 
 const labels = {
   introuvable: 'Ouvrage introuvable',
@@ -13,16 +12,8 @@ const labels = {
 
 export default function OuvrageScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { width } = useWindowDimensions();
-  const router = useRouter();
-
-  const fermer = useCallback(() => {
-    if (router.canGoBack()) {
-      router.back();
-    } else {
-      router.replace('/');
-    }
-  }, [router]);
+  const mode = useModeOuvrage();
+  const navigation = useNavigationOuvrages();
 
   if (typeof id !== 'string' || id.length === 0) {
     return (
@@ -31,6 +22,11 @@ export default function OuvrageScreen() {
   }
 
   return (
-    <FicheOuvrage id={id} mode={width >= layout.twoPaneMin ? 'volet' : 'ecran'} onFermer={fermer} />
+    <FicheOuvrage
+      id={id}
+      mode={mode}
+      onFermer={navigation.retour}
+      onModifier={() => navigation.modifier(id)}
+    />
   );
 }
