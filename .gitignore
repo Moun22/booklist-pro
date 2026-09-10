@@ -25,6 +25,10 @@ expo-env.d.ts
 .idea/
 .vscode/
 .claude/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
 coverage/
 *.tsbuildinfo
 npm-debug.*
