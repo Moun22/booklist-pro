@@ -1,14 +1,13 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { CadreOuvrage, type ModeOuvrage } from './CadreOuvrage';
 import { useOuvrage } from './useOuvrage';
 import { useRetoucheOuvrage } from './useRetoucheOuvrage';
 import { AppText } from '@/components/AppText';
 import { FieldRow } from '@/components/FieldRow';
-import { Rule } from '@/components/Rule';
-import { ScreenHeader } from '@/components/ScreenHeader';
 import { Skeleton } from '@/components/Skeleton';
 import { StateMessage } from '@/components/StateMessage';
-import { SyncMark } from '@/components/SyncMark';
+import { TextButton } from '@/components/TextButton';
 import { ToggleRow } from '@/components/ToggleRow';
 import { messagePourErreur } from '@/features/erreurs/messages';
 import { useEscape } from '@/hooks/useEscape';
@@ -16,9 +15,6 @@ import { useTheme } from '@/theme/ThemeProvider';
 import { hairline, layout, space } from '@/theme/tokens';
 
 const labels = {
-  retour: 'Fonds',
-  fermer: 'Fermer',
-  online: 'En ligne',
   chargement: 'Chargement de la fiche',
   editeur: 'Éditeur',
   annee: 'Année',
@@ -31,6 +27,7 @@ const labels = {
   statut: 'Lecture',
   lu: 'Lu',
   nonLu: 'Non lu',
+  modifier: 'Modifier',
   reessayer: 'Réessayer',
   modificationAnnulee: 'Modification annulée :',
 };
@@ -40,12 +37,12 @@ const LIGNES_SQUELETTE = 5;
 
 type Props = {
   id: string;
-  mode: 'ecran' | 'volet';
+  mode: ModeOuvrage;
   onFermer: () => void;
+  onModifier: () => void;
 };
 
-export function FicheOuvrage({ id, mode, onFermer }: Props) {
-  const { colors } = useTheme();
+export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
   const fiche = useOuvrage(id);
   const retouche = useRetoucheOuvrage(id);
   const ouvrage = fiche.ouvrage;
@@ -58,15 +55,7 @@ export function FicheOuvrage({ id, mode, onFermer }: Props) {
   };
 
   return (
-    <View style={[styles.fiche, { backgroundColor: colors.page }]}>
-      <ScreenHeader
-        mode={mode}
-        backLabel={labels.retour}
-        closeLabel={labels.fermer}
-        onClose={onFermer}
-        trailing={mode === 'ecran' ? <SyncMark status="online" label={labels.online} /> : undefined}
-      />
-      {mode === 'ecran' && <Rule />}
+    <CadreOuvrage mode={mode} onFermer={onFermer}>
       {ouvrage !== undefined ? (
         <ScrollView contentContainerStyle={styles.contenu}>
           <AppText variant="title">{ouvrage.titre}</AppText>
@@ -101,13 +90,16 @@ export function FicheOuvrage({ id, mode, onFermer }: Props) {
               {labels.modificationAnnulee} {messagePourErreur(retouche.error).titre}
             </AppText>
           )}
+          <View style={styles.actions}>
+            <TextButton label={labels.modifier} icon="edit-2" tone="ink" onPress={onModifier} />
+          </View>
         </ScrollView>
       ) : fiche.erreur !== null ? (
         <EtatErreur erreur={fiche.erreur} onReessayer={fiche.reessayer} />
       ) : (
         <FicheSquelette />
       )}
-    </View>
+    </CadreOuvrage>
   );
 }
 
@@ -145,10 +137,10 @@ function FicheSquelette() {
 }
 
 const styles = StyleSheet.create({
-  fiche: { flex: 1 },
   contenu: { padding: space.lg, gap: space.sm },
   auteur: { marginBottom: space.md },
   avertissement: { marginTop: space.md },
+  actions: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.lg },
   ligneSquelette: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,9 +1,9 @@
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { StateMessage } from '@/components/StateMessage';
 import { FondsPane } from '@/features/books/FondsPane';
-import { useOuvrirOuvrage } from '@/hooks/useOuvrirOuvrage';
-import { layout } from '@/theme/tokens';
+import { useModeOuvrage } from '@/hooks/useModeOuvrage';
+import { useNavigationOuvrages } from '@/hooks/useNavigationOuvrages';
 
 const labels = {
   title: 'Aucun ouvrage ouvert',
@@ -11,10 +11,10 @@ const labels = {
 };
 
 export default function FondsScreen() {
-  const { width } = useWindowDimensions();
-  const ouvrir = useOuvrirOuvrage();
+  const mode = useModeOuvrage();
+  const navigation = useNavigationOuvrages();
 
-  if (width >= layout.twoPaneMin) {
+  if (mode === 'volet') {
     return (
       <View style={styles.placeholder}>
         <StateMessage icon="book-open" title={labels.title} description={labels.hint} />
@@ -22,7 +22,9 @@ export default function FondsScreen() {
     );
   }
 
-  return <FondsPane selectionId={null} onOuvrir={ouvrir} />;
+  return (
+    <FondsPane selectionId={null} onOuvrir={navigation.ouvrir} onAjouter={navigation.ajouter} />
+  );
 }
 
 const styles = StyleSheet.create({

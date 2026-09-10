@@ -28,3 +28,10 @@ export function remplacerDansListe(donnees: DonneesListe, ouvrage: Ouvrage): Don
     })),
   };
 }
+
+export function propagerOuvrage(client: QueryClient, ouvrage: Ouvrage): void {
+  client.setQueryData(clesOuvrages.detail(ouvrage.id), ouvrage);
+  client.setQueriesData<DonneesListe>({ queryKey: clesOuvrages.listes() }, (donnees) =>
+    donnees === undefined ? donnees : remplacerDansListe(donnees, ouvrage),
+  );
+}

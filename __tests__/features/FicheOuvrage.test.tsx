@@ -18,7 +18,12 @@ describe('FicheOuvrage', () => {
       .mockResolvedValue(reponseJson(nonLu));
 
     await renderWithProviders(
-      <FicheOuvrage id={ouvrageExemple.id} mode="volet" onFermer={() => {}} />,
+      <FicheOuvrage
+        id={ouvrageExemple.id}
+        mode="volet"
+        onFermer={() => {}}
+        onModifier={() => {}}
+      />,
     );
 
     expect(await screen.findByText('La Cité des cendres')).toBeTruthy();
@@ -47,7 +52,12 @@ describe('FicheOuvrage', () => {
       .mockResolvedValue(reponseJson(ouvrageExemple));
 
     await renderWithProviders(
-      <FicheOuvrage id={ouvrageExemple.id} mode="ecran" onFermer={() => {}} />,
+      <FicheOuvrage
+        id={ouvrageExemple.id}
+        mode="ecran"
+        onFermer={() => {}}
+        onModifier={() => {}}
+      />,
     );
 
     const reessayer = await screen.findByRole('button', { name: 'Réessayer' });

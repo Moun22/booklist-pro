@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-10T12:00:00Z",
+  "generatedAt": "2026-09-11T12:00:00Z",
   "title": "Design System: BookList Pro",
   "extensions": {
     "colorMeta": {
@@ -24,20 +24,20 @@
       "danger-dark": { "role": "neutral", "displayName": "Danger (sombre)", "canonical": "#F28B82", "cssVar": "--bl-danger", "tonalRamp": ["oklch(15% 0.06 22)", "oklch(26% 0.10 22)", "oklch(38% 0.13 22)", "oklch(49% 0.15 22)", "oklch(61% 0.15 22)", "oklch(72% 0.13 22)", "oklch(84% 0.08 22)", "oklch(95% 0.03 22)"] }
     },
     "typographyMeta": {
-      "title": { "displayName": "Title", "purpose": "Titre de la fiche d'ouvrage ; jamais dans la liste." },
+      "title": { "displayName": "Title", "purpose": "Titre de la fiche d'ouvrage et titre d'écran du formulaire (« Nouvel ouvrage », « Modifier l'ouvrage »), 16 px en dessous ; jamais dans la liste." },
       "lead": { "displayName": "Lead", "purpose": "Titre d'un message d'état, centré, 420 px maximum ; auteur en tête de fiche, en encre secondaire." },
-      "body": { "displayName": "Body", "purpose": "Saisie de recherche, texte courant, valeur d'une ligne de champ et libellé de valeur d'un interrupteur." },
-      "body-strong": { "displayName": "Body strong", "purpose": "Titre d'ouvrage dans la liste et libellé de tout bouton texte, y compris Fonds et Fermer dans l'en-tête de fiche." },
-      "small": { "displayName": "Small", "purpose": "Auteur · éditeur · année ; description d'un message d'état ; message en ligne de retour arrière en danger." },
+      "body": { "displayName": "Body", "purpose": "Saisie de recherche, saisie d'un champ de formulaire et son texte indicatif, texte courant, valeur d'une ligne de champ et libellé de valeur d'un interrupteur." },
+      "body-strong": { "displayName": "Body strong", "purpose": "Titre d'ouvrage dans la liste et libellé de tout bouton texte : Fonds, Fermer, Modifier, Annuler, Enregistrer." },
+      "small": { "displayName": "Small", "purpose": "Auteur · éditeur · année ; description d'un message d'état ; message en ligne de retour arrière, message d'un champ invalide et alerte globale du formulaire en danger." },
       "figure": { "displayName": "Figure", "purpose": "Note d'un ouvrage en liste et ligne de compte ; même métrique que Small, nomme l'intention chiffrée." },
-      "rubric": { "displayName": "Rubric", "purpose": "Capitales espacées de 0,08 em pour trois emplois : rubriques de navigation, état de synchronisation, étiquette de champ sur 112 px dans la fiche ; jamais un surtitre." }
+      "rubric": { "displayName": "Rubric", "purpose": "Capitales espacées de 0,08 em pour trois emplois : rubriques de navigation, état de synchronisation, étiquette de champ sur 112 px dans la fiche et le formulaire (danger si le champ est invalide) ; jamais un surtitre." }
     },
     "shadows": [],
     "motion": [
-      { "name": "quick", "value": "150ms", "purpose": "Durée unique de toute bascule d'état (fond de ligne, filet de rubrique, bordure de la case à cocher, opacité)." },
+      { "name": "quick", "value": "150ms", "purpose": "Durée unique de toute bascule d'état (fond de ligne, filet de rubrique, bordure de la case à cocher, filet et étiquette d'un champ invalide, opacité)." },
       { "name": "ease-etat", "value": "ease-out", "purpose": "Courbe de transitionEtat sur background-color, border-color et opacity ; web uniquement." },
       { "name": "pressed", "value": "opacity: 0.7", "purpose": "Retour immédiat de tout élément pressé, y compris la ligne d'interrupteur." },
-      { "name": "disabled", "value": "opacity: 0.5", "purpose": "État désactivé d'un bouton texte." }
+      { "name": "disabled", "value": "opacity: 0.5", "purpose": "État désactivé d'un bouton texte ; le primaire du formulaire l'adopte pendant la soumission avec le libellé « Enregistrement… »." }
     ],
     "breakpoints": [
       { "name": "twoPaneMin", "value": "960px" }
@@ -52,11 +52,13 @@
       { "name": "fieldLabel", "value": "112px" },
       { "name": "iconCase", "value": "20px" },
       { "name": "hairline", "value": "1px" },
-      { "name": "iconSize", "value": "16px" }
+      { "name": "iconSize", "value": "16px" },
+      { "name": "inputIndent", "value": "28px", "purpose": "Retrait gauche du TextInput de FormField : iconCase 20 + space.sm 8, calculé dans le composant." },
+      { "name": "valueColumn", "value": "152px", "purpose": "Début de la colonne des valeurs depuis le bord du contenu : fieldLabel 112 + space.md 12 + inputIndent 28 ; retrait du message d'erreur d'un champ." }
     ],
     "focus": { "name": "focus-visible", "value": "outline: 2px solid var(--bl-signal); outline-offset: 2px", "purpose": "Anneau de focus clavier global (theme/global.css)." },
-    "selection": { "name": "selection", "value": "background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent)", "purpose": "Sélection de texte." },
-    "keyboard": { "name": "escape", "value": "Escape ferme le volet de fiche (hooks/useEscape.ts, web, mode volet uniquement)", "purpose": "Fermeture clavier du volet à 960 px et plus." }
+    "selection": { "name": "selection", "value": "background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent)", "purpose": "Sélection de texte ; les TextInput passent aussi selectionColor = signal." },
+    "keyboard": { "name": "escape", "value": "Escape ferme le volet d'ouvrage (hooks/useEscape.ts, web, mode volet uniquement) : fiche, création et modification", "purpose": "Fermeture clavier du volet à 960 px et plus." }
   },
   "components": [
     {
@@ -84,12 +86,28 @@
       "css": ".ds-btn-text-danger { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bl-danger); cursor: pointer; transition: opacity 150ms ease-out; } .ds-btn-text-danger:active { opacity: 0.7; } .ds-btn-text-danger:disabled { opacity: 0.5; } .ds-btn-text-danger:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
     },
     {
+      "name": "Form actions",
+      "kind": "button",
+      "refersTo": "button-text-ink",
+      "description": "Rangée d'actions d'une fiche ou d'un formulaire : calée à droite, 16 px sous la dernière ligne, écart 8 px ; « Annuler » en encre, puis « Enregistrer » en signal avec sa coche ; pendant la soumission, le primaire est désactivé à 0,5 et relibellé « Enregistrement… ».",
+      "html": "<div class=\"ds-form-actions\"><button class=\"ds-btn-ink\">Annuler</button><button class=\"ds-btn-signal\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"20 6 9 17 4 12\"/></svg>Enregistrer</button></div><div class=\"ds-form-actions\"><button class=\"ds-btn-ink\">Annuler</button><button class=\"ds-btn-signal\" disabled aria-disabled=\"true\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"20 6 9 17 4 12\"/></svg>Enregistrement…</button></div><div class=\"ds-form-actions\"><button class=\"ds-btn-ink\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z\"/></svg>Modifier</button></div>",
+      "css": ".ds-form-actions { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 16px; padding: 0 16px; background: var(--bl-page); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; } .ds-btn-ink, .ds-btn-signal { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; cursor: pointer; transition: opacity 150ms ease-out; } .ds-btn-ink { color: var(--bl-ink); } .ds-btn-signal { color: var(--bl-signal); } .ds-btn-ink:active, .ds-btn-signal:active { opacity: 0.7; } .ds-btn-signal:disabled { opacity: 0.5; cursor: default; } .ds-btn-ink:focus-visible, .ds-btn-signal:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
       "name": "Search field",
       "kind": "input",
       "refersTo": "search-field",
       "description": "Champ sans contour ni fond dans le bandeau : loupe 16 px en encre secondaire, saisie en Body ; son filet est celui du bandeau.",
       "html": "<div class=\"ds-search-band\"><label class=\"ds-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/></svg><input class=\"ds-search__input\" type=\"search\" placeholder=\"Rechercher un titre ou un auteur\" aria-label=\"Rechercher un titre ou un auteur\"></label></div>",
       "css": ".ds-search-band { background: var(--bl-surface); border-bottom: 1px solid var(--bl-rule); padding: 0 16px; min-height: 48px; display: flex; align-items: stretch; } .ds-search { display: flex; align-items: center; gap: 8px; flex: 1; min-height: 44px; color: var(--bl-inkSecondary); } .ds-search__input { flex: 1; min-height: 44px; padding: 8px 0; background: transparent; border: 0; border-radius: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; color: var(--bl-ink); caret-color: var(--bl-signal); } .ds-search__input::placeholder { color: var(--bl-inkSecondary); } .ds-search__input::selection { background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent); } .ds-search__input:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Form field",
+      "kind": "input",
+      "refersTo": "form-field",
+      "description": "Ligne de saisie du formulaire : une ligne de champ de la fiche dont la valeur se tape. Hauteur fixe 44 px filet compris, étiquette Rubric sur 112 px, saisie retirée de 28 px pour commencer sur la colonne des valeurs (152 px), texte indicatif en encre secondaire (« Facultatif » nomme le champ facultatif). Invalide : filet et étiquette en danger (150 ms), message Small danger 4 px sous la ligne sur la colonne des valeurs.",
+      "html": "<div class=\"ds-form\"><div class=\"ds-ff\"><label class=\"ds-ff__row\"><span class=\"ds-ff__label\">Titre</span><input class=\"ds-ff__input\" type=\"text\" placeholder=\"Titre de l'ouvrage\" aria-label=\"Titre\"></label></div><div class=\"ds-ff\"><label class=\"ds-ff__row\"><span class=\"ds-ff__label\">Éditeur</span><input class=\"ds-ff__input\" type=\"text\" placeholder=\"Facultatif\" aria-label=\"Éditeur\"></label></div><div class=\"ds-ff ds-ff--invalid\"><label class=\"ds-ff__row\"><span class=\"ds-ff__label\">Année</span><input class=\"ds-ff__input\" type=\"text\" inputmode=\"numeric\" placeholder=\"1965\" value=\"abcd\" aria-label=\"Année\" aria-invalid=\"true\"></label><p class=\"ds-ff__error\" role=\"alert\">L'année doit être un nombre à quatre chiffres.</p></div></div>",
+      "css": ".ds-form { display: flex; flex-direction: column; gap: 8px; padding: 0 16px; background: var(--bl-page); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; } .ds-ff__row { display: flex; align-items: stretch; gap: 12px; height: 44px; box-sizing: border-box; border-bottom: 1px solid var(--bl-rule); transition: border-color 150ms ease-out; } .ds-ff__label { flex: none; width: 112px; align-self: center; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--bl-inkSecondary); transition: color 150ms ease-out; } .ds-ff__input { flex: 1; min-width: 0; padding: 0 0 0 28px; background: transparent; border: 0; border-radius: 0; font: inherit; font-size: 14px; line-height: 20px; color: var(--bl-ink); caret-color: var(--bl-signal); } .ds-ff__input::placeholder { color: var(--bl-inkSecondary); } .ds-ff__input::selection { background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent); } .ds-ff__input:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; } .ds-ff--invalid .ds-ff__row { border-bottom-color: var(--bl-danger); } .ds-ff--invalid .ds-ff__label { color: var(--bl-danger); } .ds-ff__error { margin: 4px 0 0 152px; font-size: 13px; line-height: 18px; color: var(--bl-danger); }"
     },
     {
       "name": "Book row",
@@ -111,7 +129,7 @@
       "name": "Screen header (volet)",
       "kind": "nav",
       "refersTo": "screen-header-volet",
-      "description": "En-tête du volet de fiche à 960 px et plus : rangée de 56 px sur page avec son propre filet, qui rejoint celui de la première ligne de la liste ; un seul bouton texte encre « Fermer » à droite.",
+      "description": "En-tête du volet d'ouvrage (fiche, création, modification) à 960 px et plus : rangée de 56 px sur page avec son propre filet, qui rejoint celui de la première ligne de la liste ; un seul bouton texte encre « Fermer » à droite.",
       "html": "<div class=\"ds-header-volet\"><span class=\"ds-header-volet__spacer\"></span><button class=\"ds-header-volet__close\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg>Fermer</button></div>",
       "css": ".ds-header-volet { display: flex; align-items: center; height: 56px; padding: 0 8px; background: var(--bl-page); border-bottom: 1px solid var(--bl-rule); } .ds-header-volet__spacer { flex: 1; } .ds-header-volet__close { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bl-ink); cursor: pointer; transition: opacity 150ms ease-out; } .ds-header-volet__close:active { opacity: 0.7; } .ds-header-volet__close:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
     },
@@ -119,7 +137,7 @@
       "name": "Screen header (écran)",
       "kind": "nav",
       "refersTo": "screen-header-ecran",
-      "description": "En-tête de la fiche sous 960 px : bande de 48 px sur surface, bouton texte encre « Fonds » avec chevron à gauche, marque de synchronisation à droite, filet en dessous.",
+      "description": "En-tête d'un écran d'ouvrage sous 960 px : bande de 48 px sur surface, bouton texte encre « Fonds » avec chevron à gauche, marque de synchronisation à droite, filet en dessous.",
       "html": "<div class=\"ds-header-ecran\"><button class=\"ds-header-ecran__back\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"15 18 9 12 15 6\"/></svg>Fonds</button><span class=\"ds-header-ecran__spacer\"></span><span class=\"ds-header-ecran__sync\" role=\"status\"><span class=\"ds-header-ecran__dot\"></span>En ligne</span></div>",
       "css": ".ds-header-ecran { display: flex; align-items: center; min-height: 48px; padding: 0 8px; background: var(--bl-surface); border-bottom: 1px solid var(--bl-rule); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; } .ds-header-ecran__spacer { flex: 1; } .ds-header-ecran__back { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--bl-ink); cursor: pointer; transition: opacity 150ms ease-out; } .ds-header-ecran__back:active { opacity: 0.7; } .ds-header-ecran__back:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; } .ds-header-ecran__sync { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; min-height: 44px; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; color: var(--bl-signal); } .ds-header-ecran__dot { width: 8px; height: 8px; border-radius: 4px; background: var(--bl-signal); }"
     },
@@ -166,36 +184,44 @@
   ],
   "narrative": {
     "northStar": "La page des nouveautés",
-    "overview": "BookList Pro est mis en page comme la page des nouveautés d'un périodique professionnel du livre : une liste typographique serrée, lue au comptoir de caisse en plein jour, où les filets d'un pixel font les lignes et où les capitales espacées font les rubriques. La hiérarchie est portée par la graisse, la taille et le gris de l'encre, jamais par des fonds, des cartes ni des ombres. Chaque ligne d'ouvrage est un article de deux niveaux, titre en graisse puis auteur · éditeur · année en gris, avec sa note en chiffres tabulaires calée à droite comme une colonne de prix. La fiche d'un ouvrage prolonge la même page : un titre, l'auteur en gris, puis une liste de définitions sur filets où l'étiquette en capitales espacées précède la valeur.\n\nLa densité est celle d'un outil de métier : 56 px par ouvrage, bandeau de 48 px, ligne de compte de 28 px, lignes de champ de 44 px, tout aligné sur des filets. La couleur est retenue à l'extrême : une seule encre de signal, un vert bouteille, sert à la fois l'action primaire, la rubrique active, le coup de coeur et l'état « en ligne » ; le rouge n'existe que pour le destructif, l'erreur et le conflit. La scène par défaut est claire (la caisse en plein jour) ; le thème sombre suit la préférence système avec la même grammaire et une palette inversée, sans changer une seule règle.\n\nRejets confirmés par la direction et vérifiés dans le rendu : pas de table d'administration à cartes, pas de pastilles arrondies, pas de bouton bleu plein, aucun fond de carte, aucune icône décorative, aucun aplat de signal (la case à cocher cochée porte une coche en encre, jamais un fond vert).",
+    "overview": "BookList Pro est mis en page comme la page des nouveautés d'un périodique professionnel du livre : une liste typographique serrée, lue au comptoir de caisse en plein jour, où les filets d'un pixel font les lignes et où les capitales espacées font les rubriques. La hiérarchie est portée par la graisse, la taille et le gris de l'encre, jamais par des fonds, des cartes ni des ombres. Chaque ligne d'ouvrage est un article de deux niveaux, titre en graisse puis auteur · éditeur · année en gris, avec sa note en chiffres tabulaires calée à droite comme une colonne de prix. La fiche d'un ouvrage prolonge la même page : un titre, l'auteur en gris, puis une liste de définitions sur filets où l'étiquette en capitales espacées précède la valeur. Le formulaire de création ou de modification prolonge la fiche à son tour : les mêmes lignes de champ sur filets, où la valeur est simplement devenue saisissable, et le texte tapé commence exactement là où la fiche pose ses valeurs.\n\nLa densité est celle d'un outil de métier : 56 px par ouvrage, bandeau de 48 px, ligne de compte de 28 px, lignes de champ de 44 px, tout aligné sur des filets. La couleur est retenue à l'extrême : une seule encre de signal, un vert bouteille, sert à la fois l'action primaire, la rubrique active, le coup de coeur et l'état « en ligne » ; le rouge n'existe que pour le destructif, l'erreur et le conflit. La scène par défaut est claire (la caisse en plein jour) ; le thème sombre suit la préférence système avec la même grammaire et une palette inversée, sans changer une seule règle.\n\nRejets confirmés par la direction et vérifiés dans le rendu : pas de table d'administration à cartes, pas de pastilles arrondies, pas de bouton bleu plein, aucun fond de carte, aucune icône décorative, aucun aplat de signal (la case à cocher cochée porte une coche en encre, jamais un fond vert), aucun champ de saisie à contour ou à fond.",
     "keyCharacteristics": [
-      "Filets de 1 px (`hairline = 1`) comme seule structure visible : entre les lignes, sous le bandeau, sous la ligne de compte, sous chaque ligne de champ de la fiche, sous l'en-tête du volet, et vertical devant la fiche.",
-      "Rubriques en capitales espacées de 11 px, soulignées d'un filet vert de 1 px quand elles sont actives ; les mêmes capitales, en gris, étiquettent les champs de la fiche.",
+      "Filets de 1 px (`hairline = 1`) comme seule structure visible : entre les lignes, sous le bandeau, sous la ligne de compte, sous chaque ligne de champ de la fiche et du formulaire, sous l'en-tête du volet, et vertical devant la fiche.",
+      "Rubriques en capitales espacées de 11 px, soulignées d'un filet vert de 1 px quand elles sont actives ; les mêmes capitales, en gris, étiquettent les champs de la fiche et du formulaire.",
       "Chiffres tabulaires (`fontVariant: ['tabular-nums']`) sur tout texte, pas seulement sur les figures.",
-      "Un seul signal coloré, vert bouteille, sur ≤ 5 % de l'écran ; le rouge réservé au danger et au conflit.",
+      "Un seul signal coloré, vert bouteille, sur ≤ 5 % de l'écran ; le rouge réservé au danger, au conflit et au champ invalide.",
       "Pile système (`system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif`) et échelle fixe 11 / 13 / 14 / 16 / 20.",
       "Icônes Feather à 16 px, trait unique, toujours dans une case fixe : 16 px dans la liste (`iconSize`), 20 px dans la fiche (`layout.iconCase`).",
-      "Aucune ombre, aucun rayon supérieur à 2 px ; les bascules d'état durent 150 ms."
+      "Aucune ombre, aucun rayon supérieur à 2 px ; les bascules d'état durent 150 ms.",
+      "Un champ de saisie est une ligne de champ : aucun contour, son filet est son seul trait, et l'invalidité se lit par ce filet et son étiquette passés en rouge."
     ],
     "rules": [
       { "name": "La règle du signal unique", "body": "Une seule couleur de signal, le vert bouteille, et une seule sémantique : ce qui est actif, recommandé, en ligne ou à faire. Si un nouvel élément a besoin d'une deuxième couleur d'accent, c'est la hiérarchie qui est fausse, pas la palette.", "section": "colors" },
-      { "name": "La règle du rouge gardé", "body": "Le rouge n'apparaît que pour une erreur, une destruction ou un conflit de synchronisation. Il n'est jamais un accent, une étoile, ni un compteur.", "section": "colors" },
-      { "name": "La règle de la surface sans carte", "body": "`surface` colore le bandeau et la ligne survolée ou sélectionnée. Elle ne délimite jamais un bloc de contenu ; les blocs sont délimités par des filets.", "section": "colors" },
+      { "name": "La règle du rouge gardé", "body": "Le rouge n'apparaît que pour une erreur, une destruction ou un conflit de synchronisation. Il n'est jamais un accent, une étoile, ni un compteur. Le champ invalide est une erreur : son filet, son étiquette et son message passent en rouge, rien d'autre.", "section": "colors" },
+      { "name": "La règle de la surface sans carte", "body": "`surface` colore le bandeau et la ligne survolée ou sélectionnée. Elle ne délimite jamais un bloc de contenu ni un champ ; les blocs sont délimités par des filets.", "section": "colors" },
       { "name": "La règle de la coche en encre", "body": "Un état coché se lit par une coche en encre dans une case bordée d'encre ; jamais par un aplat de signal ni par un texte sur signal. Le vert dit « recommandé ou actif », pas « oui ».", "section": "colors" },
-      { "name": "La règle des chiffres tabulaires", "body": "Tout texte est composé en `tabular-nums`, pas seulement les notes : les colonnes de chiffres restent alignées où qu'elles apparaissent, sans variante à activer.", "section": "typography" },
-      { "name": "La règle des capitales espacées", "body": "Les capitales espacées à 11 px sont réservées à trois emplois : les rubriques de navigation, l'état de synchronisation et l'étiquette d'un champ dans une liste de définitions. Elles nomment une section, un état ou un champ, toujours à côté ou en ligne ; elles ne servent jamais de surtitre décoratif au-dessus d'un titre.", "section": "typography" },
+      { "name": "La règle des chiffres tabulaires", "body": "Tout texte est composé en `tabular-nums`, pas seulement les notes : les colonnes de chiffres restent alignées où qu'elles apparaissent, sans variante à activer. Le texte tapé dans un champ y compris.", "section": "typography" },
+      { "name": "La règle des capitales espacées", "body": "Les capitales espacées à 11 px sont réservées à trois emplois : les rubriques de navigation, l'état de synchronisation et l'étiquette d'un champ dans une liste de définitions, lue ou saisie. Elles nomment une section, un état ou un champ, toujours à côté ou en ligne ; elles ne servent jamais de surtitre décoratif au-dessus d'un titre.", "section": "typography" },
       { "name": "La règle du plat", "body": "Pas d'ombre, pas de dégradé, pas de bordure de plus d'un pixel. Un état se lit par un changement de fond (`page` → `surface`), de couleur d'encre ou de filet, en 150 ms.", "section": "elevation" },
-      { "name": "La règle des filets qui se rejoignent", "body": "Quand deux zones se côtoient derrière un filet vertical, leurs filets horizontaux tombent à la même ordonnée : l'en-tête du volet fait la hauteur d'une ligne d'ouvrage (56 px) pour cette seule raison.", "section": "elevation" }
+      { "name": "La règle des filets qui se rejoignent", "body": "Quand deux zones se côtoient derrière un filet vertical, leurs filets horizontaux tombent à la même ordonnée : l'en-tête du volet fait la hauteur d'une ligne d'ouvrage (56 px) pour cette seule raison.", "section": "elevation" },
+      { "name": "La règle du champ sur filet", "body": "Un champ de saisie est une ligne de champ dont la valeur se tape : même étiquette de 112 px, même filet, même hauteur de 44 px, et le texte tapé commence à 152 px, sur la colonne des valeurs de la fiche. Aucun contour, aucun fond, aucun rayon ne distingue « à lire » de « à saisir » ; seul le curseur le fait.", "section": "components" },
+      { "name": "La règle du filet rouge", "body": "Un champ invalide se lit par son filet et son étiquette passés en danger, et par un message en Small danger sous la ligne, sur la colonne des valeurs. Rien d'autre ne change : pas d'icône, pas de fond, pas de contour, et le texte tapé reste en encre.", "section": "components" },
+      { "name": "La règle des actions à droite", "body": "Les actions d'un écran d'ouvrage forment une rangée calée à droite, 16 px sous la dernière ligne, en boutons texte : le neutre en encre avant le primaire en signal, le primaire seul portant une icône. Pendant la soumission, le primaire se désactive à 0,5 et son libellé dit ce qui se passe (« Enregistrement… »). Jamais un bouton plein, jamais une barre d'actions sur fond.", "section": "components" }
     ],
     "dos": [
       "Do structurer avec des filets de 1 px en `rule` et des fonds `page` / `surface` ; c'est toute la structure visible.",
       "Do réserver le vert bouteille au signal : action primaire en texte, rubrique active, coup de coeur, état en ligne, focus, curseur et sélection.",
-      "Do composer tout texte en `tabular-nums` via `AppText` et prendre la couleur dans `theme/tone.ts` ; aucune couleur ni taille en dur dans `components/`.",
+      "Do composer tout texte en `tabular-nums` via `AppText` et prendre la couleur dans `theme/tone.ts` ; les `TextInput` lisent leur taille dans `theme/tokens.ts` ; aucune couleur ni taille en dur dans `components/`.",
       "Do garder les icônes Feather à 16 px dans une case fixe (16 px en liste, 20 px en fiche), et n'agrandir à 24 px que l'icône d'un message d'état.",
       "Do donner 44 px minimum à toute cible interactive et un libellé, un rôle et un état à chaque élément pressable.",
       "Do faire durer toute bascule d'état 150 ms (`transitionEtat`) et signaler le pressé par `opacity 0.7`.",
       "Do décliner tout nouvel écran dans les deux palettes en lisant `useTheme().colors` ; les valeurs sombres sont dans `theme/tokens.ts`, pas dans les composants.",
       "Do présenter un détail d'ouvrage comme une liste de définitions sur filets (`FieldRow`, `ToggleRow`) : étiquette Rubric sur 112 px, case d'icône de 20 px, valeur en Body ; et aligner l'en-tête d'un volet sur la première ligne de la liste (56 px, filet propre).",
-      "Do dire « oui » par une coche en encre dans une case bordée d'encre ; réserver le vert au coeur du coup de coeur."
+      "Do dire « oui » par une coche en encre dans une case bordée d'encre ; réserver le vert au coeur du coup de coeur.",
+      "Do composer un formulaire comme la fiche qu'il édite : `FormField` sur filet, ligne de 44 px, texte tapé retiré de 28 px pour commencer sur la colonne des valeurs, écart 8 px entre les lignes, titre d'écran en Title avec 16 px en dessous, et le même `CadreOuvrage` en tête.",
+      "Do signaler un champ invalide par son filet et son étiquette en `danger` (150 ms) et un message Small danger `role=\"alert\"` 4 px sous la ligne, retiré de 152 px ; laisser le texte tapé en encre.",
+      "Do donner à tout champ un texte indicatif en encre secondaire qui montre la forme attendue, et nommer le champ facultatif par « Facultatif » plutôt que par une mention dans l'étiquette.",
+      "Do terminer une fiche ou un formulaire par une rangée d'actions calée à droite, 16 px sous la dernière ligne : neutre en encre, puis primaire en signal avec icône ; désactiver le primaire à 0,5 et le relibeller en progression (« Enregistrement… ») pendant la soumission."
     ],
     "donts": [
       "Don't poser un fond de carte, une ombre, un dégradé ou une bordure de plus d'un pixel autour d'un bloc de contenu.",
@@ -205,7 +231,10 @@
       "Don't ajouter un filet propre au champ de recherche du bandeau ; le filet du bandeau lui suffit.",
       "Don't utiliser les capitales espacées comme surtitre au-dessus d'un titre ; elles nomment une rubrique, un état de synchronisation ou l'étiquette d'un champ, toujours en ligne avec ce qu'elles nomment.",
       "Don't remplir la case à cocher d'un aplat de signal ni poser du texte en `on-signal` ; aucun aplat de signal n'existe dans le système.",
-      "Don't écrire une couleur, une taille ou une chaîne visible en dur dans `components/` ou `features/`."
+      "Don't écrire une couleur, une taille ou une chaîne visible en dur dans `components/` ou `features/`.",
+      "Don't donner à un champ de saisie un contour, un fond, un rayon ou une étiquette au-dessus ; un champ est une ligne de champ sur filet, étiquette à gauche sur 112 px.",
+      "Don't signaler une erreur de champ par une icône, un fond ou un contour rouge ; seuls le filet, l'étiquette et le message passent en danger.",
+      "Don't mettre un bouton plein, une barre d'actions sur fond ou un indicateur d'attente distinct sous un formulaire ; deux boutons texte à droite, et le libellé du primaire dit la progression."
     ]
   }
 }

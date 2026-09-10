@@ -2,14 +2,14 @@
 version: 1
 slug: "app-fonds-index-tsx"
 primary_target: "app/(fonds)/index.tsx"
-related_targets: ["app/(fonds)/_layout.tsx","app/(fonds)/ouvrages/[id].tsx","features/books/FondsPane.tsx"]
+related_targets: ["app/(fonds)/_layout.tsx","app/(fonds)/ouvrages/[id]/index.tsx","app/(fonds)/ouvrages/[id]/modifier.tsx","app/(fonds)/ouvrages/nouveau.tsx","features/books/FondsPane.tsx"]
 ---
 
 # Surface : le fonds et la fiche (groupe de routes app/(fonds))
 
 ## Scope et mode
 
-Operate. Écran principal de BookList Pro : la liste paginée des ouvrages, avec recherche, filtres, tri, état de synchronisation, et l'ouverture d'une fiche. Le groupe de routes `app/(fonds)` porte la liste (`index.tsx`), la fiche (`ouvrages/[id].tsx`) et le layout qui les dispose côte à côte dès 960 pixels ou en pile en dessous ; le panneau du fonds vit dans `features/books/FondsPane.tsx`. La coquille (bandeau fixe, thème, navigation) est décidée ici et héritée par le formulaire, la connexion et le tableau de bord.
+Operate. Écran principal de BookList Pro : la liste paginée des ouvrages, avec recherche, filtres, tri, état de synchronisation, et l'ouverture d'une fiche. Le groupe de routes `app/(fonds)` porte la liste (`index.tsx`), la fiche (`ouvrages/[id]/index.tsx`), le formulaire de création (`ouvrages/nouveau.tsx`) et de modification (`ouvrages/[id]/modifier.tsx`), et le layout qui dispose liste et volet côte à côte dès 960 pixels ou en pile en dessous ; le panneau du fonds vit dans `features/books/FondsPane.tsx`. Le formulaire est la fiche dont les valeurs se saisissent : mêmes étiquettes sur 112, même colonne de valeur à 152, filets qui passent au rouge quand un champ est invalide, actions en texte alignées à droite. La coquille (bandeau fixe, thème, navigation) est décidée ici et héritée par le formulaire, la connexion et le tableau de bord.
 
 ## Audience, tâche, contraintes
 

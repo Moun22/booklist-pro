@@ -33,8 +33,9 @@ export type Ouvrage = z.infer<typeof ouvrageSchema>;
 
 const messageAnnee = `Année comprise entre ${LIMITES_OUVRAGE.anneeMin} et ${anneeMax()}`;
 const messageNote = `Note entre ${LIMITES_OUVRAGE.noteMin} et ${LIMITES_OUVRAGE.noteMax}`;
+const messageAnneeEntiere = "L'année doit être un nombre entier";
 
-const champsSaisie = {
+export const champsOuvrage = {
   titre: z
     .string()
     .trim()
@@ -50,8 +51,8 @@ const champsSaisie = {
     .trim()
     .max(LIMITES_OUVRAGE.editeurMax, `${LIMITES_OUVRAGE.editeurMax} caractères maximum`),
   annee: z
-    .number({ error: "L'année doit être un nombre entier" })
-    .int("L'année doit être un nombre entier")
+    .number({ error: messageAnneeEntiere })
+    .int(messageAnneeEntiere)
     .min(LIMITES_OUVRAGE.anneeMin, messageAnnee)
     .max(anneeMax(), messageAnnee),
   lu: z.boolean(),
@@ -69,17 +70,34 @@ const champsSaisie = {
 };
 
 export const ouvrageSaisieSchema = z.object({
-  ...champsSaisie,
-  editeur: champsSaisie.editeur.default(''),
-  lu: champsSaisie.lu.default(false),
-  favori: champsSaisie.favori.default(false),
-  note: champsSaisie.note.default(null),
-  couverture: champsSaisie.couverture.default(null),
+  ...champsOuvrage,
+  editeur: champsOuvrage.editeur.default(''),
+  lu: champsOuvrage.lu.default(false),
+  favori: champsOuvrage.favori.default(false),
+  note: champsOuvrage.note.default(null),
+  couverture: champsOuvrage.couverture.default(null),
 });
 
 export type OuvrageSaisie = z.input<typeof ouvrageSaisieSchema>;
 export type OuvrageValide = z.output<typeof ouvrageSaisieSchema>;
 
-export const ouvrageRetoucheSchema = z.object(champsSaisie).partial();
+export const ouvrageRetoucheSchema = z.object(champsOuvrage).partial();
 
 export type OuvrageRetouche = z.output<typeof ouvrageRetoucheSchema>;
+
+// A text field feeds the year: the schema turns the typed string into the validated number.
+export const ouvrageFormulaireSchema = z.object({
+  titre: champsOuvrage.titre,
+  auteur: champsOuvrage.auteur,
+  editeur: champsOuvrage.editeur,
+  annee: z
+    .string()
+    .trim()
+    .min(1, "L'année est obligatoire")
+    .pipe(z.coerce.number({ error: messageAnneeEntiere }))
+    .pipe(champsOuvrage.annee),
+  lu: champsOuvrage.lu,
+});
+
+export type SaisieFormulaire = z.input<typeof ouvrageFormulaireSchema>;
+export type OuvrageFormulaire = z.output<typeof ouvrageFormulaireSchema>;
