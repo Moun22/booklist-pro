@@ -33,6 +33,12 @@ Deux terminaux.
 
    Elle s'ouvre sur <http://localhost:8081>.
 
+## Configuration
+
+L'application lit l'URL de l'API dans `EXPO_PUBLIC_API_URL`, avec `http://localhost:3000` par
+défaut. Pour une autre adresse, copiez [.env.example](.env.example) en `.env` et ajustez la valeur
+avant de lancer `npm run web`.
+
 ## Scripts
 
 | Commande            | Effet                                                   |
