@@ -58,7 +58,7 @@ export const layout = {
   chromeHeight: 48,
   tallyHeight: 28,
   rowHeight: 56,
-  statusColumn: 28,
+  statusColumn: 40,
   detailPane: 400,
   twoPaneMin: 960,
   touchTarget: 44,

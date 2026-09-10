@@ -1,7 +1,11 @@
 import type { z } from 'zod';
 
 import { API_URL, DELAI_REQUETE_MS } from './config';
-import { lireJsonOuUndefined, traduireEchecTransport, traduireReponseEchec } from './traduireErreurs';
+import {
+  lireJsonOuUndefined,
+  traduireEchecTransport,
+  traduireReponseEchec,
+} from './traduireErreurs';
 import { ErreurAuth, ErreurReseau } from '@/domain/erreurs';
 
 export type MethodeHttp = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -56,7 +60,10 @@ export function creerClientHttp({ baseUrl, delaiMs, transport }: ConfigClientHtt
 
   async function requeter<T>(options: OptionsRequete, schema: z.ZodType<T>): Promise<T>;
   async function requeter(options: OptionsRequete): Promise<undefined>;
-  async function requeter<T>(options: OptionsRequete, schema?: z.ZodType<T>): Promise<T | undefined> {
+  async function requeter<T>(
+    options: OptionsRequete,
+    schema?: z.ZodType<T>,
+  ): Promise<T | undefined> {
     const requete: RequeteHttp = {
       methode: options.methode ?? 'GET',
       chemin: options.chemin,

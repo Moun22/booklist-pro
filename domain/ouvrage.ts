@@ -56,7 +56,11 @@ const champsSaisie = {
     .max(anneeMax(), messageAnnee),
   lu: z.boolean(),
   favori: z.boolean(),
-  note: z.number().min(LIMITES_OUVRAGE.noteMin, messageNote).max(LIMITES_OUVRAGE.noteMax, messageNote).nullable(),
+  note: z
+    .number()
+    .min(LIMITES_OUVRAGE.noteMin, messageNote)
+    .max(LIMITES_OUVRAGE.noteMax, messageNote)
+    .nullable(),
   couverture: z
     .string()
     .trim()

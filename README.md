@@ -41,14 +41,14 @@ avant de lancer `npm run web`.
 
 ## Scripts
 
-| Commande            | Effet                                                   |
-| ------------------- | ------------------------------------------------------- |
-| `npm run web`       | Serveur de développement Expo, cible navigateur         |
-| `npm start`         | Serveur de développement Expo, choix de la cible        |
-| `npm run typecheck` | Vérification TypeScript en mode strict                  |
-| `npm run lint`      | ESLint, dont les règles de frontières entre couches     |
-| `npm test`          | Tests Jest                                              |
-| `npm run format`    | Formatage Prettier                                      |
+| Commande            | Effet                                               |
+| ------------------- | --------------------------------------------------- |
+| `npm run web`       | Serveur de développement Expo, cible navigateur     |
+| `npm start`         | Serveur de développement Expo, choix de la cible    |
+| `npm run typecheck` | Vérification TypeScript en mode strict              |
+| `npm run lint`      | ESLint, dont les règles de frontières entre couches |
+| `npm test`          | Tests Jest                                          |
+| `npm run format`    | Formatage Prettier                                  |
 
 ## Structure cible
 

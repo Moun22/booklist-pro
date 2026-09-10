@@ -76,11 +76,7 @@ export class ErreurIntrouvable extends Error {
 }
 
 export type ErreurApplicative =
-  | ErreurReseau
-  | ErreurValidation
-  | ErreurConflit
-  | ErreurAuth
-  | ErreurIntrouvable;
+  ErreurReseau | ErreurValidation | ErreurConflit | ErreurAuth | ErreurIntrouvable;
 
 export function estErreurApplicative(valeur: unknown): valeur is ErreurApplicative {
   return (

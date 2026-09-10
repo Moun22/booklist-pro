@@ -20,7 +20,13 @@ describe('services/api/ouvrages', () => {
         reponseJson({ items: [ouvrageExemple], page: 2, limit: 20, total: 41, totalPages: 3 }),
       );
 
-    const page = await listerOuvrages({ page: 2, q: 'dune', favori: true, sort: 'annee', order: 'desc' });
+    const page = await listerOuvrages({
+      page: 2,
+      q: 'dune',
+      favori: true,
+      sort: 'annee',
+      order: 'desc',
+    });
 
     expect(page.total).toBe(41);
     expect(page.items[0]?.titre).toBe(ouvrageExemple.titre);
@@ -31,7 +37,9 @@ describe('services/api/ouvrages', () => {
   });
 
   it('replaces an ouvrage with If-Match and never sends a null cover', async () => {
-    const transport = jest.spyOn(globalThis, 'fetch').mockResolvedValue(reponseJson(ouvrageExemple));
+    const transport = jest
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(reponseJson(ouvrageExemple));
 
     await remplacerOuvrage(ouvrageExemple.id, { ...ouvrageExemple, couverture: null }, 3);
 
@@ -46,7 +54,9 @@ describe('services/api/ouvrages', () => {
   });
 
   it('patches a single field without If-Match when no version is known', async () => {
-    const transport = jest.spyOn(globalThis, 'fetch').mockResolvedValue(reponseJson(ouvrageExemple));
+    const transport = jest
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(reponseJson(ouvrageExemple));
 
     await retoucherOuvrage(ouvrageExemple.id, { favori: true });
 

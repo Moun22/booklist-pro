@@ -62,7 +62,11 @@ export async function traduireReponseEchec(reponse: Response): Promise<ErreurApp
       if (!serveur.success) {
         return new ErreurReseau('reponse-invalide', message, reponse.status);
       }
-      return new ErreurConflit(message, serveur.data, detail.versionAttendue ?? serveur.data.version);
+      return new ErreurConflit(
+        message,
+        serveur.data,
+        detail.versionAttendue ?? serveur.data.version,
+      );
     }
     case 413:
     case 415:
@@ -75,7 +79,10 @@ export async function traduireReponseEchec(reponse: Response): Promise<ErreurApp
   }
 }
 
-export function traduireEchecTransport(erreur: unknown, signalAppelant: AbortSignal | undefined): unknown {
+export function traduireEchecTransport(
+  erreur: unknown,
+  signalAppelant: AbortSignal | undefined,
+): unknown {
   if (signalAppelant?.aborted) {
     return erreur;
   }
