@@ -1,0 +1,28 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bl-page);
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--bl-signal);
+  outline-offset: 2px;
+}
+
+input,
+textarea {
+  caret-color: var(--bl-signal);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bl-rule) transparent;
+}
