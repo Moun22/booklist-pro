@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-10T00:00:00Z",
+  "title": "Design System: BookList Pro",
+  "extensions": {
+    "colorMeta": {
+      "signal": { "role": "primary", "displayName": "Vert bouteille", "canonical": "#1F5C3A", "cssVar": "--bl-signal", "tonalRamp": ["oklch(15% 0.05 155)", "oklch(26% 0.07 155)", "oklch(38% 0.09 155)", "oklch(49% 0.10 155)", "oklch(61% 0.11 155)", "oklch(72% 0.10 155)", "oklch(84% 0.08 155)", "oklch(95% 0.04 155)"] },
+      "on-signal": { "role": "primary", "displayName": "Sur signal", "canonical": "#FFFFFF", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "page": { "role": "neutral", "displayName": "Page", "canonical": "#FFFFFF", "cssVar": "--bl-page", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "#F4F4F2", "cssVar": "--bl-surface", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "ink": { "role": "neutral", "displayName": "Encre", "canonical": "#1C1C1C", "cssVar": "--bl-ink", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "ink-secondary": { "role": "neutral", "displayName": "Encre secondaire", "canonical": "#6F6F6F", "cssVar": "--bl-inkSecondary", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "rule": { "role": "neutral", "displayName": "Filet", "canonical": "#E3E3E0", "cssVar": "--bl-rule", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "skeleton": { "role": "neutral", "displayName": "Squelette", "canonical": "#ECECEA", "cssVar": "--bl-skeleton", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "danger": { "role": "neutral", "displayName": "Danger", "canonical": "#B3261E", "cssVar": "--bl-danger", "tonalRamp": ["oklch(15% 0.07 27)", "oklch(26% 0.11 27)", "oklch(38% 0.15 27)", "oklch(49% 0.18 27)", "oklch(61% 0.17 27)", "oklch(72% 0.13 27)", "oklch(84% 0.08 27)", "oklch(95% 0.03 27)"] },
+      "signal-dark": { "role": "primary", "displayName": "Vert bouteille (sombre)", "canonical": "#6FBF8E", "cssVar": "--bl-signal", "tonalRamp": ["oklch(15% 0.05 155)", "oklch(26% 0.07 155)", "oklch(38% 0.09 155)", "oklch(49% 0.10 155)", "oklch(61% 0.11 155)", "oklch(72% 0.10 155)", "oklch(84% 0.08 155)", "oklch(95% 0.04 155)"] },
+      "on-signal-dark": { "role": "primary", "displayName": "Sur signal (sombre)", "canonical": "#141414", "cssVar": "--bl-onSignal", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "page-dark": { "role": "neutral", "displayName": "Page (sombre)", "canonical": "#141414", "cssVar": "--bl-page", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(38% 0 0)", "oklch(49% 0 0)", "oklch(61% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] },
+      "surface-dark": { "role": "neutral", "displayName": "Surface (sombre)", "canonical": "#1E1E1D", "cssVar": "--bl-surface", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "ink-dark": { "role": "neutral", "displayName": "Encre (sombre)", "canonical": "#EDEDEA", "cssVar": "--bl-ink", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "ink-secondary-dark": { "role": "neutral", "displayName": "Encre secondaire (sombre)", "canonical": "#A0A09B", "cssVar": "--bl-inkSecondary", "tonalRamp": ["oklch(15% 0.004 100)", "oklch(26% 0.004 100)", "oklch(38% 0.004 100)", "oklch(49% 0.004 100)", "oklch(61% 0.004 100)", "oklch(72% 0.004 100)", "oklch(84% 0.004 100)", "oklch(95% 0.004 100)"] },
+      "rule-dark": { "role": "neutral", "displayName": "Filet (sombre)", "canonical": "#2C2C2A", "cssVar": "--bl-rule", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "skeleton-dark": { "role": "neutral", "displayName": "Squelette (sombre)", "canonical": "#242423", "cssVar": "--bl-skeleton", "tonalRamp": ["oklch(15% 0.003 100)", "oklch(26% 0.003 100)", "oklch(38% 0.003 100)", "oklch(49% 0.003 100)", "oklch(61% 0.003 100)", "oklch(72% 0.003 100)", "oklch(84% 0.003 100)", "oklch(95% 0.003 100)"] },
+      "danger-dark": { "role": "neutral", "displayName": "Danger (sombre)", "canonical": "#F28B82", "cssVar": "--bl-danger", "tonalRamp": ["oklch(15% 0.06 22)", "oklch(26% 0.10 22)", "oklch(38% 0.13 22)", "oklch(49% 0.15 22)", "oklch(61% 0.15 22)", "oklch(72% 0.13 22)", "oklch(84% 0.08 22)", "oklch(95% 0.03 22)"] }
+    },
+    "typographyMeta": {
+      "title": { "displayName": "Title", "purpose": "Titre de fiche et de vue ; jamais dans la liste." },
+      "lead": { "displayName": "Lead", "purpose": "Titre d'un message d'état, centré, 420 px maximum." },
+      "body": { "displayName": "Body", "purpose": "Saisie de recherche et texte courant." },
+      "body-strong": { "displayName": "Body strong", "purpose": "Titre d'ouvrage dans la liste et libellé de tout bouton texte." },
+      "small": { "displayName": "Small", "purpose": "Auteur · éditeur · année ; description d'un message d'état." },
+      "figure": { "displayName": "Figure", "purpose": "Note d'un ouvrage et ligne de compte ; même métrique que Small, nomme l'intention chiffrée." },
+      "rubric": { "displayName": "Rubric", "purpose": "Capitales espacées de 0,08 em pour les rubriques de navigation et l'état de synchronisation ; jamais un surtitre." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "quick", "value": "150ms", "purpose": "Durée unique de toute bascule d'état (fond de ligne, filet de rubrique, opacité)." },
+      { "name": "ease-etat", "value": "ease-out", "purpose": "Courbe de transitionEtat sur background-color, border-color et opacity ; web uniquement." },
+      { "name": "pressed", "value": "opacity: 0.7", "purpose": "Retour immédiat de tout élément pressé." },
+      { "name": "disabled", "value": "opacity: 0.5", "purpose": "État désactivé d'un bouton texte." }
+    ],
+    "breakpoints": [
+      { "name": "twoPaneMin", "value": "960px" }
+    ],
+    "layout": [
+      { "name": "chromeHeight", "value": "48px" },
+      { "name": "tallyHeight", "value": "28px" },
+      { "name": "rowHeight", "value": "56px" },
+      { "name": "statusColumn", "value": "40px" },
+      { "name": "detailPane", "value": "400px" },
+      { "name": "touchTarget", "value": "44px" },
+      { "name": "hairline", "value": "1px" },
+      { "name": "iconSize", "value": "16px" }
+    ],
+    "focus": { "name": "focus-visible", "value": "outline: 2px solid var(--bl-signal); outline-offset: 2px", "purpose": "Anneau de focus clavier global (theme/global.css)." },
+    "selection": { "name": "selection", "value": "background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent)", "purpose": "Sélection de texte." }
+  },
+  "components": [
+    {
+      "name": "Rubric bar",
+      "kind": "nav",
+      "refersTo": "rubric-tab",
+      "description": "Onglets en capitales espacées ; l'actif est en signal avec un filet vert de 1 px, les autres en encre secondaire sur filet transparent.",
+      "html": "<div class=\"ds-rubrics\" role=\"tablist\"><button class=\"ds-rubric ds-rubric--active\" role=\"tab\" aria-selected=\"true\">Fonds</button><button class=\"ds-rubric\" role=\"tab\">Lus</button><button class=\"ds-rubric\" role=\"tab\">Non lus</button><button class=\"ds-rubric\" role=\"tab\">Coups de coeur</button></div>",
+      "css": ".ds-rubrics { display: flex; align-items: stretch; background: var(--bl-surface); padding: 0 8px; min-height: 48px; } .ds-rubric { background: transparent; border: 0; border-bottom: 1px solid transparent; min-height: 44px; min-width: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; font-variant-numeric: tabular-nums; color: var(--bl-inkSecondary); cursor: pointer; transition: border-color 150ms ease-out, opacity 150ms ease-out; } .ds-rubric--active { color: var(--bl-signal); border-bottom-color: var(--bl-signal); } .ds-rubric:active { opacity: 0.7; } .ds-rubric:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text button (primary)",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "L'action primaire du système : un texte vert en graisse 600 avec une icône Feather de 16 px, sans fond ni contour.",
+      "html": "<button class=\"ds-btn-text\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"/><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/></svg>Ajouter un ouvrage</button>",
+      "css": ".ds-btn-text { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bl-signal); cursor: pointer; transition: opacity 150ms ease-out; } .ds-btn-text:active { opacity: 0.7; } .ds-btn-text:disabled { opacity: 0.5; } .ds-btn-text:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text button (danger)",
+      "kind": "button",
+      "refersTo": "button-text-danger",
+      "description": "Même forme que le bouton texte, en rouge, réservé à une action destructive.",
+      "html": "<button class=\"ds-btn-text-danger\">Supprimer</button>",
+      "css": ".ds-btn-text-danger { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bl-danger); cursor: pointer; transition: opacity 150ms ease-out; } .ds-btn-text-danger:active { opacity: 0.7; } .ds-btn-text-danger:disabled { opacity: 0.5; } .ds-btn-text-danger:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Search field",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Champ sans contour ni fond dans le bandeau : loupe 16 px en encre secondaire, saisie en Body ; son filet est celui du bandeau.",
+      "html": "<div class=\"ds-search-band\"><label class=\"ds-search\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"/></svg><input class=\"ds-search__input\" type=\"search\" placeholder=\"Rechercher un titre ou un auteur\" aria-label=\"Rechercher un titre ou un auteur\"></label></div>",
+      "css": ".ds-search-band { background: var(--bl-surface); border-bottom: 1px solid var(--bl-rule); padding: 0 16px; min-height: 48px; display: flex; align-items: stretch; } .ds-search { display: flex; align-items: center; gap: 8px; flex: 1; min-height: 44px; color: var(--bl-inkSecondary); } .ds-search__input { flex: 1; min-height: 44px; padding: 8px 0; background: transparent; border: 0; border-radius: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; color: var(--bl-ink); caret-color: var(--bl-signal); } .ds-search__input::placeholder { color: var(--bl-inkSecondary); } .ds-search__input::selection { background-color: color-mix(in srgb, var(--bl-signal) 22%, transparent); } .ds-search__input:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Book row",
+      "kind": "card",
+      "refersTo": "book-row",
+      "description": "Ligne d'ouvrage de 56 px : colonne d'état de 40 px à deux cases fixes (coche lu, coeur coup de coeur), titre et légende, note tabulaire à droite ; fond surface au survol et à la sélection, filet inférieur.",
+      "html": "<div class=\"ds-rows\"><button class=\"ds-row ds-row--selected\" role=\"button\" aria-selected=\"true\"><span class=\"ds-row__status\"><span class=\"ds-row__mark ds-row__mark--secondary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"20 6 9 17 4 12\"/></svg></span><span class=\"ds-row__mark ds-row__mark--signal\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"/></svg></span></span><span class=\"ds-row__text\"><span class=\"ds-row__title\">Des Archipel des cendres</span><span class=\"ds-row__detail\">Frank Cixin · Bragelonne · 1986</span></span><span class=\"ds-row__note\">1/5</span></button><button class=\"ds-row\" role=\"button\"><span class=\"ds-row__status\"><span class=\"ds-row__mark\"></span><span class=\"ds-row__mark\"></span></span><span class=\"ds-row__text\"><span class=\"ds-row__title\">Des Archipel inverse</span><span class=\"ds-row__detail\">Frank Martine · Bragelonne · 1973</span></span><span class=\"ds-row__note ds-row__note--absent\">–</span></button></div>",
+      "css": ".ds-rows { background: var(--bl-page); } .ds-row { display: flex; align-items: center; width: 100%; height: 56px; padding: 0 16px; gap: 12px; background: var(--bl-page); border: 0; border-bottom: 1px solid var(--bl-rule); border-radius: 0; text-align: left; cursor: pointer; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; transition: background-color 150ms ease-out, opacity 150ms ease-out; } .ds-row:hover, .ds-row--selected { background: var(--bl-surface); } .ds-row:active { opacity: 0.7; } .ds-row:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; } .ds-row__status { display: flex; gap: 4px; width: 40px; flex: none; } .ds-row__mark { display: flex; justify-content: center; width: 16px; height: 16px; } .ds-row__mark--secondary { color: var(--bl-inkSecondary); } .ds-row__mark--signal { color: var(--bl-signal); } .ds-row__text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; } .ds-row__title { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--bl-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-row__detail { font-size: 13px; line-height: 18px; color: var(--bl-inkSecondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-row__note { min-width: 32px; text-align: right; font-size: 13px; line-height: 18px; color: var(--bl-ink); } .ds-row__note--absent { color: var(--bl-inkSecondary); }"
+    },
+    {
+      "name": "Sync mark",
+      "kind": "chip",
+      "refersTo": "sync-mark",
+      "description": "Point de 8 px et capitales espacées ; plein signal en ligne, creux en encre secondaire hors ligne, creux en encre en attente, plein danger en conflit.",
+      "html": "<div class=\"ds-syncs\"><span class=\"ds-sync ds-sync--online\" role=\"status\"><span class=\"ds-sync__dot\"></span>En ligne</span><span class=\"ds-sync ds-sync--offline\" role=\"status\"><span class=\"ds-sync__dot\"></span>Hors ligne</span><span class=\"ds-sync ds-sync--pending\" role=\"status\"><span class=\"ds-sync__dot\"></span>3 en attente</span><span class=\"ds-sync ds-sync--conflict\" role=\"status\"><span class=\"ds-sync__dot\"></span>Conflit</span></div>",
+      "css": ".ds-syncs { display: flex; flex-wrap: wrap; } .ds-sync { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; min-height: 44px; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: 0.88px; text-transform: uppercase; font-variant-numeric: tabular-nums; } .ds-sync__dot { width: 8px; height: 8px; border-radius: 4px; box-sizing: border-box; } .ds-sync--online { color: var(--bl-signal); } .ds-sync--online .ds-sync__dot { background: var(--bl-signal); } .ds-sync--offline { color: var(--bl-inkSecondary); } .ds-sync--offline .ds-sync__dot { border: 1px solid var(--bl-inkSecondary); } .ds-sync--pending { color: var(--bl-ink); } .ds-sync--pending .ds-sync__dot { border: 1px solid var(--bl-ink); } .ds-sync--conflict { color: var(--bl-danger); } .ds-sync--conflict .ds-sync__dot { background: var(--bl-danger); }"
+    },
+    {
+      "name": "Tally line",
+      "kind": "custom",
+      "refersTo": "tally-line",
+      "description": "Ligne de compte de 28 px entre deux filets : figures tabulaires en encre secondaire séparées par un point médian.",
+      "html": "<div class=\"ds-tally\" role=\"summary\"><span>500 ouvrages</span><span aria-hidden=\"true\"> · </span><span>actualisation</span></div>",
+      "css": ".ds-tally { display: flex; align-items: center; flex-wrap: wrap; min-height: 28px; padding: 0 16px; border-top: 1px solid var(--bl-rule); border-bottom: 1px solid var(--bl-rule); background: var(--bl-page); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-size: 13px; line-height: 18px; font-variant-numeric: tabular-nums; color: var(--bl-inkSecondary); white-space: pre; }"
+    },
+    {
+      "name": "State message",
+      "kind": "custom",
+      "refersTo": "state-message",
+      "description": "Vide, erreur et fiche non ouverte partagent ce bloc centré : icône 24 px, titre Lead, description Small, action en bouton texte ; aucun fond ni bordure.",
+      "html": "<div class=\"ds-state\"><svg class=\"ds-state__icon\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z\"/><path d=\"M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z\"/></svg><p class=\"ds-state__title\">Le fonds est vide</p><p class=\"ds-state__detail\">Ajoutez le premier ouvrage pour commencer le cahier.</p><button class=\"ds-state__action\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"/><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/></svg>Ajouter un ouvrage</button></div>",
+      "css": ".ds-state { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 24px; background: var(--bl-page); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; font-variant-numeric: tabular-nums; text-align: center; } .ds-state__icon { color: var(--bl-inkSecondary); } .ds-state__title { margin: 0; max-width: 420px; font-size: 16px; line-height: 22px; font-weight: 500; color: var(--bl-ink); } .ds-state__detail { margin: 0; max-width: 420px; font-size: 13px; line-height: 18px; color: var(--bl-inkSecondary); } .ds-state__action { display: inline-flex; align-items: center; gap: 4px; background: transparent; border: 0; border-radius: 0; min-height: 44px; padding: 0 12px; font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--bl-signal); cursor: pointer; transition: opacity 150ms ease-out; } .ds-state__action:active { opacity: 0.7; } .ds-state__action:focus-visible { outline: 2px solid var(--bl-signal); outline-offset: 2px; }"
+    },
+    {
+      "name": "Skeleton row",
+      "kind": "custom",
+      "refersTo": "skeleton",
+      "description": "Le chargement rejoue la géométrie exacte de la ligne : rond de 16 px dans la colonne d'état, barres à rayon 2 px, note de 32 px, filet.",
+      "html": "<div class=\"ds-skel-row\" role=\"progressbar\" aria-busy=\"true\" aria-label=\"Chargement du fonds\"><span class=\"ds-skel-row__status\"><span class=\"ds-skel ds-skel--round\"></span></span><span class=\"ds-skel-row__text\"><span class=\"ds-skel\" style=\"width:45%;height:12px\"></span><span class=\"ds-skel\" style=\"width:65%;height:10px\"></span></span><span class=\"ds-skel\" style=\"width:32px;height:10px\"></span></div>",
+      "css": ".ds-skel-row { display: flex; align-items: center; height: 56px; padding: 0 16px; gap: 12px; background: var(--bl-page); border-bottom: 1px solid var(--bl-rule); } .ds-skel-row__status { display: flex; justify-content: center; width: 40px; flex: none; } .ds-skel-row__text { display: flex; flex-direction: column; gap: 8px; flex: 1; } .ds-skel { display: block; background: var(--bl-skeleton); border-radius: 2px; } .ds-skel--round { width: 16px; height: 16px; border-radius: 8px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La page des nouveautés",
+    "overview": "BookList Pro est mis en page comme la page des nouveautés d'un périodique professionnel du livre : une liste typographique serrée, lue au comptoir de caisse en plein jour, où les filets d'un pixel font les lignes et où les capitales espacées font les rubriques. La hiérarchie est portée par la graisse, la taille et le gris de l'encre, jamais par des fonds, des cartes ni des ombres. Chaque ligne d'ouvrage est un article de deux niveaux, titre en graisse puis auteur · éditeur · année en gris, avec sa note en chiffres tabulaires calée à droite comme une colonne de prix.\n\nLa densité est celle d'un outil de métier : 56 px par ouvrage, bandeau de 48 px, ligne de compte de 28 px, tout aligné sur des filets. La couleur est retenue à l'extrême : une seule encre de signal, un vert bouteille, sert à la fois l'action primaire, la rubrique active, le coup de coeur et l'état « en ligne » ; le rouge n'existe que pour le destructif et le conflit. La scène par défaut est claire (la caisse en plein jour) ; le thème sombre suit la préférence système avec la même grammaire et une palette inversée, sans changer une seule règle.\n\nRejets confirmés par la direction et vérifiés dans le rendu : pas de table d'administration à cartes, pas de pastilles arrondies, pas de bouton bleu plein, aucun fond de carte, aucune icône décorative.",
+    "keyCharacteristics": [
+      "Filets de 1 px (`hairline = 1`) comme seule structure visible : entre les lignes, sous le bandeau, sous la ligne de compte, et vertical devant la fiche.",
+      "Rubriques en capitales espacées de 11 px, soulignées d'un filet vert de 1 px quand elles sont actives.",
+      "Chiffres tabulaires (`fontVariant: ['tabular-nums']`) sur tout texte, pas seulement sur les figures.",
+      "Un seul signal coloré, vert bouteille, sur ≤ 5 % de l'écran ; le rouge réservé au danger et au conflit.",
+      "Pile système (`system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", sans-serif`) et échelle fixe 11 / 13 / 14 / 16 / 20.",
+      "Icônes Feather à 16 px, trait unique, toujours dans une case fixe de 16 px.",
+      "Aucune ombre, aucun rayon supérieur à 2 px ; les bascules d'état durent 150 ms."
+    ],
+    "rules": [
+      { "name": "La règle du signal unique", "body": "Une seule couleur de signal, le vert bouteille, et une seule sémantique : ce qui est actif, recommandé, en ligne ou à faire. Si un nouvel élément a besoin d'une deuxième couleur d'accent, c'est la hiérarchie qui est fausse, pas la palette.", "section": "colors" },
+      { "name": "La règle du rouge gardé", "body": "Le rouge n'apparaît que pour une erreur, une destruction ou un conflit de synchronisation. Il n'est jamais un accent, une étoile, ni un compteur.", "section": "colors" },
+      { "name": "La règle de la surface sans carte", "body": "`surface` colore le bandeau et la ligne survolée ou sélectionnée. Elle ne délimite jamais un bloc de contenu ; les blocs sont délimités par des filets.", "section": "colors" },
+      { "name": "La règle des chiffres tabulaires", "body": "Tout texte est composé en `tabular-nums`, pas seulement les notes : les colonnes de chiffres restent alignées où qu'elles apparaissent, sans variante à activer.", "section": "typography" },
+      { "name": "La règle des capitales espacées", "body": "Les capitales espacées à 11 px sont réservées aux rubriques de navigation et à l'état de synchronisation. Elles nomment une section ou un état ; elles ne servent jamais de surtitre décoratif au-dessus d'un titre.", "section": "typography" },
+      { "name": "La règle du plat", "body": "Pas d'ombre, pas de dégradé, pas de bordure de plus d'un pixel. Un état se lit par un changement de fond (`page` → `surface`), de couleur d'encre ou de filet, en 150 ms.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do structurer avec des filets de 1 px en `rule` et des fonds `page` / `surface` ; c'est toute la structure visible.",
+      "Do réserver le vert bouteille au signal : action primaire en texte, rubrique active, coup de coeur, état en ligne, focus, curseur et sélection.",
+      "Do composer tout texte en `tabular-nums` via `AppText` et prendre la couleur dans `theme/tone.ts` ; aucune couleur ni taille en dur dans `components/`.",
+      "Do garder les icônes Feather à 16 px dans une case fixe de 16 px, et n'agrandir à 24 px que l'icône d'un message d'état.",
+      "Do donner 44 px minimum à toute cible interactive et un libellé, un rôle et un état à chaque élément pressable.",
+      "Do faire durer toute bascule d'état 150 ms (`transitionEtat`) et signaler le pressé par `opacity 0.7`.",
+      "Do décliner tout nouvel écran dans les deux palettes en lisant `useTheme().colors` ; les valeurs sombres sont dans `theme/tokens.ts`, pas dans les composants."
+    ],
+    "donts": [
+      "Don't poser un fond de carte, une ombre, un dégradé ou une bordure de plus d'un pixel autour d'un bloc de contenu.",
+      "Don't introduire une deuxième couleur d'accent, ni un bouton plein bleu ou vert ; l'action primaire est un texte vert.",
+      "Don't employer le rouge ailleurs que pour une erreur, une destruction ou un conflit.",
+      "Don't arrondir au-delà de 2 px, sauf le point de 8 px et le rond de squelette qui sont des cercles.",
+      "Don't ajouter un filet propre au champ de recherche du bandeau ; le filet du bandeau lui suffit.",
+      "Don't utiliser les capitales espacées comme surtitre au-dessus d'un titre ; elles nomment une rubrique ou un état de synchronisation.",
+      "Don't écrire une couleur, une taille ou une chaîne visible en dur dans `components/` ou `features/`."
+    ]
+  }
+}

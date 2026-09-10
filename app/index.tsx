@@ -1,59 +1,94 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 
-import { ListSkeleton } from '@/components/ListSkeleton';
-import { RubricBar, type Rubric } from '@/components/RubricBar';
+import { RubricBar } from '@/components/RubricBar';
 import { Rule } from '@/components/Rule';
 import { SearchField } from '@/components/SearchField';
 import { Skeleton } from '@/components/Skeleton';
 import { StateMessage } from '@/components/StateMessage';
 import { SyncMark } from '@/components/SyncMark';
+import { TallyLine } from '@/components/TallyLine';
 import { TextButton } from '@/components/TextButton';
+import { FondsListe } from '@/features/books/FondsListe';
+import {
+  RUBRIQUES,
+  estRubrique,
+  versRequeteFonds,
+  type Rubrique,
+} from '@/features/books/rubriques';
+import { useFonds } from '@/features/books/useFonds';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useTheme } from '@/theme/ThemeProvider';
 import { layout, space } from '@/theme/tokens';
 
 const labels = {
   rubrics: 'Filtrer le fonds',
   search: 'Rechercher un titre ou un auteur',
+  searchShort: 'Titre ou auteur',
   add: 'Ajouter un ouvrage',
   addShort: 'Ajouter',
   online: 'En ligne',
-  loading: 'Chargement du fonds',
+  ouvrages: 'ouvrages',
+  resultats: 'résultats',
+  actualisation: 'actualisation',
   detailTitle: 'Aucun ouvrage ouvert',
   detailHint: 'Choisissez un ouvrage dans le fonds pour lire sa fiche et ses notes de lecture.',
 };
 
-const rubrics: readonly Rubric[] = [
-  { key: 'all', label: 'Fonds' },
-  { key: 'lu', label: 'Lus' },
-  { key: 'nonlu', label: 'Non lus' },
-  { key: 'favori', label: 'Coups de coeur' },
-];
+const DELAI_RECHERCHE_MS = 300;
 
-const SKELETON_ROWS = 8;
+const rubriques = RUBRIQUES.map((rubrique) => ({ key: rubrique.cle, label: rubrique.libelle }));
 
 export default function FondsScreen() {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const twoPane = width >= layout.twoPaneMin;
-  const [activeRubric, setActiveRubric] = useState<string>('all');
-  const [query, setQuery] = useState('');
+
+  const [rubrique, setRubrique] = useState<Rubrique>('tout');
+  const [recherche, setRecherche] = useState('');
+  const [selectionId, setSelectionId] = useState<string | null>(null);
+  const rechercheRetardee = useDebouncedValue(recherche, DELAI_RECHERCHE_MS);
+  const requete = useMemo(
+    () => versRequeteFonds(rubrique, rechercheRetardee),
+    [rubrique, rechercheRetardee],
+  );
+  const fonds = useFonds(requete);
+
+  const choisirRubrique = useCallback((cle: string) => {
+    if (estRubrique(cle)) {
+      setRubrique(cle);
+    }
+  }, []);
+  const effacerRecherche = useCallback(() => setRecherche(''), []);
+  const ajouter = useCallback(() => {}, []);
 
   const rubricBar = (
     <RubricBar
-      items={rubrics}
-      activeKey={activeRubric}
-      onSelect={setActiveRubric}
+      items={rubriques}
+      activeKey={rubrique}
+      onSelect={choisirRubrique}
       label={labels.rubrics}
     />
   );
   const search = (
-    <SearchField value={query} onChangeText={setQuery} placeholder={labels.search} label={labels.search} />
-  );
-  const add = (
-    <TextButton label={twoPane ? labels.add : labels.addShort} icon="plus" onPress={() => {}} />
+    <SearchField
+      value={recherche}
+      onChangeText={setRecherche}
+      placeholder={twoPane ? labels.search : labels.searchShort}
+      label={labels.search}
+    />
   );
   const sync = <SyncMark status="online" label={labels.online} />;
+
+  const compte = fonds.chargementInitial
+    ? null
+    : [
+        {
+          figure: fonds.total.toLocaleString('fr-FR'),
+          label: rechercheRetardee.trim().length > 0 ? labels.resultats : labels.ouvrages,
+        },
+        ...(fonds.actualisation ? [{ figure: '', label: labels.actualisation }] : []),
+      ];
 
   return (
     <View style={[styles.screen, { backgroundColor: colors.page }]}>
@@ -62,39 +97,58 @@ export default function FondsScreen() {
           <View style={styles.chromeRow}>
             {rubricBar}
             <View style={styles.searchSlot}>{search}</View>
-            {add}
+            <TextButton label={labels.add} icon="plus" onPress={ajouter} />
             {sync}
           </View>
         ) : (
           <>
             <View style={styles.chromeRow}>
               <View style={styles.searchSlot}>{search}</View>
+              <TextButton label={labels.addShort} icon="plus" onPress={ajouter} />
               {sync}
             </View>
             <View style={styles.chromeRow}>
-              {rubricBar}
-              <View style={styles.spacer} />
-              {add}
+              <RubricBar
+                items={rubriques}
+                activeKey={rubrique}
+                onSelect={choisirRubrique}
+                label={labels.rubrics}
+                defilable
+              />
             </View>
           </>
         )}
       </View>
       <Rule />
-      <View style={styles.tally}>
-        <Skeleton width={96} height={10} />
-        <Skeleton width={64} height={10} />
-        <Skeleton width={112} height={10} />
-      </View>
+      {compte === null ? (
+        <View style={styles.tallySkeleton}>
+          <Skeleton width={96} height={10} />
+        </View>
+      ) : (
+        <TallyLine items={compte} />
+      )}
       <Rule />
       <View style={styles.body}>
         <View style={styles.list}>
-          <ListSkeleton rows={SKELETON_ROWS} label={labels.loading} />
+          <FondsListe
+            fonds={fonds}
+            rubrique={rubrique}
+            recherche={rechercheRetardee}
+            selectionId={selectionId}
+            onSelection={setSelectionId}
+            onEffacerRecherche={effacerRecherche}
+            onAjouter={ajouter}
+          />
         </View>
         {twoPane && (
           <>
             <Rule orientation="vertical" />
             <View style={styles.detail}>
-              <StateMessage icon="book-open" title={labels.detailTitle} description={labels.detailHint} />
+              <StateMessage
+                icon="book-open"
+                title={labels.detailTitle}
+                description={labels.detailHint}
+              />
             </View>
           </>
         )}
@@ -112,11 +166,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: space.sm,
   },
   searchSlot: { flex: 1, paddingHorizontal: space.sm },
-  spacer: { flex: 1 },
-  tally: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: space.lg,
+  tallySkeleton: {
+    justifyContent: 'center',
     minHeight: layout.tallyHeight,
     paddingHorizontal: space.lg,
   },

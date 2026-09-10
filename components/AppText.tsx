@@ -14,12 +14,15 @@ type Props = TextProps & {
 export function AppText({ variant = 'body', tone = 'ink', style, ...rest }: Props) {
   const { colors } = useTheme();
   return (
-    <Text {...rest} style={[styles.base, styles[variant], { color: toneColor(colors, tone) }, style]} />
+    <Text
+      {...rest}
+      style={[styles.base, styles[variant], { color: toneColor(colors, tone) }, style]}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  base: { fontFamily },
+  base: { fontFamily, fontVariant: ['tabular-nums'] },
   title: { fontSize: fontSize.title, lineHeight: lineHeight.title, fontWeight: '600' },
   lead: { fontSize: fontSize.lead, lineHeight: lineHeight.lead, fontWeight: '500' },
   body: { fontSize: fontSize.body, lineHeight: lineHeight.body },
@@ -32,5 +35,5 @@ const styles = StyleSheet.create({
     letterSpacing: rubricTracking,
     textTransform: 'uppercase',
   },
-  figure: { fontSize: fontSize.small, lineHeight: lineHeight.small, fontVariant: ['tabular-nums'] },
+  figure: { fontSize: fontSize.small, lineHeight: lineHeight.small },
 });

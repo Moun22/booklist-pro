@@ -61,7 +61,16 @@ module.exports = defineConfig([
     files: ['domain/**/*.ts'],
     rules: {
       ...forbidImports(
-        ['react', 'react-native', 'react-native/**', 'expo*', 'expo*/**', '@expo/**', ...SERVICES, ...FEATURES],
+        [
+          'react',
+          'react-native',
+          'react-native/**',
+          'expo*',
+          'expo*/**',
+          '@expo/**',
+          ...SERVICES,
+          ...FEATURES,
+        ],
         'domain/ holds business rules only: no React, no Expo, no services.',
       ),
     },

@@ -3,12 +3,15 @@ import '@/theme/global.css';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import { QueryProvider } from '@/features/query/QueryProvider';
 import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
 
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <ThemedStack />
+      <QueryProvider>
+        <ThemedStack />
+      </QueryProvider>
     </ThemeProvider>
   );
 }

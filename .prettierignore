@@ -5,3 +5,5 @@ dist/
 coverage/
 package-lock.json
 *.pdf
+.impeccable/
+DESIGN.md

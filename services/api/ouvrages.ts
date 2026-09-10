@@ -24,8 +24,14 @@ export type RequeteFonds = {
 
 const pageOuvragesSchema = pageSchema(ouvrageSchema);
 
-export function listerOuvrages(requete: RequeteFonds = {}, signal?: AbortSignal): Promise<Page<Ouvrage>> {
-  return clientHttp.requeter({ chemin: `/books${construireQuery(requete)}`, signal }, pageOuvragesSchema);
+export function listerOuvrages(
+  requete: RequeteFonds = {},
+  signal?: AbortSignal,
+): Promise<Page<Ouvrage>> {
+  return clientHttp.requeter(
+    { chemin: `/books${construireQuery(requete)}`, signal },
+    pageOuvragesSchema,
+  );
 }
 
 export function obtenirOuvrage(id: string, signal?: AbortSignal): Promise<Ouvrage> {
@@ -39,7 +45,11 @@ export function creerOuvrage(saisie: OuvrageValide): Promise<Ouvrage> {
   );
 }
 
-export function remplacerOuvrage(id: string, saisie: OuvrageValide, version: number): Promise<Ouvrage> {
+export function remplacerOuvrage(
+  id: string,
+  saisie: OuvrageValide,
+  version: number,
+): Promise<Ouvrage> {
   return clientHttp.requeter(
     {
       methode: 'PUT',

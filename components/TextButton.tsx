@@ -19,7 +19,11 @@ export function TextButton({ label, onPress, icon, tone = 'signal', disabled = f
       aria-disabled={disabled}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed, disabled && styles.disabled]}
+      style={({ pressed }) => [
+        styles.button,
+        pressed && styles.pressed,
+        disabled && styles.disabled,
+      ]}
     >
       {icon !== undefined && <Icon name={icon} tone={tone} />}
       <AppText variant="bodyStrong" tone={tone}>

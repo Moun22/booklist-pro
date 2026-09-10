@@ -1,9 +1,17 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { ouvrageExemple } from '../helpers/fixtures';
-import { anneeMax, ouvrageRetoucheSchema, ouvrageSaisieSchema, ouvrageSchema } from '@/domain/ouvrage';
+import {
+  anneeMax,
+  ouvrageRetoucheSchema,
+  ouvrageSaisieSchema,
+  ouvrageSchema,
+} from '@/domain/ouvrage';
 
-function messagesParChamp(resultat: { success: boolean; error?: { issues: { path: PropertyKey[]; message: string }[] } }) {
+function messagesParChamp(resultat: {
+  success: boolean;
+  error?: { issues: { path: PropertyKey[]; message: string }[] };
+}) {
   return Object.fromEntries(
     (resultat.error?.issues ?? []).map((probleme) => [String(probleme.path[0]), probleme.message]),
   );
@@ -23,7 +31,11 @@ describe('ouvrageSchema', () => {
 
 describe('ouvrageSaisieSchema', () => {
   it('trims text fields and applies the defaults of a new ouvrage', () => {
-    const resultat = ouvrageSaisieSchema.safeParse({ titre: '  Dune ', auteur: 'Herbert', annee: 1965 });
+    const resultat = ouvrageSaisieSchema.safeParse({
+      titre: '  Dune ',
+      auteur: 'Herbert',
+      annee: 1965,
+    });
 
     expect(resultat.success).toBe(true);
     expect(resultat.data).toEqual({
@@ -39,7 +51,12 @@ describe('ouvrageSaisieSchema', () => {
   });
 
   it('names every invalid field', () => {
-    const resultat = ouvrageSaisieSchema.safeParse({ titre: '   ', auteur: '', annee: 1200, note: 9 });
+    const resultat = ouvrageSaisieSchema.safeParse({
+      titre: '   ',
+      auteur: '',
+      annee: 1200,
+      note: 9,
+    });
 
     expect(resultat.success).toBe(false);
     expect(messagesParChamp(resultat)).toEqual({
@@ -52,8 +69,12 @@ describe('ouvrageSaisieSchema', () => {
 
   it('refuses a year beyond next year', () => {
     const tropLoin = anneeMax() + 1;
-    expect(ouvrageSaisieSchema.safeParse({ titre: 'X', auteur: 'Y', annee: tropLoin }).success).toBe(false);
-    expect(ouvrageSaisieSchema.safeParse({ titre: 'X', auteur: 'Y', annee: anneeMax() }).success).toBe(true);
+    expect(
+      ouvrageSaisieSchema.safeParse({ titre: 'X', auteur: 'Y', annee: tropLoin }).success,
+    ).toBe(false);
+    expect(
+      ouvrageSaisieSchema.safeParse({ titre: 'X', auteur: 'Y', annee: anneeMax() }).success,
+    ).toBe(true);
   });
 });
 

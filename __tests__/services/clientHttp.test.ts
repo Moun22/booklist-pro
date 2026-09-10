@@ -50,7 +50,9 @@ describe('creerClientHttp', () => {
   it('rejects an answer that does not match the schema', async () => {
     const { client } = clientAvec([reponseJson({ autre: 1 })]);
 
-    const erreur = await client.requeter({ chemin: '/books' }, schemaMessage).catch((e: unknown) => e);
+    const erreur = await client
+      .requeter({ chemin: '/books' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(erreur).toBeInstanceOf(ErreurReseau);
     expect((erreur as ErreurReseau).cause).toBe('reponse-invalide');
@@ -60,7 +62,9 @@ describe('creerClientHttp', () => {
   it('returns undefined for an empty 204 answer', async () => {
     const { client } = clientAvec([reponseVide()]);
 
-    await expect(client.requeter({ methode: 'DELETE', chemin: '/books/1' })).resolves.toBeUndefined();
+    await expect(
+      client.requeter({ methode: 'DELETE', chemin: '/books/1' }),
+    ).resolves.toBeUndefined();
   });
 
   it('maps 422 to a validation error carrying each field', async () => {
@@ -68,7 +72,9 @@ describe('creerClientHttp', () => {
       reponseJson({ erreur: 'validation', champs: { titre: 'champ obligatoire' } }, 422),
     ]);
 
-    const erreur = await client.requeter({ chemin: '/books' }, schemaMessage).catch((e: unknown) => e);
+    const erreur = await client
+      .requeter({ chemin: '/books' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(erreur).toBeInstanceOf(ErreurValidation);
     expect((erreur as ErreurValidation).champs).toEqual({ titre: 'champ obligatoire' });
@@ -76,10 +82,15 @@ describe('creerClientHttp', () => {
 
   it('maps 409 to a conflict carrying the server version of the ouvrage', async () => {
     const { client } = clientAvec([
-      reponseJson({ erreur: 'conflit', message: 'Modifié', serveur: ouvrageExemple, versionAttendue: 3 }, 409),
+      reponseJson(
+        { erreur: 'conflit', message: 'Modifié', serveur: ouvrageExemple, versionAttendue: 3 },
+        409,
+      ),
     ]);
 
-    const erreur = await client.requeter({ chemin: '/books/1' }, schemaMessage).catch((e: unknown) => e);
+    const erreur = await client
+      .requeter({ chemin: '/books/1' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(erreur).toBeInstanceOf(ErreurConflit);
     expect((erreur as ErreurConflit).serveur.id).toBe(ouvrageExemple.id);
@@ -92,8 +103,12 @@ describe('creerClientHttp', () => {
       reponseJson({ erreur: 'service_indisponible' }, 503),
     ]);
 
-    const introuvable = await client.requeter({ chemin: '/x' }, schemaMessage).catch((e: unknown) => e);
-    const indisponible = await client.requeter({ chemin: '/x' }, schemaMessage).catch((e: unknown) => e);
+    const introuvable = await client
+      .requeter({ chemin: '/x' }, schemaMessage)
+      .catch((e: unknown) => e);
+    const indisponible = await client
+      .requeter({ chemin: '/x' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(introuvable).toBeInstanceOf(ErreurIntrouvable);
     expect(indisponible).toBeInstanceOf(ErreurReseau);
@@ -105,7 +120,9 @@ describe('creerClientHttp', () => {
     const transport = jest.fn<typeof fetch>().mockRejectedValue(new TypeError('Failed to fetch'));
     const client = creerClientHttp({ baseUrl: 'http://api.test', delaiMs: 1000, transport });
 
-    const erreur = await client.requeter({ chemin: '/books' }, schemaMessage).catch((e: unknown) => e);
+    const erreur = await client
+      .requeter({ chemin: '/books' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(erreur).toBeInstanceOf(ErreurReseau);
     expect((erreur as ErreurReseau).cause).toBe('hors-ligne');
@@ -120,7 +137,9 @@ describe('creerClientHttp', () => {
     );
     const client = creerClientHttp({ baseUrl: 'http://api.test', delaiMs: 20, transport });
 
-    const erreur = await client.requeter({ chemin: '/books' }, schemaMessage).catch((e: unknown) => e);
+    const erreur = await client
+      .requeter({ chemin: '/books' }, schemaMessage)
+      .catch((e: unknown) => e);
 
     expect(erreur).toBeInstanceOf(ErreurReseau);
     expect((erreur as ErreurReseau).cause).toBe('delai');
@@ -172,12 +191,16 @@ describe('creerClientHttp', () => {
     expect(transport).toHaveBeenNthCalledWith(
       1,
       'http://api.test/me',
-      expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer périmé' }) }),
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: 'Bearer périmé' }),
+      }),
     );
     expect(transport).toHaveBeenNthCalledWith(
       2,
       'http://api.test/me',
-      expect.objectContaining({ headers: expect.objectContaining({ Authorization: 'Bearer frais' }) }),
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: 'Bearer frais' }),
+      }),
     );
   });
 });
