@@ -1,11 +1,37 @@
 node_modules/
 .env
-.env.*.local
+.env*.local
 
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+
+# Generated native projects and signing material
+/ios
+/android
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Tooling
 .idea/
 .vscode/
-.claude/settings.local.json
+.claude/
+coverage/
+*.tsbuildinfo
+npm-debug.*
+yarn-debug.*
+yarn-error.*
 
+# Course material
 /*.pdf
 
 .DS_Store
