@@ -1,0 +1,7 @@
+node_modules/
+api-books-v2/
+dist/
+.expo/
+coverage/
+package-lock.json
+*.pdf
