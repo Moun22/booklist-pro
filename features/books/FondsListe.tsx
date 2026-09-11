@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { memo, useCallback, useMemo, useRef } from 'react';
 import { FlatList, type ListRenderItemInfo } from 'react-native';
 
 import type { Rubrique } from './rubriques';
@@ -46,7 +46,8 @@ type Props = {
   onAjouter: () => void;
 };
 
-export function FondsListe({
+// Memoised so that typing in the search field, which re-renders the pane, never reaches the list.
+export const FondsListe = memo(function FondsListe({
   fonds,
   rubrique,
   recherche,
@@ -122,7 +123,7 @@ export function FondsListe({
       }
     />
   );
-}
+});
 
 function EtatVide({
   rubrique,

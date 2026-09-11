@@ -1,5 +1,5 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { clesOuvrages } from './cles';
 import { useSuppression } from './SuppressionProvider';
@@ -33,6 +33,7 @@ export function useFonds(requete: RequeteFonds): Fonds {
   });
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } = resultat;
+  const { isPending, isFetching, isError, error } = resultat;
   const { enAttente } = useSuppression();
   const tous = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
   // An ouvrage whose deletion is still undoable never shows, even in a list fetched meanwhile.
@@ -44,22 +45,42 @@ export function useFonds(requete: RequeteFonds): Fonds {
   const totalServeur = data?.pages[0]?.total ?? 0;
   const masque = ouvrages.length < tous.length;
 
-  return {
-    ouvrages,
-    total: masque ? Math.max(0, totalServeur - 1) : totalServeur,
-    enSortieId: enAttente !== null && !enAttente.retiree ? enAttente.ouvrage.id : null,
-    chargementInitial: resultat.isPending,
-    chargementPageSuivante: isFetchingNextPage,
-    actualisation: resultat.isFetching && !isFetchingNextPage && !resultat.isPending,
-    erreur: resultat.isError ? resultat.error : null,
-    aPageSuivante: hasNextPage,
-    chargerPageSuivante: () => {
-      if (hasNextPage && !isFetchingNextPage) {
-        void fetchNextPage();
-      }
-    },
-    reessayer: () => {
-      void refetch();
-    },
-  };
+  const chargerPageSuivante = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      void fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const reessayer = useCallback(() => {
+    void refetch();
+  }, [refetch]);
+
+  // One stable object per state, so the list is skipped by memo while the search field is typed in.
+  return useMemo(
+    () => ({
+      ouvrages,
+      total: masque ? Math.max(0, totalServeur - 1) : totalServeur,
+      enSortieId: enAttente !== null && !enAttente.retiree ? enAttente.ouvrage.id : null,
+      chargementInitial: isPending,
+      chargementPageSuivante: isFetchingNextPage,
+      actualisation: isFetching && !isFetchingNextPage && !isPending,
+      erreur: isError ? error : null,
+      aPageSuivante: hasNextPage,
+      chargerPageSuivante,
+      reessayer,
+    }),
+    [
+      ouvrages,
+      masque,
+      totalServeur,
+      enAttente,
+      isPending,
+      isFetchingNextPage,
+      isFetching,
+      isError,
+      error,
+      hasNextPage,
+      chargerPageSuivante,
+      reessayer,
+    ],
+  );
 }

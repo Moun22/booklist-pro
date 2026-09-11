@@ -12,9 +12,17 @@ type Props = {
   checked: boolean;
   onToggle: () => void;
   busy?: boolean;
+  mark?: 'check' | 'heart';
 };
 
-export function ToggleRow({ label, valueLabel, checked, onToggle, busy = false }: Props) {
+export function ToggleRow({
+  label,
+  valueLabel,
+  checked,
+  onToggle,
+  busy = false,
+  mark = 'check',
+}: Props) {
   const { colors } = useTheme();
   return (
     <Pressable
@@ -33,15 +41,21 @@ export function ToggleRow({ label, valueLabel, checked, onToggle, busy = false }
         {label}
       </AppText>
       <View style={styles.value}>
-        <View
-          style={[
-            styles.box,
-            transitionEtat,
-            { borderColor: checked ? colors.ink : colors.inkSecondary },
-          ]}
-        >
-          {checked && <Icon name="check" />}
-        </View>
+        {mark === 'heart' ? (
+          <View style={styles.case}>
+            <Icon name="heart" tone={checked ? 'signal' : 'secondary'} />
+          </View>
+        ) : (
+          <View
+            style={[
+              styles.box,
+              transitionEtat,
+              { borderColor: checked ? colors.ink : colors.inkSecondary },
+            ]}
+          >
+            {checked && <Icon name="check" />}
+          </View>
+        )}
         <AppText variant="body">{valueLabel}</AppText>
       </View>
     </Pressable>
@@ -59,6 +73,7 @@ const styles = StyleSheet.create({
   },
   label: { width: layout.fieldLabel },
   value: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: space.sm },
+  case: { width: layout.iconCase, alignItems: 'center' },
   box: {
     width: layout.iconCase,
     height: layout.iconCase,

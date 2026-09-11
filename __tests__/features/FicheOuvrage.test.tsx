@@ -9,13 +9,22 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+// The fiche loads the ouvrage and its notes side by side: answers are routed by path.
+function transportDeFiche(reponseOuvrage: () => Response) {
+  return jest
+    .spyOn(globalThis, 'fetch')
+    .mockImplementation((entree) =>
+      Promise.resolve(String(entree).endsWith('/notes') ? reponseJson([]) : reponseOuvrage()),
+    );
+}
+
 describe('FicheOuvrage', () => {
   it('shows the ouvrage and flips the read status through a PATCH guarded by If-Match', async () => {
     const nonLu = { ...ouvrageExemple, lu: false, version: 4 };
-    const transport = jest
-      .spyOn(globalThis, 'fetch')
-      .mockResolvedValueOnce(reponseJson(ouvrageExemple))
-      .mockResolvedValue(reponseJson(nonLu));
+    let reponses = 0;
+    const transport = transportDeFiche(() =>
+      reponseJson(reponses++ === 0 ? ouvrageExemple : nonLu),
+    );
 
     await renderWithProviders(
       <FicheOuvrage
@@ -45,11 +54,41 @@ describe('FicheOuvrage', () => {
     );
   });
 
+  it('flips the coup de coeur at once through the same PATCH', async () => {
+    const favori = { ...ouvrageExemple, favori: true, version: 4 };
+    let reponses = 0;
+    const transport = transportDeFiche(() =>
+      reponseJson(reponses++ === 0 ? ouvrageExemple : favori),
+    );
+
+    await renderWithProviders(
+      <FicheOuvrage
+        id={ouvrageExemple.id}
+        mode="ecran"
+        onFermer={() => {}}
+        onModifier={() => {}}
+      />,
+    );
+    await screen.findByText('La Cité des cendres');
+
+    await fireEvent.press(screen.getByRole('switch', { name: 'Coup de coeur', checked: false }));
+
+    await waitFor(() =>
+      expect(screen.getByRole('switch', { name: 'Coup de coeur', checked: true })).toBeTruthy(),
+    );
+    expect(transport).toHaveBeenCalledWith(
+      `http://localhost:3000/books/${ouvrageExemple.id}`,
+      expect.objectContaining({ method: 'PATCH', body: '{"favori":true}' }),
+    );
+  });
+
   it('offers a retry when the ouvrage cannot be loaded', async () => {
-    jest
-      .spyOn(globalThis, 'fetch')
-      .mockResolvedValueOnce(reponseJson({ erreur: 'service_indisponible' }, 503))
-      .mockResolvedValue(reponseJson(ouvrageExemple));
+    let reponses = 0;
+    transportDeFiche(() =>
+      reponses++ === 0
+        ? reponseJson({ erreur: 'service_indisponible' }, 503)
+        : reponseJson(ouvrageExemple),
+    );
 
     await renderWithProviders(
       <FicheOuvrage

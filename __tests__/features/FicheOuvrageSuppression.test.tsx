@@ -13,7 +13,11 @@ describe('FicheOuvrage, suppression', () => {
   it('asks for confirmation, then schedules the deletion, closes and offers to undo', async () => {
     jest
       .spyOn(globalThis, 'fetch')
-      .mockImplementation(() => Promise.resolve(reponseJson(ouvrageExemple)));
+      .mockImplementation((entree) =>
+        Promise.resolve(
+          String(entree).endsWith('/notes') ? reponseJson([]) : reponseJson(ouvrageExemple),
+        ),
+      );
     const onFermer = jest.fn();
 
     await renderWithProviders(
@@ -40,7 +44,11 @@ describe('FicheOuvrage, suppression', () => {
   it('keeps the ouvrage when the librarian changes their mind', async () => {
     jest
       .spyOn(globalThis, 'fetch')
-      .mockImplementation(() => Promise.resolve(reponseJson(ouvrageExemple)));
+      .mockImplementation((entree) =>
+        Promise.resolve(
+          String(entree).endsWith('/notes') ? reponseJson([]) : reponseJson(ouvrageExemple),
+        ),
+      );
     const onFermer = jest.fn();
 
     await renderWithProviders(

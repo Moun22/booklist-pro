@@ -67,3 +67,9 @@ export const layout = {
 } as const;
 
 export const motion = { quick: 150 } as const;
+
+// The only shadow of the system: overlays (menus) floating over the page.
+export const overlayShadow: Readonly<Record<ColorScheme, string>> = {
+  light: '0 4px 12px rgba(0, 0, 0, 0.12)',
+  dark: '0 4px 12px rgba(0, 0, 0, 0.6)',
+};
