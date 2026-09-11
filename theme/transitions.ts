@@ -1,13 +1,14 @@
-import { Platform, type ViewStyle } from 'react-native';
+import { Platform, type TextStyle, type ViewStyle } from 'react-native';
 
 import { motion } from './tokens';
 
 // react-native-web turns these keys into CSS transitions; native platforms ignore them.
-export const transitionEtat: ViewStyle = Platform.select({
+// The intersection type lets the same object style a view or a text.
+export const transitionEtat: ViewStyle & TextStyle = Platform.select({
   web: {
-    transitionProperty: 'background-color, border-color, opacity',
+    transitionProperty: 'background-color, border-color, color, opacity',
     transitionDuration: `${motion.quick}ms`,
     transitionTimingFunction: 'ease-out',
-  } as ViewStyle,
+  } as ViewStyle & TextStyle,
   default: {},
 });

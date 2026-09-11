@@ -12,6 +12,7 @@ type Props = {
   tone?: 'signal' | 'ink' | 'danger';
   disabled?: boolean;
   autoFocus?: boolean;
+  onAutoFocus?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
 };
@@ -23,10 +24,11 @@ export function TextButton({
   tone = 'signal',
   disabled = false,
   autoFocus = false,
+  onAutoFocus,
   onFocus,
   onBlur,
 }: Props) {
-  const bouton = useAutoFocus<View>(autoFocus);
+  const bouton = useAutoFocus<View>(autoFocus, onAutoFocus);
 
   return (
     <Pressable

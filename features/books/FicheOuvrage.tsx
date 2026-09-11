@@ -12,7 +12,9 @@ import { Skeleton } from '@/components/Skeleton';
 import { StateMessage } from '@/components/StateMessage';
 import { TextButton } from '@/components/TextButton';
 import { ToggleRow } from '@/components/ToggleRow';
+import type { Ouvrage, OuvrageRetouche } from '@/domain/ouvrage';
 import { messagePourErreur } from '@/features/erreurs/messages';
+import { NotesOuvrage } from '@/features/notes/NotesOuvrage';
 import { useEscape } from '@/hooks/useEscape';
 import { useTheme } from '@/theme/ThemeProvider';
 import { hairline, layout, space } from '@/theme/tokens';
@@ -66,11 +68,13 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
     }
   };
 
-  const basculerLu = () => {
+  const retoucher = (calcul: (courant: Ouvrage) => OuvrageRetouche) => {
     if (ouvrage !== undefined && !retouche.isPending) {
-      retouche.mutate({ retouche: { lu: !ouvrage.lu }, version: ouvrage.version });
+      retouche.mutate({ retouche: calcul(ouvrage), version: ouvrage.version });
     }
   };
+  const basculerLu = () => retoucher((courant) => ({ lu: !courant.lu }));
+  const basculerCoupDeCoeur = () => retoucher((courant) => ({ favori: !courant.favori }));
 
   return (
     <CadreOuvrage mode={mode} onFermer={onFermer}>
@@ -91,10 +95,13 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
             value={ouvrage.note === null ? labels.sansNote : `${ouvrage.note}/${NOTE_MAX}`}
             muted={ouvrage.note === null}
           />
-          <FieldRow
+          <ToggleRow
             label={labels.coupDeCoeur}
-            value={ouvrage.favori ? labels.oui : labels.non}
-            icon={ouvrage.favori ? 'heart' : undefined}
+            valueLabel={ouvrage.favori ? labels.oui : labels.non}
+            checked={ouvrage.favori}
+            onToggle={basculerCoupDeCoeur}
+            busy={retouche.isPending}
+            mark="heart"
           />
           <ToggleRow
             label={labels.statut}
@@ -130,6 +137,7 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
               <TextButton label={labels.modifier} icon="edit-2" tone="ink" onPress={onModifier} />
             </View>
           )}
+          <NotesOuvrage livreId={ouvrage.id} />
         </ScrollView>
       ) : fiche.erreur !== null ? (
         <EtatErreur erreur={fiche.erreur} onReessayer={fiche.reessayer} />
