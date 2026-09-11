@@ -86,6 +86,36 @@ routes, couvertures comprises.
   français ou en anglais à chaud, dates et nombres compris.
 - Au-dessus de 960 px, la fiche s'ouvre dans un volet à côté du fonds ; en dessous, chaque écran
   prend toute la largeur.
+- Les comptes (lot 4, volet 4.1) : écran de connexion, session persistée, rafraîchissement
+  silencieux du jeton d'accès, déconnexion ; un compte lecteur ne voit aucune action d'écriture.
+
+## Depuis la revue intermédiaire
+
+Ce qui a été ajouté après la revue de mi-parcours, dans l'ordre.
+
+1. **Tests du lot 3 complétés.** Le redimensionnement et l'encodage de l'image choisie
+   (`services/plateforme/image.ts`), les hooks de couverture (propagation du cache, conflit 409),
+   le composant de couverture (retour à l'origine, refus du serveur, lecture seule), la notation
+   par étoiles dans la fiche et le bouton d'envoi du formulaire désactivé pendant la soumission
+   sont maintenant couverts. La couverture mesurée sur `domain/` et `services/` est de 95 % des
+   instructions et 86 % des branches (`npx jest --coverage`).
+2. **Lot 4 amorcé : les comptes.** Écran de connexion (`app/connexion.tsx`), session persistée
+   et restaurée au démarrage (`features/auth/SessionProvider.tsx`), jetons rangés derrière
+   `services/stockageSecurise.ts` (trousseau de l'appareil sur mobile ; sur navigateur, repli sur
+   le stockage local, sans coffre possible, ce qui est documenté ici), intercepteur unique dans
+   `services/api/intercepteurAuth.ts` : injection du jeton, détection du 401, rafraîchissement,
+   rejeu de la requête, et **un seul rafraîchissement** quand plusieurs requêtes reçoivent un 401
+   en même temps. Une route protégée redirige vers la connexion puis revient à l'écran demandé.
+   Le rôle `lecteur` ne voit aucune action d'écriture : elles sont masquées, pas désactivées.
+   Le tout est testé : intercepteur (dont dix 401 simultanés), service d'authentification,
+   stockage sécurisé, fournisseur de session, formulaire de connexion, fiche en lecture seule.
+3. **Ce qui n'est pas couvert du lot 4**, par choix : mode hors ligne, file de mutations,
+   synchronisation par `POST /sync`, résolution différée des conflits, tableau de bord.
+
+Pour l'essayer en mode recette (`npm run final` dans `api-books-v2/`, authentification et chaos
+combinés), les comptes du seed sont `editeur@booklist.fr` / `editeur123` et
+`lecteur@booklist.fr` / `lecteur123`. Le jeton d'accès expire toutes les 120 secondes : le
+rafraîchissement se fait sans que le libraire ne s'en aperçoive.
 
 ## Documentation
 
@@ -107,18 +137,18 @@ routes, couvertures comprises.
 Les responsabilités de chaque dossier sont vérifiées par ESLint : un import qui traverse une
 frontière interdite fait échouer `npm run lint`.
 
-| Dossier         | Rôle                                                                             |
-| --------------- | -------------------------------------------------------------------------------- |
-| `app/`          | Écrans et routage Expo Router. Aucune logique métier, aucun appel réseau         |
-| `components/`   | Interface pure, sans dépendance à l'API ni au store                              |
-| `features/`     | Découpage par domaine : books, notes, enrichissement, preferences, i18n, erreurs |
-| `hooks/`        | Logique réutilisable                                                             |
-| `services/`     | Réseau, stockage, plateforme : seul endroit qui connaît l'API et les capacités   |
-| `domain/`       | Types, schémas zod et règles métier, sans dépendance technique                   |
-| `theme/`        | Tokens de design et thème                                                        |
-| `docs/`         | Architecture, décisions d'architecture (ADR), mesure de performance              |
-| `__tests__/`    | Tests Jest, rangés comme le code qu'ils couvrent                                 |
-| `api-books-v2/` | API Express fournie, étendue en 2.1 (couvertures)                                |
+| Dossier         | Rôle                                                                           |
+| --------------- | ------------------------------------------------------------------------------ |
+| `app/`          | Écrans et routage Expo Router. Aucune logique métier, aucun appel réseau       |
+| `components/`   | Interface pure, sans dépendance à l'API ni au store                            |
+| `features/`     | Découpage par domaine : books, notes, auth, enrichissement, preferences, i18n  |
+| `hooks/`        | Logique réutilisable                                                           |
+| `services/`     | Réseau, stockage, plateforme : seul endroit qui connaît l'API et les capacités |
+| `domain/`       | Types, schémas zod et règles métier, sans dépendance technique                 |
+| `theme/`        | Tokens de design et thème                                                      |
+| `docs/`         | Architecture, décisions d'architecture (ADR), mesure de performance            |
+| `__tests__/`    | Tests Jest, rangés comme le code qu'ils couvrent                               |
+| `api-books-v2/` | API Express fournie, étendue en 2.1 (couvertures)                              |
 
 ## Tests
 
@@ -130,6 +160,9 @@ frontière interdite fait échouer `npm run lint`.
   message d'état, interrupteur, étoiles, couverture, question de confirmation, barre
   d'annulation, menu de tri ;
 - les hooks de données avec un `fetch` simulé : liste paginée, retouche optimiste, notes,
-  enrichissement OpenLibrary, suppression différée avec faux timers, préférences persistées ;
-- les services : client HTTP avec transport injecté, délai, traduction des erreurs, couvertures,
-  OpenLibrary, stockage.
+  couvertures, enrichissement OpenLibrary, suppression différée avec faux timers, préférences
+  persistées, session (restauration, connexion, déconnexion, demande de connexion sur un 401) ;
+- les services : client HTTP avec transport injecté, délai, traduction des erreurs,
+  intercepteur d'authentification (un seul rafraîchissement pour dix 401 simultanés),
+  authentification, couvertures, choix et redimensionnement d'image, OpenLibrary, stockage et
+  stockage sécurisé.

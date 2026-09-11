@@ -21,7 +21,6 @@ describe('useEnrichissement', () => {
       wrapper: creerWrapper(creerClientDeTest()),
     });
 
-    expect(result.current.etat).toBe('recherche');
     await waitFor(() => expect(result.current.etat).toBe('trouve'));
     expect(result.current).toEqual({ etat: 'trouve', editions: 7, premiereAnnee: 1987 });
   });

@@ -18,10 +18,11 @@ const HAUTEUR = 120;
 
 type Props = {
   ouvrage: Ouvrage;
+  lectureSeule?: boolean;
 };
 
 // The head of the fiche: the cover beside the title, then the row that replaces or restores it.
-export function CouvertureOuvrage({ ouvrage }: Props) {
+export function CouvertureOuvrage({ ouvrage, lectureSeule = false }: Props) {
   const { colors } = useTheme();
   const t = useTraduction();
   const televersement = useTeleverserCouverture(ouvrage.id);
@@ -62,31 +63,33 @@ export function CouvertureOuvrage({ ouvrage }: Props) {
           </AppText>
         </View>
       </View>
-      <View style={[styles.actions, { borderBottomColor: colors.rule }]}>
-        <AppText variant="rubric" tone="secondary" style={styles.etiquette}>
-          {t.fiche.couverture}
-        </AppText>
-        <View style={styles.boutons}>
-          <TextButton
-            label={occupe ? t.fiche.envoiCouverture : t.fiche.remplacerCouverture}
-            icon="image"
-            tone="ink"
-            disabled={occupe}
-            onPress={() => {
-              void remplacer();
-            }}
-          />
-          {televersee && (
+      {!lectureSeule && (
+        <View style={[styles.actions, { borderBottomColor: colors.rule }]}>
+          <AppText variant="rubric" tone="secondary" style={styles.etiquette}>
+            {t.fiche.couverture}
+          </AppText>
+          <View style={styles.boutons}>
             <TextButton
-              label={t.fiche.couvertureOrigine}
-              icon="rotate-ccw"
+              label={occupe ? t.fiche.envoiCouverture : t.fiche.remplacerCouverture}
+              icon="image"
               tone="ink"
               disabled={occupe}
-              onPress={() => retrait.mutate(ouvrage.version)}
+              onPress={() => {
+                void remplacer();
+              }}
             />
-          )}
+            {televersee && (
+              <TextButton
+                label={t.fiche.couvertureOrigine}
+                icon="rotate-ccw"
+                tone="ink"
+                disabled={occupe}
+                onPress={() => retrait.mutate(ouvrage.version)}
+              />
+            )}
+          </View>
         </View>
-      </View>
+      )}
       {erreur !== null && erreur !== undefined && (
         <AppText variant="small" tone="danger" role="alert" style={styles.avertissement}>
           {t.fiche.couvertureRefusee} {messagePourErreur(erreur, t.erreurs).detail}

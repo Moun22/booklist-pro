@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react-native';
 import type { ReactElement, ReactNode } from 'react';
 
+import { SessionProvider } from '@/features/auth/SessionProvider';
 import { SuppressionProvider } from '@/features/books/SuppressionProvider';
 import { PreferencesProvider } from '@/features/preferences/PreferencesProvider';
 
@@ -20,7 +21,9 @@ export function creerWrapper(client: QueryClient) {
     return (
       <PreferencesProvider>
         <QueryClientProvider client={client}>
-          <SuppressionProvider>{children}</SuppressionProvider>
+          <SessionProvider>
+            <SuppressionProvider>{children}</SuppressionProvider>
+          </SessionProvider>
         </QueryClientProvider>
       </PreferencesProvider>
     );

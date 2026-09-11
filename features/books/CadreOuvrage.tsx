@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import { Rule } from '@/components/Rule';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { SyncMark } from '@/components/SyncMark';
 import { useTraduction } from '@/features/i18n/useTraduction';
+import { MarqueServeur } from '@/features/sync/MarqueServeur';
 import { useTheme } from '@/theme/ThemeProvider';
 
 export type ModeOuvrage = 'ecran' | 'volet';
@@ -25,9 +25,7 @@ export function CadreOuvrage({ mode, onFermer, children }: Props) {
         backLabel={t.cadre.retour}
         closeLabel={t.cadre.fermer}
         onClose={onFermer}
-        trailing={
-          mode === 'ecran' ? <SyncMark status="online" label={t.chrome.online} /> : undefined
-        }
+        trailing={mode === 'ecran' ? <MarqueServeur /> : undefined}
       />
       {mode === 'ecran' && <Rule />}
       {children}

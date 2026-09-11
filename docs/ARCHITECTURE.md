@@ -91,9 +91,19 @@ tard `supprimerOuvrage` (`DELETE`) ; « Annuler » remet l'instantané et n'envo
 
 - **Racine** ([app/\_layout.tsx](../app/_layout.tsx)) : `PreferencesProvider` (langue et thème,
   lus et écrits par `services/stockage.ts`, qui rend le `ThemeProvider` avec la préférence) →
-  `QueryProvider` (un `QueryClient`, réglé dans `features/query/`) → `SuppressionProvider` (une
-  suppression en attente à la fois, barre d'annulation, région `aria-live`) → la pile de
-  navigation.
+  `QueryProvider` (un `QueryClient`, réglé dans `features/query/`) → `SessionProvider` (compte
+  connecté, jetons, connexion et déconnexion) → `SuppressionProvider` (une suppression en
+  attente à la fois, barre d'annulation, région `aria-live`) → la pile de navigation.
+- **Session et jetons** : `services/api/intercepteurAuth.ts` est installé sur le client HTTP dès
+  l'import de `features/auth/SessionProvider.tsx`, avant toute requête. Il injecte le jeton
+  d'accès dans chaque requête (`preparer`), et sur un 401 `jeton_expire` il lance **un seul**
+  rafraîchissement, partagé par toutes les requêtes en attente, puis rejoue chacune avec le
+  nouveau jeton (`reprendre`). Un 401 sans jeton ou un rafraîchissement refusé marquent la
+  session comme perdue : le groupe de routes `app/(fonds)/_layout.tsx` redirige alors vers
+  `/connexion?vers=<écran demandé>`, et la connexion ramène à cet écran. Le jeton de
+  rafraîchissement ne passe jamais par un état React : il vit dans une boîte du module et dans
+  `services/stockageSecurise.ts`. Le rôle est lu par `useSession().peutEcrire` : un compte
+  lecteur ne reçoit aucune action d'écriture, elles ne sont pas rendues.
 - **Langue** : aucune chaîne visible dans `components/` ; chaque écran lit un dictionnaire typé
   (`features/i18n/fr.ts`, `en.ts`) par `useTraduction()`. Les schémas zod du domaine reçoivent
   leurs messages en paramètre (`creerOuvrageFormulaireSchema(t.validation)`), donc le domaine ne

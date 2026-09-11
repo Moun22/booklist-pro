@@ -12,3 +12,9 @@ export const transitionEtat: ViewStyle & TextStyle = Platform.select({
   } as ViewStyle & TextStyle,
   default: {},
 });
+
+// For a field whose focus is drawn on its own rule: the browser's outline would double it.
+export const sansContourFocus: TextStyle = Platform.select({
+  web: { outlineWidth: 0 },
+  default: {},
+});

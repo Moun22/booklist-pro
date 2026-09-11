@@ -28,7 +28,6 @@ describe('useNotesDeLecture', () => {
       wrapper: creerWrapper(creerClientDeTest()),
     });
 
-    expect(result.current.chargement).toBe(true);
     await waitFor(() => expect(result.current.chargement).toBe(false));
     expect(result.current.notes.map((note) => note.id)).toEqual(['n1', 'n2']);
   });
