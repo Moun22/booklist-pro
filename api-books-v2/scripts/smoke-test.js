@@ -195,6 +195,49 @@ async function main() {
   const suppNote = await appel(`/books/${id}/notes/${note.corps.id}`, { method: 'DELETE' });
   verifier('DELETE note -> 204', suppNote.statut === 204);
 
+  console.log('\n-- Couvertures --');
+  const pixelPng =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+  const versionAvantCouverture = (await appel(`/books/${id}`)).corps.version;
+  const televersement = await appel(`/books/${id}/cover`, {
+    method: 'POST',
+    headers: { 'If-Match': String(versionAvantCouverture) },
+    body: JSON.stringify({ image: pixelPng }),
+  });
+  verifier(
+    'POST cover -> 200 avec chemin relatif et version incrementee',
+    televersement.statut === 200 &&
+      televersement.corps.couverture === `/covers/${id}.png` &&
+      televersement.corps.version === versionAvantCouverture + 1,
+  );
+  const imageServie = await fetch(`${base}/covers/${id}.png`);
+  verifier('GET cover televersee -> image/png', imageServie.status === 200 && imageServie.headers.get('content-type').startsWith('image/png'));
+  const svgGenere = await fetch(`${base}/covers/${id}.svg`);
+  verifier('GET cover generee -> image/svg+xml', svgGenere.status === 200 && svgGenere.headers.get('content-type').startsWith('image/svg+xml'));
+  const mauvaisFormat = await appel(`/books/${id}/cover`, {
+    method: 'POST',
+    body: JSON.stringify({ image: 'data:image/gif;base64,R0lGODlhAQABAAAAACw=' }),
+  });
+  verifier('POST cover gif -> 415', mauvaisFormat.statut === 415 && mauvaisFormat.corps.erreur === 'format_non_supporte');
+  const tropLourde = await appel(`/books/${id}/cover`, {
+    method: 'POST',
+    body: JSON.stringify({ image: `data:image/png;base64,${'A'.repeat(420 * 1024)}` }),
+  });
+  verifier('POST cover trop lourde -> 413', tropLourde.statut === 413 && tropLourde.corps.erreur === 'image_trop_lourde');
+  const conflitCouverture = await appel(`/books/${id}/cover`, {
+    method: 'POST',
+    headers: { 'If-Match': '1' },
+    body: JSON.stringify({ image: pixelPng }),
+  });
+  verifier('POST cover avec version perimee -> 409', conflitCouverture.statut === 409);
+  const retour = await appel(`/books/${id}/cover`, { method: 'DELETE' });
+  verifier(
+    'DELETE cover -> retour a la couverture d origine',
+    retour.statut === 200 && retour.corps.couverture === null && retour.corps.couvertureOrigine === undefined,
+  );
+  const imageRetiree = await fetch(`${base}/covers/${id}.png`);
+  verifier('image televersee retiree -> 404', imageRetiree.status === 404);
+
   console.log('\n-- Stats --');
   const stats = await appel('/stats');
   verifier('GET /stats', stats.statut === 200 && stats.corps.total > 0);

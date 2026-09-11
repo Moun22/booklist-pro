@@ -148,6 +148,19 @@ If-Match: 3
 - en-tête absent → écriture acceptée sans contrôle (le dernier écrivain gagne).
   Utile aux paliers 10 à 16 ; **inacceptable au palier 18**.
 
+### Couvertures — ajout v2.1 (voir CHANGELOG.md)
+
+```
+GET    /covers/:id.svg                → 200 image/svg+xml  (générée)  |  404
+GET    /covers/:id.(png|jpg|webp)     → 200 image          (téléversée)  |  404
+POST   /books/:id/cover  { image }    → 200 Livre  |  404  |  409  |  413  |  415  |  422
+DELETE /books/:id/cover               → 200 Livre  (retour à la couverture d'origine)  |  404  |  409
+```
+
+`image` est une data URL base64 (`data:image/jpeg;base64,…`), 300 Ko décodés maximum, en png,
+jpeg ou webp. Le champ `couverture` d'un livre contient un chemin relatif (`/covers/…`), une URL
+absolue, ou `null`.
+
 ### Notes
 
 ```

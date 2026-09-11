@@ -3,8 +3,24 @@ const crypto = require('crypto');
 const { charger, sauvegarder } = require('./db');
 const { validerLivre, creerLivre, appliquerMaj, interroger, maintenant } = require('./livres');
 const { authentifier, ecrivain } = require('./middleware');
+const couvertures = require('./couvertures');
 
 const routeur = express.Router();
+
+// If-Match: <version> -> 409 si la version envoyee n'est plus celle du serveur.
+function enConflit(req, res, actuel) {
+  const ifMatch = req.headers['if-match'];
+  if (ifMatch !== undefined && Number(String(ifMatch).replace(/"/g, '')) !== actuel.version) {
+    res.status(409).json({
+      erreur: 'conflit',
+      message: 'Ce livre a ete modifie entre temps.',
+      serveur: actuel,
+      versionAttendue: actuel.version,
+    });
+    return true;
+  }
+  return false;
+}
 
 /* ------------------------------------------------------------------ */
 /* Livres                                                              */
@@ -42,16 +58,7 @@ function majLivre(req, res) {
   if (index === -1) return res.status(404).json({ erreur: 'introuvable', message: 'Livre inconnu.' });
 
   const actuel = db.livres[index];
-  const ifMatch = req.headers['if-match'];
-
-  if (ifMatch !== undefined && Number(String(ifMatch).replace(/"/g, '')) !== actuel.version) {
-    return res.status(409).json({
-      erreur: 'conflit',
-      message: 'Ce livre a ete modifie entre temps.',
-      serveur: actuel,
-      versionAttendue: actuel.version,
-    });
-  }
+  if (enConflit(req, res, actuel)) return undefined;
 
   const partiel = req.method === 'PATCH';
   const { valeur, erreurs } = validerLivre(req.body ?? {}, partiel);
@@ -74,9 +81,72 @@ routeur.delete('/books/:id', ecrivain(), (req, res) => {
 
   db.livres.splice(index, 1);
   db.notes = db.notes.filter((n) => n.livreId !== req.params.id);
+  couvertures.supprimerFichiers(req.params.id);
   sauvegarder();
 
   res.status(204).end();
+});
+
+/* ------------------------------------------------------------------ */
+/* Couvertures (v2.1)                                                  */
+/* ------------------------------------------------------------------ */
+
+// Image generee ou televersee. Pas d'authentification : une balise <img> n'envoie pas de jeton.
+routeur.get('/covers/:fichier', (req, res) => {
+  const fichier = couvertures.lireFichier(req.params.fichier);
+  if (fichier) {
+    return res.type(fichier.type).set('Cache-Control', 'public, max-age=86400').send(fichier.octets);
+  }
+  const id = req.params.fichier.replace(/\.svg$/, '');
+  const livre = req.params.fichier.endsWith('.svg') && charger().livres.find((l) => l.id === id);
+  if (!livre) return res.status(404).json({ erreur: 'introuvable', message: 'Couverture inconnue.' });
+  res
+    .type('image/svg+xml')
+    .set('Cache-Control', 'public, max-age=86400')
+    .send(couvertures.genererSvg(livre));
+});
+
+// POST /books/:id/cover  { image: "data:image/jpeg;base64,..." }  If-Match facultatif
+routeur.post('/books/:id/cover', ecrivain(), (req, res) => {
+  const db = charger();
+  const index = db.livres.findIndex((l) => l.id === req.params.id);
+  if (index === -1) return res.status(404).json({ erreur: 'introuvable', message: 'Livre inconnu.' });
+
+  const actuel = db.livres[index];
+  if (enConflit(req, res, actuel)) return undefined;
+
+  const lecture = couvertures.lireDataUrl(req.body?.image);
+  if (lecture.statut) {
+    const { statut, ...corps } = lecture;
+    return res.status(statut).json(corps);
+  }
+
+  const chemin = couvertures.enregistrerFichier(actuel.id, lecture.type, lecture.octets);
+  const origine = actuel.couvertureOrigine === undefined ? actuel.couverture : actuel.couvertureOrigine;
+  const livreMaj = appliquerMaj(actuel, { couverture: chemin, couvertureOrigine: origine });
+  db.livres[index] = livreMaj;
+  sauvegarder();
+
+  return res.set('ETag', String(livreMaj.version)).json(livreMaj);
+});
+
+// DELETE /books/:id/cover : retire l'image televersee, retour a la couverture d'origine.
+routeur.delete('/books/:id/cover', ecrivain(), (req, res) => {
+  const db = charger();
+  const index = db.livres.findIndex((l) => l.id === req.params.id);
+  if (index === -1) return res.status(404).json({ erreur: 'introuvable', message: 'Livre inconnu.' });
+
+  const actuel = db.livres[index];
+  if (enConflit(req, res, actuel)) return undefined;
+
+  couvertures.supprimerFichiers(actuel.id);
+  const origine = actuel.couvertureOrigine === undefined ? actuel.couverture : actuel.couvertureOrigine;
+  const { couvertureOrigine, ...sansOrigine } = actuel;
+  const livreMaj = appliquerMaj(sansOrigine, { couverture: origine });
+  db.livres[index] = livreMaj;
+  sauvegarder();
+
+  return res.set('ETag', String(livreMaj.version)).json(livreMaj);
 });
 
 /* ------------------------------------------------------------------ */

@@ -33,7 +33,7 @@ app.get('/health', (req, res) => {
   const db = charger();
   res.json({
     statut: 'ok',
-    version: '2.0.0',
+    version: '2.1.0',
     authRequise: AUTH_REQUISE,
     chaos: {
       latence: Number(process.env.CHAOS_LATENCE || 0),

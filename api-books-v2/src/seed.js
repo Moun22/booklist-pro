@@ -25,13 +25,31 @@ const MOTS_B = ['Cite', 'Horizon', 'Memoire', 'Silence', 'Fracture', 'Orbite', '
 const MOTS_C = ['des cendres', 'du vide', 'sans fin', 'oublie', 'de verre', 'des origines', 'perdue', 'fragmentee', 'de Mars', 'du dernier jour', 'des profondeurs', 'inverse'];
 const EDITEURS = ['Denoel', 'Le Belial', 'Actes Sud', 'Gallimard', 'Bragelonne', 'Mnemos', 'Folio SF', 'La Volte', 'Albin Michel', 'Robert Laffont'];
 
+// Couvertures externes reelles (OpenLibrary) : un client doit aussi tenir sans reseau.
+const COUVERTURES_EXTERNES = [
+  'https://covers.openlibrary.org/b/id/8231856-M.jpg',
+  'https://covers.openlibrary.org/b/id/10521270-M.jpg',
+  'https://covers.openlibrary.org/b/id/12547191-M.jpg',
+  'https://covers.openlibrary.org/b/id/9255566-M.jpg',
+];
+
+// v2.1 : la plupart des livres ont une couverture generee (chemin relatif),
+// quelques-uns une URL externe, et certains aucune. Les trois cas sont voulus.
+function couvertureSeed(id) {
+  const tirage = alea();
+  if (tirage < 0.8) return `/covers/${id}.svg`;
+  if (tirage < 0.9) return choisir(COUVERTURES_EXTERNES);
+  return null;
+}
+
 function genererLivre(index) {
   const date = new Date(Date.now() - entier(0, 900) * 86400000).toISOString();
   const lu = alea() < 0.45;
   const noteAttribuee = lu && alea() < 0.8;
+  const id = crypto.randomUUID();
 
   return {
-    id: crypto.randomUUID(),
+    id,
     titre: `${choisir(MOTS_A)} ${choisir(MOTS_B)} ${choisir(MOTS_C)}`.replace(/\s+/g, ' '),
     auteur: `${choisir(PRENOMS)} ${choisir(NOMS)}`,
     editeur: choisir(EDITEURS),
@@ -39,7 +57,7 @@ function genererLivre(index) {
     lu,
     favori: alea() < 0.18,
     note: noteAttribuee ? entier(1, 5) : null,
-    couverture: null,
+    couverture: couvertureSeed(id),
     createdAt: date,
     updatedAt: date,
     version: 1,
