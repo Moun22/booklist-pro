@@ -43,6 +43,28 @@ describe('FormulaireOuvrage', () => {
     );
   });
 
+  it('disables and relabels the submit button while the server has not answered', async () => {
+    let terminer: () => void = () => {};
+    const onSoumettre = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          terminer = resolve;
+        }),
+    );
+    await renderWithTheme(<FormulaireOuvrage onSoumettre={onSoumettre} onAnnuler={() => {}} />);
+
+    await remplirFormulaireValide();
+    await fireEvent.press(screen.getByRole('button', { name: 'Enregistrer' }));
+
+    const enCours = await screen.findByRole('button', { name: 'Enregistrement…' });
+    expect(enCours.props.accessibilityState?.disabled ?? enCours.props['aria-disabled']).toBe(true);
+    await fireEvent.press(enCours);
+    expect(onSoumettre).toHaveBeenCalledTimes(1);
+
+    terminer();
+    expect(await screen.findByRole('button', { name: 'Enregistrer' })).toBeTruthy();
+  });
+
   it('shows a 422 answer under the field the server named', async () => {
     const onSoumettre = jest.fn(async () => {
       throw new ErreurValidation('Validation', { titre: 'titre déjà présent dans le fonds' });
