@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import { ErreurReseau, ErreurValidation } from '@/domain/erreurs';
 import { repartirErreur } from '@/features/books/erreursFormulaire';
+import { fr } from '@/features/i18n/fr';
 
 describe('repartirErreur', () => {
   it('routes each field of a 422 to its form field', () => {
@@ -10,7 +11,7 @@ describe('repartirErreur', () => {
       annee: 'annee invalide',
     });
 
-    expect(repartirErreur(erreur)).toEqual({
+    expect(repartirErreur(erreur, fr.erreurs)).toEqual({
       parChamp: { titre: 'champ obligatoire', annee: 'annee invalide' },
       globale: null,
     });
@@ -19,7 +20,7 @@ describe('repartirErreur', () => {
   it('keeps unknown fields visible instead of dropping them', () => {
     const erreur = new ErreurValidation('Validation', { couverture: 'trop lourde' });
 
-    expect(repartirErreur(erreur)).toEqual({
+    expect(repartirErreur(erreur, fr.erreurs)).toEqual({
       parChamp: {},
       globale: 'couverture : trop lourde',
     });
@@ -28,7 +29,7 @@ describe('repartirErreur', () => {
   it('turns any other error into a single readable message', () => {
     const erreur = new ErreurReseau('indisponible', 'Service indisponible', 503);
 
-    const reparties = repartirErreur(erreur);
+    const reparties = repartirErreur(erreur, fr.erreurs);
 
     expect(reparties.parChamp).toEqual({});
     expect(reparties.globale).toContain('momentanément indisponible');

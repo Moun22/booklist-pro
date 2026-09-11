@@ -1,7 +1,8 @@
 # BookList Pro
 
 Cahier de lecture numérique des Comptoirs du Livre : application React Native (Expo) exécutée
-dans le navigateur, adossée à l'API `api-books-v2` fournie pour l'évaluation.
+dans le navigateur, adossée à l'API `api-books-v2` fournie pour l'évaluation et étendue en
+version 2.1 pour les couvertures (voir [api-books-v2/CHANGELOG.md](api-books-v2/CHANGELOG.md)).
 
 ## Prérequis
 
@@ -22,8 +23,8 @@ Deux terminaux.
    npm start
    ```
 
-   Vérification : <http://localhost:3000/health>. Les modes `auth`, `chaos` et `final` sont
-   décrits dans [api-books-v2/README.md](api-books-v2/README.md).
+   Vérification : <http://localhost:3000/health> doit annoncer la version `2.1.0`. Les modes
+   `auth`, `chaos` et `final` sont décrits dans [api-books-v2/README.md](api-books-v2/README.md).
 
 2. L'application :
 
@@ -35,13 +36,20 @@ Deux terminaux.
    Elle s'ouvre sur <http://localhost:8081>.
 
 Pour vérifier le comportement en mode dégradé (celui de la recette), remplacez `npm start` par
-`npm run chaos` dans le dossier de l'API : 1,5 s de latence et 30 % de réponses 503.
+`npm run chaos` dans le dossier de l'API : 1,5 s de latence et 30 % de réponses 503. Sous
+Windows, les scripts `chaos`, `auth` et `final` utilisent la syntaxe d'environnement de bash ;
+dans PowerShell, lancez plutôt :
+
+```powershell
+$env:CHAOS_LATENCE=1500; $env:CHAOS_ECHEC=0.3; npm start
+```
 
 ## Configuration
 
 L'application lit l'URL de l'API dans `EXPO_PUBLIC_API_URL`, avec `http://localhost:3000` par
 défaut. Pour une autre adresse, copiez [.env.example](.env.example) en `.env` et ajustez la valeur
-avant de lancer `npm run web`.
+avant de lancer `npm run web`. L'enrichissement bibliographique interroge `openlibrary.org` ;
+sans accès à Internet, la fiche affiche « OpenLibrary injoignable » et tout le reste fonctionne.
 
 ## Scripts
 
@@ -57,21 +65,27 @@ avant de lancer `npm run web`.
 | `npm run format:check` | Vérifie le formatage sans modifier les fichiers             |
 
 Les quatre vérifications (`typecheck`, `lint`, `test`, `format:check`) passent sur `main` à
-chaque fusion.
+chaque fusion. Dans `api-books-v2/`, `npm run test:api` rejoue le test de fumée de toutes les
+routes, couvertures comprises.
 
 ## Ce que fait l'application
 
 - Le fonds : liste paginée par le serveur, chargée page par page en fin de liste ; recherche
-  sur le titre et l'auteur ; rubriques « Lus », « Non lus », « Coups de coeur ». Le client ne
-  filtre, ne trie et ne pagine jamais lui-même.
-- La fiche d'un ouvrage, avec la case « Lu » basculée sans attendre le serveur et remise en
-  place s'il refuse.
+  sur le titre et l'auteur ; rubriques « Lus », « Non lus », « Coups de coeur » ; tri par titre,
+  auteur, année ou note. Le client ne filtre, ne trie et ne pagine jamais lui-même.
+- La fiche d'un ouvrage : couverture, note par étoiles, coup de coeur et statut « Lu » basculés
+  sans attendre le serveur et remis en place s'il refuse, nombre d'éditions référencées sur
+  OpenLibrary, notes de lecture horodatées (ajout, suppression).
+- La couverture : servie par l'API (générée, externe ou absente, jamais d'image cassée),
+  remplaçable par un fichier redimensionné avant l'envoi, avec retour à la couverture d'origine.
 - La création et la modification dans un formulaire validé par zod, avec les erreurs 422 du
   serveur réparties champ par champ et la détection de conflit de version (`If-Match`, 409).
 - La suppression avec confirmation en place et cinq secondes pour annuler avant que la requête
   ne parte.
+- Thème clair ou sombre (réglage du système par défaut, bascule persistée) et interface en
+  français ou en anglais à chaud, dates et nombres compris.
 - Au-dessus de 960 px, la fiche s'ouvre dans un volet à côté du fonds ; en dessous, chaque écran
-  prend toute la largeur. Thème clair ou sombre suivant le réglage du système.
+  prend toute la largeur.
 
 ## Documentation
 
@@ -79,34 +93,43 @@ chaque fusion.
   respecter, et le parcours complet d'une modification de fiche, du clic jusqu'au serveur.
 - [docs/ADR/001-gestion-etat-serveur.md](docs/ADR/001-gestion-etat-serveur.md) : pourquoi
   TanStack Query porte tout l'état serveur, et comment.
+- [docs/ADR/002-resolution-des-conflits.md](docs/ADR/002-resolution-des-conflits.md) : le
+  serveur gagne, le libraire garde sa saisie et arbitre.
+- [docs/ADR/003-routes-de-couverture.md](docs/ADR/003-routes-de-couverture.md) : pourquoi et
+  comment l'API a été étendue pour les couvertures.
+- [docs/PERFORMANCE.md](docs/PERFORMANCE.md) : mesure avant et après optimisation de la liste.
 - [DESIGN.md](DESIGN.md) : le système visuel (couleurs, typographie, composants, règles).
 - [PRODUCT.md](PRODUCT.md) : le produit, ses utilisateurs et son vocabulaire.
+- [IA.md](IA.md) : l'usage de l'assistant de génération de code sur une fonctionnalité.
 
 ## Structure du dépôt
 
 Les responsabilités de chaque dossier sont vérifiées par ESLint : un import qui traverse une
 frontière interdite fait échouer `npm run lint`.
 
-| Dossier         | Rôle                                                                     |
-| --------------- | ------------------------------------------------------------------------ |
-| `app/`          | Écrans et routage Expo Router. Aucune logique métier, aucun appel réseau |
-| `components/`   | Interface pure, sans dépendance à l'API ni au store                      |
-| `features/`     | Découpage par domaine : books, erreurs, query ; notes et auth à venir    |
-| `hooks/`        | Logique réutilisable                                                     |
-| `services/`     | Réseau, stockage, plateforme : seul endroit qui connaît l'API            |
-| `domain/`       | Types, schémas zod et règles métier, sans dépendance technique           |
-| `theme/`        | Tokens de design et thème                                                |
-| `docs/`         | Architecture et décisions d'architecture (ADR)                           |
-| `__tests__/`    | Tests Jest, rangés comme le code qu'ils couvrent                         |
-| `api-books-v2/` | API Express fournie                                                      |
+| Dossier         | Rôle                                                                             |
+| --------------- | -------------------------------------------------------------------------------- |
+| `app/`          | Écrans et routage Expo Router. Aucune logique métier, aucun appel réseau         |
+| `components/`   | Interface pure, sans dépendance à l'API ni au store                              |
+| `features/`     | Découpage par domaine : books, notes, enrichissement, preferences, i18n, erreurs |
+| `hooks/`        | Logique réutilisable                                                             |
+| `services/`     | Réseau, stockage, plateforme : seul endroit qui connaît l'API et les capacités   |
+| `domain/`       | Types, schémas zod et règles métier, sans dépendance technique                   |
+| `theme/`        | Tokens de design et thème                                                        |
+| `docs/`         | Architecture, décisions d'architecture (ADR), mesure de performance              |
+| `__tests__/`    | Tests Jest, rangés comme le code qu'ils couvrent                                 |
+| `api-books-v2/` | API Express fournie, étendue en 2.1 (couvertures)                                |
 
 ## Tests
 
 `npm test` lance les suites Jest sous le préréglage `jest-expo` :
 
-- le domaine pur : schémas d'ouvrage, règles de formulaire, rubriques, manipulation du cache ;
+- le domaine pur : schémas d'ouvrage et de note de lecture dans les deux langues, règles de
+  formulaire, rubriques et tri, manipulation du cache, horodatage ;
 - les composants avec Testing Library : ligne d'ouvrage, barre de rubriques, champ de recherche,
-  message d'état, interrupteur, question de confirmation, barre d'annulation ;
-- les hooks de données avec un `fetch` simulé : liste paginée, retouche optimiste, suppression
-  différée avec faux timers ;
-- les services : client HTTP avec transport injecté, délai, traduction des erreurs.
+  message d'état, interrupteur, étoiles, couverture, question de confirmation, barre
+  d'annulation, menu de tri ;
+- les hooks de données avec un `fetch` simulé : liste paginée, retouche optimiste, notes,
+  enrichissement OpenLibrary, suppression différée avec faux timers, préférences persistées ;
+- les services : client HTTP avec transport injecté, délai, traduction des erreurs, couvertures,
+  OpenLibrary, stockage.

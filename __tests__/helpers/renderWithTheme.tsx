@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react-native';
 import type { ReactElement } from 'react';
 
-import { ThemeProvider } from '@/theme/ThemeProvider';
+import { PreferencesProvider } from '@/features/preferences/PreferencesProvider';
 
 export function renderWithTheme(element: ReactElement) {
-  return render(<ThemeProvider>{element}</ThemeProvider>);
+  return render(<PreferencesProvider>{element}</PreferencesProvider>);
 }

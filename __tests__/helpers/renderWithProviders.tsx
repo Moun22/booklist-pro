@@ -3,7 +3,7 @@ import { render } from '@testing-library/react-native';
 import type { ReactElement, ReactNode } from 'react';
 
 import { SuppressionProvider } from '@/features/books/SuppressionProvider';
-import { ThemeProvider } from '@/theme/ThemeProvider';
+import { PreferencesProvider } from '@/features/preferences/PreferencesProvider';
 
 export function creerClientDeTest() {
   return new QueryClient({
@@ -18,11 +18,11 @@ export function creerClientDeTest() {
 export function creerWrapper(client: QueryClient) {
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
-      <ThemeProvider>
+      <PreferencesProvider>
         <QueryClientProvider client={client}>
           <SuppressionProvider>{children}</SuppressionProvider>
         </QueryClientProvider>
-      </ThemeProvider>
+      </PreferencesProvider>
     );
   };
 }

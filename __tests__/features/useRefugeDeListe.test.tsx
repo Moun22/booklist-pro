@@ -8,11 +8,12 @@ import type { Ouvrage } from '@/domain/ouvrage';
 import { DELAI_ANNULATION_MS, useSuppression } from '@/features/books/SuppressionProvider';
 import { useRefugeDeListe } from '@/features/books/useRefugeDeListe';
 import { versLigne } from '@/features/books/versLigne';
+import { fr } from '@/features/i18n/fr';
 import { motion } from '@/theme/tokens';
 
 const premier: Ouvrage = { ...ouvrageExemple, id: 'premier', titre: 'Premier' };
 const second: Ouvrage = { ...ouvrageExemple, id: 'second', titre: 'Second' };
-const lignes: LigneOuvrage[] = [premier, second].map(versLigne);
+const lignes: LigneOuvrage[] = [premier, second].map((ouvrage) => versLigne(ouvrage, fr.ligne));
 
 function rendre(scrollToIndex: () => void, enSortieId: string | null = null) {
   const liste = { current: { scrollToIndex } };

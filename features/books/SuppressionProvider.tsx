@@ -16,19 +16,11 @@ import { clesOuvrages } from './cles';
 import { AppText } from '@/components/AppText';
 import { UndoBar } from '@/components/UndoBar';
 import type { Ouvrage } from '@/domain/ouvrage';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { supprimerOuvrage } from '@/services/api/ouvrages';
 import { motion } from '@/theme/tokens';
 
 export const DELAI_ANNULATION_MS = 5000;
-
-const labels = {
-  supprime: 'supprimé',
-  conserve: 'conservé',
-  annuler: 'Annuler',
-  echec: "n'a pas pu être supprimé",
-  reessayer: 'Réessayer',
-  fermer: 'Fermer',
-};
 
 type Attente = {
   ouvrage: Ouvrage;
@@ -59,6 +51,7 @@ function citer(titre: string, suite: string) {
 
 export function SuppressionProvider({ children }: { children: ReactNode }) {
   const client = useQueryClient();
+  const t = useTraduction();
   const attenteRef = useRef<Attente | null>(null);
   const minuteries = useRef<ReturnType<typeof setTimeout>[]>([]);
   const [attente, setAttente] = useState<Attente | null>(null);
@@ -98,7 +91,7 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
     onError: (_erreur, cible) => {
       restaurer(cible);
       setEchec(cible);
-      setAnnonce(citer(cible.ouvrage.titre, labels.echec));
+      setAnnonce(citer(cible.ouvrage.titre, t.suppression.echec));
     },
   });
 
@@ -140,7 +133,7 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
       setRefugeId(null);
       focusDansBarre.current = false;
       voisineId.current = null;
-      setAnnonce(citer(ouvrage.titre, labels.supprime));
+      setAnnonce(citer(ouvrage.titre, t.suppression.supprime));
       minuteries.current = [
         setTimeout(() => definirAttente(retirer(nouvelle)), motion.quick),
         setTimeout(() => {
@@ -154,7 +147,7 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
         }, DELAI_ANNULATION_MS),
       ];
     },
-    [arreterMinuteries, definirAttente, executer, retirer],
+    [arreterMinuteries, definirAttente, executer, retirer, t],
   );
 
   const annuler = useCallback(() => {
@@ -166,8 +159,8 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
     restaurer(courante);
     definirAttente(null);
     setRefugeId(courante.ouvrage.id);
-    setAnnonce(citer(courante.ouvrage.titre, labels.conserve));
-  }, [arreterMinuteries, definirAttente, restaurer]);
+    setAnnonce(citer(courante.ouvrage.titre, t.suppression.conserve));
+  }, [arreterMinuteries, definirAttente, restaurer, t]);
 
   const oublierRefuge = useCallback(() => setRefugeId(null), []);
 
@@ -206,8 +199,8 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
         {attente !== null && (
           <UndoBar
             subject={attente.ouvrage.titre}
-            message={labels.supprime}
-            actionLabel={labels.annuler}
+            message={t.suppression.supprime}
+            actionLabel={t.suppression.annuler}
             onAction={annuler}
             onFocusChange={surFocusBarre}
             dureeMs={DELAI_ANNULATION_MS}
@@ -218,11 +211,11 @@ export function SuppressionProvider({ children }: { children: ReactNode }) {
           <UndoBar
             tone="danger"
             subject={echec.ouvrage.titre}
-            message={labels.echec}
-            actionLabel={labels.reessayer}
+            message={t.suppression.echec}
+            actionLabel={t.suppression.reessayer}
             onAction={() => programmer(echec.ouvrage)}
             onFocusChange={surFocusBarre}
-            secondaryLabel={labels.fermer}
+            secondaryLabel={t.suppression.fermer}
             onSecondary={fermerEchec}
           />
         )}

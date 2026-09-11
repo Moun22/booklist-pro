@@ -9,29 +9,9 @@ import { BookRow, type LigneOuvrage } from '@/components/BookRow';
 import { ListSkeleton } from '@/components/ListSkeleton';
 import { StateMessage } from '@/components/StateMessage';
 import { messagePourErreur } from '@/features/erreurs/messages';
+import type { Dictionnaire } from '@/features/i18n/fr';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { layout } from '@/theme/tokens';
-
-const labels = {
-  chargement: 'Chargement du fonds',
-  pageSuivante: 'Chargement de la page suivante',
-  reessayer: 'Réessayer',
-  effacerRecherche: 'Effacer la recherche',
-  ajouter: 'Ajouter un ouvrage',
-  vide: {
-    tout: {
-      titre: 'Le fonds est vide',
-      detail: 'Ajoutez le premier ouvrage pour commencer le cahier.',
-    },
-    lus: { titre: 'Aucun ouvrage lu', detail: 'Marquez un ouvrage comme lu depuis sa fiche.' },
-    nonLus: { titre: 'Tout le fonds est lu', detail: 'Rien à lire pour le moment.' },
-    coupsDeCoeur: {
-      titre: 'Aucun coup de coeur',
-      detail: 'Le coeur sur une fiche signale un ouvrage à recommander.',
-    },
-  },
-  aucunResultat: (recherche: string) => `Aucun ouvrage pour « ${recherche} »`,
-  aucunResultatDetail: "Vérifiez l'orthographe, ou cherchez par auteur.",
-};
 
 const LIGNES_SQUELETTE = 8;
 const LIGNES_PAGE_SUIVANTE = 2;
@@ -56,7 +36,11 @@ export const FondsListe = memo(function FondsListe({
   onEffacerRecherche,
   onAjouter,
 }: Props) {
-  const lignes = useMemo(() => fonds.ouvrages.map(versLigne), [fonds.ouvrages]);
+  const t = useTraduction();
+  const lignes = useMemo(
+    () => fonds.ouvrages.map((ouvrage) => versLigne(ouvrage, t.ligne)),
+    [fonds.ouvrages, t],
+  );
   const { enSortieId } = fonds;
   const liste = useRef<FlatList<LigneOuvrage>>(null);
   const { focusId, surFocusPris } = useRefugeDeListe(lignes, enSortieId, liste);
@@ -80,18 +64,18 @@ export const FondsListe = memo(function FondsListe({
   );
 
   if (fonds.chargementInitial) {
-    return <ListSkeleton rows={LIGNES_SQUELETTE} label={labels.chargement} />;
+    return <ListSkeleton rows={LIGNES_SQUELETTE} label={t.liste.chargement} />;
   }
 
   if (fonds.erreur !== null && lignes.length === 0) {
-    const message = messagePourErreur(fonds.erreur);
+    const message = messagePourErreur(fonds.erreur, t.erreurs);
     return (
       <StateMessage
         icon="alert-circle"
         tone="danger"
         title={message.titre}
         description={message.detail}
-        action={{ label: labels.reessayer, icon: 'refresh-cw', onPress: fonds.reessayer }}
+        action={{ label: t.liste.reessayer, icon: 'refresh-cw', onPress: fonds.reessayer }}
       />
     );
   }
@@ -110,6 +94,7 @@ export const FondsListe = memo(function FondsListe({
       keyboardShouldPersistTaps="handled"
       ListEmptyComponent={
         <EtatVide
+          t={t.liste}
           rubrique={rubrique}
           recherche={recherche}
           onEffacerRecherche={onEffacerRecherche}
@@ -118,39 +103,36 @@ export const FondsListe = memo(function FondsListe({
       }
       ListFooterComponent={
         fonds.chargementPageSuivante ? (
-          <ListSkeleton rows={LIGNES_PAGE_SUIVANTE} label={labels.pageSuivante} />
+          <ListSkeleton rows={LIGNES_PAGE_SUIVANTE} label={t.liste.pageSuivante} />
         ) : null
       }
     />
   );
 });
 
-function EtatVide({
-  rubrique,
-  recherche,
-  onEffacerRecherche,
-  onAjouter,
-}: Pick<Props, 'rubrique' | 'recherche' | 'onEffacerRecherche' | 'onAjouter'>) {
+type EtatVideProps = Pick<Props, 'rubrique' | 'recherche' | 'onEffacerRecherche' | 'onAjouter'> & {
+  t: Dictionnaire['liste'];
+};
+
+function EtatVide({ t, rubrique, recherche, onEffacerRecherche, onAjouter }: EtatVideProps) {
   if (recherche.trim().length > 0) {
     return (
       <StateMessage
         icon="search"
-        title={labels.aucunResultat(recherche.trim())}
-        description={labels.aucunResultatDetail}
-        action={{ label: labels.effacerRecherche, icon: 'x', onPress: onEffacerRecherche }}
+        title={t.aucunResultat(recherche.trim())}
+        description={t.aucunResultatDetail}
+        action={{ label: t.effacerRecherche, icon: 'x', onPress: onEffacerRecherche }}
       />
     );
   }
-  const message = labels.vide[rubrique];
+  const message = t.vide[rubrique];
   return (
     <StateMessage
       icon="book-open"
       title={message.titre}
       description={message.detail}
       action={
-        rubrique === 'tout'
-          ? { label: labels.ajouter, icon: 'plus', onPress: onAjouter }
-          : undefined
+        rubrique === 'tout' ? { label: t.ajouter, icon: 'plus', onPress: onAjouter } : undefined
       }
     />
   );

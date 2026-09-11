@@ -9,23 +9,18 @@ import { versSaisie, versValide } from '@/features/books/formulaire';
 import { useRemplacerOuvrage } from '@/features/books/useEnregistrerOuvrage';
 import { useOuvrage } from '@/features/books/useOuvrage';
 import { messagePourErreur } from '@/features/erreurs/messages';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { useEscape } from '@/hooks/useEscape';
 import { useModeOuvrage } from '@/hooks/useModeOuvrage';
 import { useNavigationOuvrages } from '@/hooks/useNavigationOuvrages';
 import { space } from '@/theme/tokens';
-
-const labels = {
-  titre: "Modifier l'ouvrage",
-  introuvable: 'Ouvrage introuvable',
-  hint: "L'adresse ne désigne aucun ouvrage du fonds.",
-  reessayer: 'Réessayer',
-};
 
 export default function ModifierOuvrageScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const ouvrageId = typeof id === 'string' ? id : '';
   const mode = useModeOuvrage();
   const navigation = useNavigationOuvrages();
+  const t = useTraduction();
   const fiche = useOuvrage(ouvrageId);
   const remplacer = useRemplacerOuvrage(ouvrageId);
   const ouvrage = fiche.ouvrage;
@@ -33,7 +28,11 @@ export default function ModifierOuvrageScreen() {
 
   if (ouvrageId.length === 0) {
     return (
-      <StateMessage icon="alert-circle" title={labels.introuvable} description={labels.hint} />
+      <StateMessage
+        icon="alert-circle"
+        title={t.ecran.introuvable}
+        description={t.ecran.introuvableDetail}
+      />
     );
   }
 
@@ -42,7 +41,7 @@ export default function ModifierOuvrageScreen() {
       {ouvrage !== undefined ? (
         <ScrollView contentContainerStyle={styles.contenu} keyboardShouldPersistTaps="handled">
           <AppText variant="title" style={styles.titre}>
-            {labels.titre}
+            {t.ecran.modifierOuvrage}
           </AppText>
           <FormulaireOuvrage
             valeursInitiales={versSaisie(ouvrage)}
@@ -60,9 +59,9 @@ export default function ModifierOuvrageScreen() {
         <StateMessage
           icon="alert-circle"
           tone="danger"
-          title={messagePourErreur(fiche.erreur).titre}
-          description={messagePourErreur(fiche.erreur).detail}
-          action={{ label: labels.reessayer, icon: 'refresh-cw', onPress: fiche.reessayer }}
+          title={messagePourErreur(fiche.erreur, t.erreurs).titre}
+          description={messagePourErreur(fiche.erreur, t.erreurs).detail}
+          action={{ label: t.fiche.reessayer, icon: 'refresh-cw', onPress: fiche.reessayer }}
         />
       ) : null}
     </CadreOuvrage>

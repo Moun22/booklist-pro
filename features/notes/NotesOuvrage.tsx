@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useAjouterNote } from './useAjouterNote';
@@ -12,31 +12,11 @@ import { TextAreaField } from '@/components/TextAreaField';
 import { TextButton } from '@/components/TextButton';
 import { ErreurValidation } from '@/domain/erreurs';
 import { formaterHorodatage } from '@/domain/horodatage';
-import { contenuNoteSchema, LIMITES_NOTE_DE_LECTURE } from '@/domain/noteDeLecture';
+import { creerContenuNoteSchema, LIMITES_NOTE_DE_LECTURE } from '@/domain/noteDeLecture';
 import { messagePourErreur } from '@/features/erreurs/messages';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { useTheme } from '@/theme/ThemeProvider';
 import { hairline, layout, space } from '@/theme/tokens';
-
-const labels = {
-  section: 'Notes de lecture',
-  compte: (total: number) => (total === 1 ? '1 note' : `${total} notes`),
-  nouvelle: 'Nouvelle note',
-  indicatif: 'À qui le conseiller, et pourquoi',
-  ajouter: 'Ajouter la note',
-  ajoutEnCours: 'Ajout…',
-  ajoutee: 'Note ajoutée',
-  chargement: 'Chargement des notes',
-  reessayer: 'Réessayer',
-  vide: {
-    titre: 'Aucune note de lecture',
-    detail: 'La première note dit à qui conseiller cet ouvrage.',
-  },
-  supprimer: (horodatage: string) => `Supprimer la note du ${horodatage}`,
-  question: 'Supprimer cette note ?',
-  garder: 'Garder',
-  confirmer: 'Supprimer',
-  suppressionAnnulee: 'Suppression annulée :',
-};
 
 const LIGNES_SQUELETTE = 2;
 
@@ -49,6 +29,8 @@ type Props = {
 
 export function NotesOuvrage({ livreId }: Props) {
   const { colors } = useTheme();
+  const t = useTraduction();
+  const contenuSchema = useMemo(() => creerContenuNoteSchema(t.validation), [t]);
   const lecture = useNotesDeLecture(livreId);
   const ajout = useAjouterNote(livreId);
   const suppression = useSupprimerNote(livreId);
@@ -71,7 +53,7 @@ export function NotesOuvrage({ livreId }: Props) {
   };
 
   const ajouter = () => {
-    const lu = contenuNoteSchema.safeParse(brouillon);
+    const lu = contenuSchema.safeParse(brouillon);
     if (!lu.success) {
       setErreurSaisie(lu.error.issues[0]?.message ?? null);
       return;
@@ -83,7 +65,7 @@ export function NotesOuvrage({ livreId }: Props) {
       },
       onError: (erreur) => {
         const parChamp = erreur instanceof ErreurValidation ? erreur.champs.contenu : undefined;
-        setErreurSaisie(parChamp ?? messagePourErreur(erreur).titre);
+        setErreurSaisie(parChamp ?? messagePourErreur(erreur, t.erreurs).titre);
       },
     });
   };
@@ -91,16 +73,16 @@ export function NotesOuvrage({ livreId }: Props) {
   return (
     <View style={styles.section}>
       <View style={[styles.entete, { borderBottomColor: colors.rule }]}>
-        <AppText variant="bodyStrong">{labels.section}</AppText>
+        <AppText variant="bodyStrong">{t.notes.section}</AppText>
         {!lecture.chargement && lecture.erreur === null && (
           <AppText variant="figure" tone="secondary">
-            {labels.compte(lecture.notes.length)}
+            {t.notes.compte(lecture.notes.length)}
           </AppText>
         )}
       </View>
       <TextAreaField
-        label={labels.nouvelle}
-        placeholder={labels.indicatif}
+        label={t.notes.nouvelle}
+        placeholder={t.notes.indicatif}
         value={brouillon}
         onChangeText={saisir}
         maxLength={LIMITES_NOTE_DE_LECTURE.contenuMax}
@@ -109,11 +91,11 @@ export function NotesOuvrage({ livreId }: Props) {
       <View style={styles.actions}>
         {ajoutee && (
           <AppText variant="small" tone="secondary" role="status">
-            {labels.ajoutee}
+            {t.notes.ajoutee}
           </AppText>
         )}
         <TextButton
-          label={ajout.isPending ? labels.ajoutEnCours : labels.ajouter}
+          label={ajout.isPending ? t.notes.ajoutEnCours : t.notes.ajouter}
           icon="plus"
           onPress={ajouter}
           disabled={ajout.isPending}
@@ -122,34 +104,34 @@ export function NotesOuvrage({ livreId }: Props) {
         />
       </View>
       {lecture.chargement ? (
-        <SqueletteNotes />
+        <SqueletteNotes label={t.notes.chargement} />
       ) : lecture.erreur !== null ? (
         <StateMessage
           icon="alert-circle"
           tone="danger"
-          title={messagePourErreur(lecture.erreur).titre}
-          description={messagePourErreur(lecture.erreur).detail}
-          action={{ label: labels.reessayer, icon: 'refresh-cw', onPress: lecture.reessayer }}
+          title={messagePourErreur(lecture.erreur, t.erreurs).titre}
+          description={messagePourErreur(lecture.erreur, t.erreurs).detail}
+          action={{ label: t.notes.reessayer, icon: 'refresh-cw', onPress: lecture.reessayer }}
         />
       ) : lecture.notes.length === 0 ? (
-        <StateMessage icon="edit-3" title={labels.vide.titre} description={labels.vide.detail} />
+        <StateMessage icon="edit-3" title={t.notes.vide.titre} description={t.notes.vide.detail} />
       ) : (
         <View
           role="list"
-          aria-label={labels.section}
+          aria-label={t.notes.section}
           style={[styles.liste, { borderTopColor: colors.rule }]}
         >
           {lecture.notes.map((note, index) => {
-            const horodatage = formaterHorodatage(note.createdAt);
+            const horodatage = formaterHorodatage(note.createdAt, t.locale);
             return (
               <NoteRow
                 key={note.id}
                 timestamp={horodatage}
                 content={note.contenu}
-                deleteLabel={labels.supprimer(horodatage)}
-                question={labels.question}
-                confirmLabel={labels.confirmer}
-                cancelLabel={labels.garder}
+                deleteLabel={t.notes.supprimer(horodatage)}
+                question={t.notes.question}
+                confirmLabel={t.notes.confirmer}
+                cancelLabel={t.notes.garder}
                 onDelete={() => supprimer(index)}
                 autoFocus={refuge !== null && 'note' in refuge && refuge.note === note.id}
                 onAutoFocus={oublierRefuge}
@@ -160,16 +142,16 @@ export function NotesOuvrage({ livreId }: Props) {
       )}
       {suppression.isError && (
         <AppText variant="small" tone="danger" role="alert" style={styles.avertissement}>
-          {labels.suppressionAnnulee} {messagePourErreur(suppression.error).titre}
+          {t.notes.suppressionAnnulee} {messagePourErreur(suppression.error, t.erreurs).titre}
         </AppText>
       )}
     </View>
   );
 }
 
-function SqueletteNotes() {
+function SqueletteNotes({ label }: { label: string }) {
   return (
-    <View aria-busy aria-label={labels.chargement} role="progressbar" style={styles.squelette}>
+    <View aria-busy aria-label={label} role="progressbar" style={styles.squelette}>
       {Array.from({ length: LIGNES_SQUELETTE }, (_, index) => (
         <View key={index} style={styles.ligneSquelette}>
           <Skeleton width={120} height={10} />

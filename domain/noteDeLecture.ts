@@ -11,11 +11,15 @@ export const noteDeLectureSchema = z.object({
 
 export type NoteDeLecture = z.infer<typeof noteDeLectureSchema>;
 
-export const contenuNoteSchema = z
-  .string()
-  .trim()
-  .min(1, 'Écrivez la note avant de l’ajouter')
-  .max(
-    LIMITES_NOTE_DE_LECTURE.contenuMax,
-    `${LIMITES_NOTE_DE_LECTURE.contenuMax} caractères maximum`,
-  );
+export type MessagesNoteDeLecture = {
+  noteDeLectureVide: string;
+  maxCaracteres: (max: number) => string;
+};
+
+export function creerContenuNoteSchema(m: MessagesNoteDeLecture) {
+  return z
+    .string()
+    .trim()
+    .min(1, m.noteDeLectureVide)
+    .max(LIMITES_NOTE_DE_LECTURE.contenuMax, m.maxCaracteres(LIMITES_NOTE_DE_LECTURE.contenuMax));
+}

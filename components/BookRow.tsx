@@ -2,7 +2,9 @@ import { memo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from './AppText';
+import { CoverImage } from './CoverImage';
 import { Icon } from './Icon';
+import type { SourceCouverture } from '@/domain/couverture';
 import { useAutoFocus } from '@/hooks/useAutoFocus';
 import { useTheme } from '@/theme/ThemeProvider';
 import { hairline, iconSize, layout, space } from '@/theme/tokens';
@@ -15,6 +17,8 @@ export type LigneOuvrage = {
   note: string | null;
   lu: boolean;
   coupDeCoeur: boolean;
+  couverture: SourceCouverture;
+  couvertureLabel: string;
   description: string;
 };
 
@@ -26,6 +30,8 @@ type Props = {
   onAutoFocus?: () => void;
   onPress: (id: string) => void;
 };
+
+const VIGNETTE = { width: 28, height: 40 };
 
 export const BookRow = memo(function BookRow({
   ligne,
@@ -63,6 +69,12 @@ export const BookRow = memo(function BookRow({
           {ligne.coupDeCoeur && <Icon name="heart" tone="signal" />}
         </View>
       </View>
+      <CoverImage
+        source={ligne.couverture}
+        label={ligne.couvertureLabel}
+        width={VIGNETTE.width}
+        height={VIGNETTE.height}
+      />
       <View style={styles.texte}>
         <AppText variant="bodyStrong" numberOfLines={1}>
           {ligne.titre}

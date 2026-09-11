@@ -3,6 +3,8 @@ import { Platform, useColorScheme } from 'react-native';
 
 import { palette, type ColorScheme, type Colors } from './tokens';
 
+export type PreferenceTheme = 'systeme' | 'clair' | 'sombre';
+
 export type Theme = {
   readonly scheme: ColorScheme;
   readonly colors: Colors;
@@ -10,13 +12,24 @@ export type Theme = {
 
 const ThemeContext = createContext<Theme | null>(null);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const scheme: ColorScheme = useColorScheme() === 'dark' ? 'dark' : 'light';
+type Props = {
+  preference?: PreferenceTheme;
+  children: ReactNode;
+};
+
+export function ThemeProvider({ preference = 'systeme', children }: Props) {
+  const systeme = useColorScheme();
+  const scheme: ColorScheme =
+    preference === 'systeme' ? (systeme === 'dark' ? 'dark' : 'light') : schemeDe(preference);
   const theme = useMemo<Theme>(() => ({ scheme, colors: palette[scheme] }), [scheme]);
 
   useDocumentTheme(theme);
 
   return <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>;
+}
+
+function schemeDe(preference: 'clair' | 'sombre'): ColorScheme {
+  return preference === 'sombre' ? 'dark' : 'light';
 }
 
 export function useTheme(): Theme {

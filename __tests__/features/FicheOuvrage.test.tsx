@@ -9,13 +9,19 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-// The fiche loads the ouvrage and its notes side by side: answers are routed by path.
+// The fiche loads the ouvrage, its notes and the OpenLibrary editions side by side:
+// answers are routed by URL.
 function transportDeFiche(reponseOuvrage: () => Response) {
-  return jest
-    .spyOn(globalThis, 'fetch')
-    .mockImplementation((entree) =>
-      Promise.resolve(String(entree).endsWith('/notes') ? reponseJson([]) : reponseOuvrage()),
-    );
+  return jest.spyOn(globalThis, 'fetch').mockImplementation((entree) => {
+    const url = String(entree);
+    if (url.endsWith('/notes')) {
+      return Promise.resolve(reponseJson([]));
+    }
+    if (url.includes('openlibrary.org')) {
+      return Promise.resolve(reponseJson({ numFound: 0, docs: [] }));
+    }
+    return Promise.resolve(reponseOuvrage());
+  });
 }
 
 describe('FicheOuvrage', () => {

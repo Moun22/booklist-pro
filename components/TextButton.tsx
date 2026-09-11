@@ -15,6 +15,8 @@ type Props = {
   onAutoFocus?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  // When the visible label is a code (« EN »), the spoken label says what pressing does.
+  accessibilityLabel?: string;
 };
 
 export function TextButton({
@@ -27,6 +29,7 @@ export function TextButton({
   onAutoFocus,
   onFocus,
   onBlur,
+  accessibilityLabel,
 }: Props) {
   const bouton = useAutoFocus<View>(autoFocus, onAutoFocus);
 
@@ -34,7 +37,7 @@ export function TextButton({
     <Pressable
       ref={bouton}
       role="button"
-      aria-label={label}
+      aria-label={accessibilityLabel ?? label}
       aria-disabled={disabled}
       disabled={disabled}
       onPress={onPress}

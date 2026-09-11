@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
 
@@ -11,30 +11,13 @@ import { TextButton } from '@/components/TextButton';
 import { ToggleRow } from '@/components/ToggleRow';
 import { ErreurConflit } from '@/domain/erreurs';
 import {
-  ouvrageFormulaireSchema,
+  creerOuvrageFormulaireSchema,
   type Ouvrage,
   type OuvrageFormulaire,
   type SaisieFormulaire,
 } from '@/domain/ouvrage';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { space } from '@/theme/tokens';
-
-const labels = {
-  titre: 'Titre',
-  auteur: 'Auteur',
-  editeur: 'Éditeur',
-  annee: 'Année',
-  titreIndicatif: "Titre de l'ouvrage",
-  auteurIndicatif: 'Prénom Nom',
-  editeurIndicatif: 'Facultatif',
-  anneeIndicatif: '1965',
-  lecture: 'Lecture',
-  lu: 'Lu',
-  nonLu: 'Non lu',
-  annuler: 'Annuler',
-  enregistrer: 'Enregistrer',
-  enregistrement: 'Enregistrement…',
-  reprendreServeur: 'Reprendre la version du serveur',
-};
 
 type Props = {
   valeursInitiales?: SaisieFormulaire;
@@ -47,12 +30,14 @@ export function FormulaireOuvrage({
   onSoumettre,
   onAnnuler,
 }: Props) {
+  const t = useTraduction();
+  const schema = useMemo(() => creerOuvrageFormulaireSchema(t.validation), [t]);
   const { control, handleSubmit, setError, reset, formState } = useForm<
     SaisieFormulaire,
     unknown,
     OuvrageFormulaire
   >({
-    resolver: zodResolver(ouvrageFormulaireSchema),
+    resolver: zodResolver(schema),
     defaultValues: valeursInitiales,
     mode: 'onBlur',
   });
@@ -68,7 +53,7 @@ export function FormulaireOuvrage({
       if (erreur instanceof ErreurConflit) {
         setConflit(erreur.serveur);
       }
-      const reparties = repartirErreur(erreur);
+      const reparties = repartirErreur(erreur, t.erreurs);
       for (const champ of CHAMPS_FORMULAIRE) {
         const message = reparties.parChamp[champ];
         if (message !== undefined) {
@@ -94,8 +79,8 @@ export function FormulaireOuvrage({
         name="titre"
         render={({ field, fieldState }) => (
           <FormField
-            label={labels.titre}
-            placeholder={labels.titreIndicatif}
+            label={t.formulaire.titre}
+            placeholder={t.formulaire.titreIndicatif}
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -110,8 +95,8 @@ export function FormulaireOuvrage({
         name="auteur"
         render={({ field, fieldState }) => (
           <FormField
-            label={labels.auteur}
-            placeholder={labels.auteurIndicatif}
+            label={t.formulaire.auteur}
+            placeholder={t.formulaire.auteurIndicatif}
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -125,8 +110,8 @@ export function FormulaireOuvrage({
         name="editeur"
         render={({ field, fieldState }) => (
           <FormField
-            label={labels.editeur}
-            placeholder={labels.editeurIndicatif}
+            label={t.formulaire.editeur}
+            placeholder={t.formulaire.editeurIndicatif}
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -140,8 +125,8 @@ export function FormulaireOuvrage({
         name="annee"
         render={({ field, fieldState }) => (
           <FormField
-            label={labels.annee}
-            placeholder={labels.anneeIndicatif}
+            label={t.formulaire.annee}
+            placeholder={t.formulaire.anneeIndicatif}
             value={field.value}
             onChangeText={field.onChange}
             onBlur={field.onBlur}
@@ -155,8 +140,8 @@ export function FormulaireOuvrage({
         name="lu"
         render={({ field }) => (
           <ToggleRow
-            label={labels.lecture}
-            valueLabel={field.value ? labels.lu : labels.nonLu}
+            label={t.formulaire.lecture}
+            valueLabel={field.value ? t.formulaire.lu : t.formulaire.nonLu}
             checked={field.value}
             onToggle={() => field.onChange(!field.value)}
           />
@@ -170,7 +155,7 @@ export function FormulaireOuvrage({
       {conflit !== null && (
         <View style={styles.reprise}>
           <TextButton
-            label={labels.reprendreServeur}
+            label={t.formulaire.reprendreServeur}
             icon="refresh-cw"
             tone="ink"
             onPress={reprendreServeur}
@@ -178,9 +163,9 @@ export function FormulaireOuvrage({
         </View>
       )}
       <View style={styles.actions}>
-        <TextButton label={labels.annuler} tone="ink" onPress={onAnnuler} />
+        <TextButton label={t.formulaire.annuler} tone="ink" onPress={onAnnuler} />
         <TextButton
-          label={formState.isSubmitting ? labels.enregistrement : labels.enregistrer}
+          label={formState.isSubmitting ? t.formulaire.enregistrement : t.formulaire.enregistrer}
           icon="check"
           onPress={() => {
             void soumettre();
