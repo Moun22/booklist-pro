@@ -23,6 +23,7 @@ export default function OuvrageScreen() {
 
   return (
     <FicheOuvrage
+      key={id}
       id={id}
       mode={mode}
       onFermer={navigation.retour}
