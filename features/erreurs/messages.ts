@@ -20,6 +20,9 @@ export function messagePourErreur(erreur: unknown, m: MessagesErreurs): MessageE
     case 'conflit':
       return m.conflit;
     case 'auth':
+      if (erreur.code === 'identifiants_invalides') {
+        return m.identifiantsInvalides;
+      }
       return erreur.statut === 403 ? m.nonAutorise : m.sessionExpiree;
     case 'introuvable':
       return m.introuvable;

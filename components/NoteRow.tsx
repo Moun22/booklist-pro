@@ -14,7 +14,8 @@ type Props = {
   question: string;
   confirmLabel: string;
   cancelLabel: string;
-  onDelete: () => void;
+  // Absent for a read-only account: the note then has no action at all.
+  onDelete?: () => void;
   autoFocus?: boolean;
   onAutoFocus?: () => void;
 };
@@ -38,7 +39,7 @@ export function NoteRow({
 
   return (
     <View role="listitem" style={[styles.note, { borderBottomColor: colors.rule }]}>
-      {etape === 'question' ? (
+      {etape === 'question' && onDelete !== undefined ? (
         <View style={styles.questionBloc}>
           <ConfirmInline
             message={question}
@@ -53,13 +54,15 @@ export function NoteRow({
           <AppText variant="figure" tone="secondary">
             {timestamp}
           </AppText>
-          <IconButton
-            icon="trash-2"
-            label={deleteLabel}
-            autoFocus={autoFocus || etape === 'gardee'}
-            onAutoFocus={onAutoFocus}
-            onPress={() => setEtape('question')}
-          />
+          {onDelete !== undefined && (
+            <IconButton
+              icon="trash-2"
+              label={deleteLabel}
+              autoFocus={autoFocus || etape === 'gardee'}
+              onAutoFocus={onAutoFocus}
+              onPress={() => setEtape('question')}
+            />
+          )}
         </View>
       )}
       <AppText variant="body" style={styles.contenu}>

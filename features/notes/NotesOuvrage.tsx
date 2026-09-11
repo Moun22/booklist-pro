@@ -25,9 +25,10 @@ type Refuge = { note: string } | { ajout: true } | null;
 
 type Props = {
   livreId: string;
+  lectureSeule?: boolean;
 };
 
-export function NotesOuvrage({ livreId }: Props) {
+export function NotesOuvrage({ livreId, lectureSeule = false }: Props) {
   const { colors } = useTheme();
   const t = useTraduction();
   const contenuSchema = useMemo(() => creerContenuNoteSchema(t.validation), [t]);
@@ -80,29 +81,33 @@ export function NotesOuvrage({ livreId }: Props) {
           </AppText>
         )}
       </View>
-      <TextAreaField
-        label={t.notes.nouvelle}
-        placeholder={t.notes.indicatif}
-        value={brouillon}
-        onChangeText={saisir}
-        maxLength={LIMITES_NOTE_DE_LECTURE.contenuMax}
-        error={erreurSaisie ?? undefined}
-      />
-      <View style={styles.actions}>
-        {ajoutee && (
-          <AppText variant="small" tone="secondary" role="status">
-            {t.notes.ajoutee}
-          </AppText>
-        )}
-        <TextButton
-          label={ajout.isPending ? t.notes.ajoutEnCours : t.notes.ajouter}
-          icon="plus"
-          onPress={ajouter}
-          disabled={ajout.isPending}
-          autoFocus={refuge !== null && 'ajout' in refuge}
-          onAutoFocus={oublierRefuge}
-        />
-      </View>
+      {!lectureSeule && (
+        <>
+          <TextAreaField
+            label={t.notes.nouvelle}
+            placeholder={t.notes.indicatif}
+            value={brouillon}
+            onChangeText={saisir}
+            maxLength={LIMITES_NOTE_DE_LECTURE.contenuMax}
+            error={erreurSaisie ?? undefined}
+          />
+          <View style={styles.actions}>
+            {ajoutee && (
+              <AppText variant="small" tone="secondary" role="status">
+                {t.notes.ajoutee}
+              </AppText>
+            )}
+            <TextButton
+              label={ajout.isPending ? t.notes.ajoutEnCours : t.notes.ajouter}
+              icon="plus"
+              onPress={ajouter}
+              disabled={ajout.isPending}
+              autoFocus={refuge !== null && 'ajout' in refuge}
+              onAutoFocus={oublierRefuge}
+            />
+          </View>
+        </>
+      )}
       {lecture.chargement ? (
         <SqueletteNotes label={t.notes.chargement} />
       ) : lecture.erreur !== null ? (
@@ -114,7 +119,12 @@ export function NotesOuvrage({ livreId }: Props) {
           action={{ label: t.notes.reessayer, icon: 'refresh-cw', onPress: lecture.reessayer }}
         />
       ) : lecture.notes.length === 0 ? (
-        <StateMessage icon="edit-3" title={t.notes.vide.titre} description={t.notes.vide.detail} />
+        // A read-only account is never invited to write: its empty state only states the fact.
+        <StateMessage
+          icon={lectureSeule ? 'book-open' : 'edit-3'}
+          title={lectureSeule ? t.notes.videLecture.titre : t.notes.vide.titre}
+          description={lectureSeule ? t.notes.videLecture.detail : t.notes.vide.detail}
+        />
       ) : (
         <View
           role="list"
@@ -132,7 +142,7 @@ export function NotesOuvrage({ livreId }: Props) {
                 question={t.notes.question}
                 confirmLabel={t.notes.confirmer}
                 cancelLabel={t.notes.garder}
-                onDelete={() => supprimer(index)}
+                onDelete={lectureSeule ? undefined : () => supprimer(index)}
                 autoFocus={refuge !== null && 'note' in refuge && refuge.note === note.id}
                 onAutoFocus={oublierRefuge}
               />

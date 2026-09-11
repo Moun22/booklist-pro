@@ -9,6 +9,8 @@ export const fr = {
     add: 'Ajouter un ouvrage',
     addShort: 'Ajouter',
     online: 'En ligne',
+    offline: 'Serveur injoignable',
+    verification: 'Vérification',
     ouvrages: 'ouvrages',
     resultats: 'résultats',
     actualisation: 'actualisation',
@@ -51,6 +53,22 @@ export const fr = {
     couverture: (titre: string) => `Couverture de ${titre}`,
   },
   cadre: { retour: 'Fonds', fermer: 'Fermer' },
+  connexion: {
+    titre: 'Connexion',
+    explication: 'Le fonds est réservé aux libraires du réseau.',
+    email: 'Email',
+    motDePasse: 'Mot de passe',
+    emailIndicatif: 'prenom@boutique.fr',
+    motDePasseIndicatif: 'Votre mot de passe',
+    valider: 'Se connecter',
+    enCours: 'Connexion…',
+    emailObligatoire: "L'email est obligatoire",
+    motDePasseObligatoire: 'Le mot de passe est obligatoire',
+  },
+  session: {
+    deconnexion: (email: string) => `Se déconnecter (${email})`,
+    lectureSeule: 'Lecture seule',
+  },
   ecran: {
     aucunOuvert: 'Aucun ouvrage ouvert',
     aucunOuvertDetail:
@@ -135,6 +153,10 @@ export const fr = {
       titre: 'Aucune note de lecture',
       detail: 'La première note dit à qui conseiller cet ouvrage.',
     },
+    videLecture: {
+      titre: 'Aucune note de lecture',
+      detail: "Aucun libraire n'a encore conseillé cet ouvrage.",
+    },
     supprimer: (horodatage: string) => `Supprimer la note du ${horodatage}`,
     question: 'Supprimer cette note ?',
     garder: 'Garder',
@@ -161,6 +183,10 @@ export const fr = {
     },
     nonAutorise: { titre: 'Action non autorisée', detail: 'Votre compte est en lecture seule.' },
     sessionExpiree: { titre: 'Session expirée', detail: 'Reconnectez-vous pour continuer.' },
+    identifiantsInvalides: {
+      titre: 'Email ou mot de passe incorrect',
+      detail: 'Vérifiez la saisie, puis réessayez.',
+    },
     introuvable: {
       titre: 'Ouvrage introuvable',
       detail: 'Il a peut-être été supprimé depuis un autre poste.',

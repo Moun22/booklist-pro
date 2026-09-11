@@ -3,6 +3,7 @@ import '@/theme/global.css';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import { SessionProvider } from '@/features/auth/SessionProvider';
 import { SuppressionProvider } from '@/features/books/SuppressionProvider';
 import { PreferencesProvider } from '@/features/preferences/PreferencesProvider';
 import { QueryProvider } from '@/features/query/QueryProvider';
@@ -12,9 +13,11 @@ export default function RootLayout() {
   return (
     <PreferencesProvider>
       <QueryProvider>
-        <SuppressionProvider>
-          <ThemedStack />
-        </SuppressionProvider>
+        <SessionProvider sonderServeur>
+          <SuppressionProvider>
+            <ThemedStack />
+          </SuppressionProvider>
+        </SessionProvider>
       </QueryProvider>
     </PreferencesProvider>
   );

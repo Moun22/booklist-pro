@@ -14,6 +14,7 @@ import { StarRow } from '@/components/StarRow';
 import { TextButton } from '@/components/TextButton';
 import { ToggleRow } from '@/components/ToggleRow';
 import { LIMITES_OUVRAGE, type Ouvrage, type OuvrageRetouche } from '@/domain/ouvrage';
+import { useSession } from '@/features/auth/SessionProvider';
 import {
   useEnrichissement,
   type Enrichissement,
@@ -40,6 +41,7 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
   const fiche = useOuvrage(id);
   const retouche = useRetoucheOuvrage(id);
   const suppression = useSuppression();
+  const { peutEcrire } = useSession();
   const [etape, setEtape] = useState<EtapeSuppression>('repos');
   const ouvrage = fiche.ouvrage;
   const editions = useEnrichissement(ouvrage?.titre ?? '');
@@ -65,42 +67,57 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
     <CadreOuvrage mode={mode} onFermer={onFermer}>
       {ouvrage !== undefined ? (
         <ScrollView contentContainerStyle={styles.contenu}>
-          <CouvertureOuvrage ouvrage={ouvrage} />
+          <CouvertureOuvrage ouvrage={ouvrage} lectureSeule={!peutEcrire} />
           <FieldRow
             label={t.fiche.editeur}
             value={ouvrage.editeur.length > 0 ? ouvrage.editeur : t.fiche.sansEditeur}
             muted={ouvrage.editeur.length === 0}
           />
           <FieldRow label={t.fiche.annee} value={String(ouvrage.annee)} />
-          <StarRow
-            label={t.fiche.note}
-            value={ouvrage.note}
-            max={LIMITES_OUVRAGE.noteMax}
-            valueLabel={
-              ouvrage.note === null
-                ? t.fiche.sansNote
-                : `${ouvrage.note}/${LIMITES_OUVRAGE.noteMax}`
-            }
-            starLabel={(valeur) => t.fiche.etoile(valeur, LIMITES_OUVRAGE.noteMax)}
-            removeLabel={t.fiche.retirerNote}
-            onChange={noter}
-            busy={retouche.isPending}
-          />
-          <ToggleRow
-            label={t.fiche.coupDeCoeur}
-            valueLabel={ouvrage.favori ? t.fiche.oui : t.fiche.non}
-            checked={ouvrage.favori}
-            onToggle={basculerCoupDeCoeur}
-            busy={retouche.isPending}
-            mark="heart"
-          />
-          <ToggleRow
-            label={t.fiche.statut}
-            valueLabel={ouvrage.lu ? t.fiche.lu : t.fiche.nonLu}
-            checked={ouvrage.lu}
-            onToggle={basculerLu}
-            busy={retouche.isPending}
-          />
+          {peutEcrire ? (
+            <>
+              <StarRow
+                label={t.fiche.note}
+                value={ouvrage.note}
+                max={LIMITES_OUVRAGE.noteMax}
+                valueLabel={libelleNote(ouvrage, t.fiche)}
+                starLabel={(valeur) => t.fiche.etoile(valeur, LIMITES_OUVRAGE.noteMax)}
+                removeLabel={t.fiche.retirerNote}
+                onChange={noter}
+                busy={retouche.isPending}
+              />
+              <ToggleRow
+                label={t.fiche.coupDeCoeur}
+                valueLabel={ouvrage.favori ? t.fiche.oui : t.fiche.non}
+                checked={ouvrage.favori}
+                onToggle={basculerCoupDeCoeur}
+                busy={retouche.isPending}
+                mark="heart"
+              />
+              <ToggleRow
+                label={t.fiche.statut}
+                valueLabel={ouvrage.lu ? t.fiche.lu : t.fiche.nonLu}
+                checked={ouvrage.lu}
+                onToggle={basculerLu}
+                busy={retouche.isPending}
+              />
+            </>
+          ) : (
+            // A read-only account reads the same rows as plain values: no switch, no star to press.
+            <>
+              <FieldRow
+                label={t.fiche.note}
+                value={libelleNote(ouvrage, t.fiche)}
+                muted={ouvrage.note === null}
+              />
+              <FieldRow
+                label={t.fiche.coupDeCoeur}
+                value={ouvrage.favori ? t.fiche.oui : t.fiche.non}
+                icon={ouvrage.favori ? 'heart' : undefined}
+              />
+              <FieldRow label={t.fiche.statut} value={ouvrage.lu ? t.fiche.lu : t.fiche.nonLu} />
+            </>
+          )}
           <FieldRow
             label={t.fiche.editions}
             value={libelleEditions(editions, t.fiche)}
@@ -111,7 +128,7 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
               {t.fiche.modificationAnnulee} {messagePourErreur(retouche.error, t.erreurs).titre}
             </AppText>
           )}
-          {etape === 'question' ? (
+          {peutEcrire && etape === 'question' && (
             <View style={styles.actions}>
               <ConfirmInline
                 message={t.fiche.confirmation}
@@ -121,7 +138,8 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
                 onCancel={() => setEtape('gardee')}
               />
             </View>
-          ) : (
+          )}
+          {peutEcrire && etape !== 'question' && (
             <View style={[styles.actions, styles.rangee]}>
               <TextButton
                 label={t.fiche.supprimer}
@@ -133,7 +151,7 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
               <TextButton label={t.fiche.modifier} icon="edit-2" tone="ink" onPress={onModifier} />
             </View>
           )}
-          <NotesOuvrage livreId={ouvrage.id} />
+          <NotesOuvrage livreId={ouvrage.id} lectureSeule={!peutEcrire} />
         </ScrollView>
       ) : fiche.erreur !== null ? (
         <FicheErreur erreur={fiche.erreur} onReessayer={fiche.reessayer} />
@@ -142,6 +160,10 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
       )}
     </CadreOuvrage>
   );
+}
+
+function libelleNote(ouvrage: Ouvrage, m: Dictionnaire['fiche']): string {
+  return ouvrage.note === null ? m.sansNote : `${ouvrage.note}/${LIMITES_OUVRAGE.noteMax}`;
 }
 
 function libelleEditions(editions: Enrichissement, m: Dictionnaire['fiche']): string {

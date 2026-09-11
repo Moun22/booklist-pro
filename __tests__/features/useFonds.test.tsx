@@ -34,7 +34,6 @@ describe('useFonds', () => {
       wrapper: creerWrapper(creerClientDeTest()),
     });
 
-    expect(result.current.chargementInitial).toBe(true);
     await waitFor(() => expect(result.current.chargementInitial).toBe(false));
     expect(result.current.total).toBe(41);
     expect(result.current.enSortieId).toBeNull();

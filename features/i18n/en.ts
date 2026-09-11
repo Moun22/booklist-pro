@@ -11,6 +11,8 @@ export const en: Dictionnaire = {
     add: 'Add a book',
     addShort: 'Add',
     online: 'Online',
+    offline: 'Server unreachable',
+    verification: 'Checking',
     ouvrages: 'books',
     resultats: 'results',
     actualisation: 'refreshing',
@@ -53,6 +55,22 @@ export const en: Dictionnaire = {
     couverture: (titre: string) => `Cover of ${titre}`,
   },
   cadre: { retour: 'Collection', fermer: 'Close' },
+  connexion: {
+    titre: 'Sign in',
+    explication: 'The collection is reserved to the booksellers of the network.',
+    email: 'Email',
+    motDePasse: 'Password',
+    emailIndicatif: 'name@shop.com',
+    motDePasseIndicatif: 'Your password',
+    valider: 'Sign in',
+    enCours: 'Signing in…',
+    emailObligatoire: 'The email is required',
+    motDePasseObligatoire: 'The password is required',
+  },
+  session: {
+    deconnexion: (email: string) => `Sign out (${email})`,
+    lectureSeule: 'Read only',
+  },
   ecran: {
     aucunOuvert: 'No book open',
     aucunOuvertDetail: 'Choose a book in the collection to read its page and its reading notes.',
@@ -136,6 +154,10 @@ export const en: Dictionnaire = {
       titre: 'No reading note',
       detail: 'The first note says who to recommend this book to.',
     },
+    videLecture: {
+      titre: 'No reading note',
+      detail: 'No bookseller has recommended this book yet.',
+    },
     supprimer: (horodatage: string) => `Delete the note of ${horodatage}`,
     question: 'Delete this note?',
     garder: 'Keep',
@@ -162,6 +184,10 @@ export const en: Dictionnaire = {
     },
     nonAutorise: { titre: 'Action not allowed', detail: 'Your account is read-only.' },
     sessionExpiree: { titre: 'Session expired', detail: 'Sign in again to continue.' },
+    identifiantsInvalides: {
+      titre: 'Incorrect email or password',
+      detail: 'Check what you typed, then retry.',
+    },
     introuvable: {
       titre: 'Book not found',
       detail: 'It may have been deleted from another workstation.',
