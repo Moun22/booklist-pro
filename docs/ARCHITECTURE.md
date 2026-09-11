@@ -89,10 +89,21 @@ tard `supprimerOuvrage` (`DELETE`) ; « Annuler » remet l'instantané et n'envo
 
 ## Les transversaux
 
-- **Racine** ([app/\_layout.tsx](../app/_layout.tsx)) : `ThemeProvider` (clair/sombre suivant
-  le système) → `QueryProvider` (un `QueryClient`, réglé dans `features/query/`) →
-  `SuppressionProvider` (une suppression en attente à la fois, barre d'annulation, région
-  `aria-live`) → la pile de navigation.
+- **Racine** ([app/\_layout.tsx](../app/_layout.tsx)) : `PreferencesProvider` (langue et thème,
+  lus et écrits par `services/stockage.ts`, qui rend le `ThemeProvider` avec la préférence) →
+  `QueryProvider` (un `QueryClient`, réglé dans `features/query/`) → `SuppressionProvider` (une
+  suppression en attente à la fois, barre d'annulation, région `aria-live`) → la pile de
+  navigation.
+- **Langue** : aucune chaîne visible dans `components/` ; chaque écran lit un dictionnaire typé
+  (`features/i18n/fr.ts`, `en.ts`) par `useTraduction()`. Les schémas zod du domaine reçoivent
+  leurs messages en paramètre (`creerOuvrageFormulaireSchema(t.validation)`), donc le domaine ne
+  connaît aucune langue. Dates et nombres passent par `Intl` avec la locale du dictionnaire.
+- **Capacités de plateforme** : choisir une image et la redimensionner tient dans une seule
+  fonction de `services/plateforme/image.ts` ; l'écran ne sait pas si un navigateur ou un
+  téléphone est derrière. Le stockage local suit la même règle dans `services/stockage.ts`.
+- **Sources externes** : OpenLibrary a son propre client HTTP (`services/api/openLibrary.ts`,
+  délai de 5 s), interrogé après un anti-rebond de 300 ms et gardé en cache pour la session ; son
+  indisponibilité est un état de la ligne « Éditions », jamais une erreur de la fiche.
 - **Deux dispositions, une seule logique** : au-dessus de 960 px, le fonds reste à gauche et la
   fiche, le formulaire ou la question s'ouvrent dans un volet à droite ; en dessous, chaque
   route occupe l'écran. Le choix est fait dans `app/(fonds)/_layout.tsx` et

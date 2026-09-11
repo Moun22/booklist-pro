@@ -1,17 +1,10 @@
 import { describe, expect, it } from '@jest/globals';
 
-import {
-  choisirTri,
-  estCleTri,
-  libelleTri,
-  sensParDefaut,
-  TRI_PAR_DEFAUT,
-} from '@/features/books/tri';
+import { choisirTri, estCleTri, sensParDefaut, TRI_PAR_DEFAUT } from '@/features/books/tri';
 
 describe('tri du fonds', () => {
   it('starts on the title, ascending', () => {
     expect(TRI_PAR_DEFAUT).toEqual({ cle: 'titre', sens: 'asc' });
-    expect(libelleTri(TRI_PAR_DEFAUT)).toBe('Titre');
   });
 
   it('reads text and years from the start but ratings from the best', () => {

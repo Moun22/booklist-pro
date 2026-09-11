@@ -103,6 +103,12 @@ function gestionErreurs(err, req, res, _next) {
   if (err && err.type === 'entity.parse.failed') {
     return res.status(400).json({ erreur: 'json_invalide', message: 'Corps JSON illisible.' });
   }
+  if (err && err.type === 'entity.too.large') {
+    return res.status(413).json({
+      erreur: 'image_trop_lourde',
+      message: 'Corps trop volumineux : redimensionnez l image avant l envoi.',
+    });
+  }
   console.error('[erreur]', err);
   res.status(500).json({ erreur: 'erreur_serveur', message: 'Erreur interne.' });
 }

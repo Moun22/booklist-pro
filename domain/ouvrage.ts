@@ -31,73 +31,92 @@ export const ouvrageSchema = z.object({
 
 export type Ouvrage = z.infer<typeof ouvrageSchema>;
 
-const messageAnnee = `Année comprise entre ${LIMITES_OUVRAGE.anneeMin} et ${anneeMax()}`;
-const messageNote = `Note entre ${LIMITES_OUVRAGE.noteMin} et ${LIMITES_OUVRAGE.noteMax}`;
-const messageAnneeEntiere = "L'année doit être un nombre entier";
-
-export const champsOuvrage = {
-  titre: z
-    .string()
-    .trim()
-    .min(1, 'Le titre est obligatoire')
-    .max(LIMITES_OUVRAGE.titreMax, `${LIMITES_OUVRAGE.titreMax} caractères maximum`),
-  auteur: z
-    .string()
-    .trim()
-    .min(1, "L'auteur est obligatoire")
-    .max(LIMITES_OUVRAGE.auteurMax, `${LIMITES_OUVRAGE.auteurMax} caractères maximum`),
-  editeur: z
-    .string()
-    .trim()
-    .max(LIMITES_OUVRAGE.editeurMax, `${LIMITES_OUVRAGE.editeurMax} caractères maximum`),
-  annee: z
-    .number({ error: messageAnneeEntiere })
-    .int(messageAnneeEntiere)
-    .min(LIMITES_OUVRAGE.anneeMin, messageAnnee)
-    .max(anneeMax(), messageAnnee),
-  lu: z.boolean(),
-  favori: z.boolean(),
-  note: z
-    .number()
-    .min(LIMITES_OUVRAGE.noteMin, messageNote)
-    .max(LIMITES_OUVRAGE.noteMax, messageNote)
-    .nullable(),
-  couverture: z
-    .string()
-    .trim()
-    .max(LIMITES_OUVRAGE.couvertureMax, `${LIMITES_OUVRAGE.couvertureMax} caractères maximum`)
-    .nullable(),
+// The rules live here; the words the librarian reads come from the active language.
+export type MessagesOuvrage = {
+  titreObligatoire: string;
+  auteurObligatoire: string;
+  anneeObligatoire: string;
+  anneeEntiere: string;
+  anneeBornes: (min: number, max: number) => string;
+  noteBornes: (min: number, max: number) => string;
+  maxCaracteres: (max: number) => string;
 };
 
-export const ouvrageSaisieSchema = z.object({
-  ...champsOuvrage,
-  editeur: champsOuvrage.editeur.default(''),
-  lu: champsOuvrage.lu.default(false),
-  favori: champsOuvrage.favori.default(false),
-  note: champsOuvrage.note.default(null),
-  couverture: champsOuvrage.couverture.default(null),
-});
+export function creerChampsOuvrage(m: MessagesOuvrage) {
+  const annee = m.anneeBornes(LIMITES_OUVRAGE.anneeMin, anneeMax());
+  const note = m.noteBornes(LIMITES_OUVRAGE.noteMin, LIMITES_OUVRAGE.noteMax);
+  return {
+    titre: z
+      .string()
+      .trim()
+      .min(1, m.titreObligatoire)
+      .max(LIMITES_OUVRAGE.titreMax, m.maxCaracteres(LIMITES_OUVRAGE.titreMax)),
+    auteur: z
+      .string()
+      .trim()
+      .min(1, m.auteurObligatoire)
+      .max(LIMITES_OUVRAGE.auteurMax, m.maxCaracteres(LIMITES_OUVRAGE.auteurMax)),
+    editeur: z
+      .string()
+      .trim()
+      .max(LIMITES_OUVRAGE.editeurMax, m.maxCaracteres(LIMITES_OUVRAGE.editeurMax)),
+    annee: z
+      .number({ error: m.anneeEntiere })
+      .int(m.anneeEntiere)
+      .min(LIMITES_OUVRAGE.anneeMin, annee)
+      .max(anneeMax(), annee),
+    lu: z.boolean(),
+    favori: z.boolean(),
+    note: z
+      .number()
+      .min(LIMITES_OUVRAGE.noteMin, note)
+      .max(LIMITES_OUVRAGE.noteMax, note)
+      .nullable(),
+    couverture: z
+      .string()
+      .trim()
+      .max(LIMITES_OUVRAGE.couvertureMax, m.maxCaracteres(LIMITES_OUVRAGE.couvertureMax))
+      .nullable(),
+  };
+}
 
-export type OuvrageSaisie = z.input<typeof ouvrageSaisieSchema>;
-export type OuvrageValide = z.output<typeof ouvrageSaisieSchema>;
+export function creerOuvrageSaisieSchema(m: MessagesOuvrage) {
+  const champs = creerChampsOuvrage(m);
+  return z.object({
+    ...champs,
+    editeur: champs.editeur.default(''),
+    lu: champs.lu.default(false),
+    favori: champs.favori.default(false),
+    note: champs.note.default(null),
+    couverture: champs.couverture.default(null),
+  });
+}
 
-export const ouvrageRetoucheSchema = z.object(champsOuvrage).partial();
+export type OuvrageSaisie = z.input<ReturnType<typeof creerOuvrageSaisieSchema>>;
+export type OuvrageValide = z.output<ReturnType<typeof creerOuvrageSaisieSchema>>;
 
-export type OuvrageRetouche = z.output<typeof ouvrageRetoucheSchema>;
+export function creerOuvrageRetoucheSchema(m: MessagesOuvrage) {
+  return z.object(creerChampsOuvrage(m)).partial();
+}
+
+export type OuvrageRetouche = z.output<ReturnType<typeof creerOuvrageRetoucheSchema>>;
 
 // A text field feeds the year: the schema turns the typed string into the validated number.
-export const ouvrageFormulaireSchema = z.object({
-  titre: champsOuvrage.titre,
-  auteur: champsOuvrage.auteur,
-  editeur: champsOuvrage.editeur,
-  annee: z
-    .string()
-    .trim()
-    .min(1, "L'année est obligatoire")
-    .pipe(z.coerce.number({ error: messageAnneeEntiere }))
-    .pipe(champsOuvrage.annee),
-  lu: champsOuvrage.lu,
-});
+export function creerOuvrageFormulaireSchema(m: MessagesOuvrage) {
+  const champs = creerChampsOuvrage(m);
+  return z.object({
+    titre: champs.titre,
+    auteur: champs.auteur,
+    editeur: champs.editeur,
+    annee: z
+      .string()
+      .trim()
+      .min(1, m.anneeObligatoire)
+      .pipe(z.coerce.number({ error: m.anneeEntiere }))
+      .pipe(champs.annee),
+    lu: champs.lu,
+  });
+}
 
-export type SaisieFormulaire = z.input<typeof ouvrageFormulaireSchema>;
-export type OuvrageFormulaire = z.output<typeof ouvrageFormulaireSchema>;
+export type SaisieFormulaire = z.input<ReturnType<typeof creerOuvrageFormulaireSchema>>;
+export type OuvrageFormulaire = z.output<ReturnType<typeof creerOuvrageFormulaireSchema>>;

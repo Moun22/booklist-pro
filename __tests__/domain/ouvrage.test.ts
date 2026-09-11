@@ -3,10 +3,15 @@ import { describe, expect, it } from '@jest/globals';
 import { ouvrageExemple } from '../helpers/fixtures';
 import {
   anneeMax,
-  ouvrageRetoucheSchema,
-  ouvrageSaisieSchema,
+  creerOuvrageRetoucheSchema,
+  creerOuvrageSaisieSchema,
   ouvrageSchema,
 } from '@/domain/ouvrage';
+import { en } from '@/features/i18n/en';
+import { fr } from '@/features/i18n/fr';
+
+const ouvrageSaisieSchema = creerOuvrageSaisieSchema(fr.validation);
+const ouvrageRetoucheSchema = creerOuvrageRetoucheSchema(fr.validation);
 
 function messagesParChamp(resultat: {
   success: boolean;
@@ -26,6 +31,12 @@ describe('ouvrageSchema', () => {
     expect(ouvrageSchema.safeParse({ ...ouvrageExemple, note: 6 }).success).toBe(false);
     const { version: _version, ...sansVersion } = ouvrageExemple;
     expect(ouvrageSchema.safeParse(sansVersion).success).toBe(false);
+  });
+
+  it('ignores fields it does not know, such as the API cover origin', () => {
+    const resultat = ouvrageSchema.safeParse({ ...ouvrageExemple, couvertureOrigine: null });
+    expect(resultat.success).toBe(true);
+    expect(resultat.data).not.toHaveProperty('couvertureOrigine');
   });
 });
 
@@ -50,21 +61,18 @@ describe('ouvrageSaisieSchema', () => {
     });
   });
 
-  it('names every invalid field', () => {
-    const resultat = ouvrageSaisieSchema.safeParse({
-      titre: '   ',
-      auteur: '',
-      annee: 1200,
-      note: 9,
-    });
+  it('names every invalid field in the language of the librarian', () => {
+    const saisie = { titre: '   ', auteur: '', annee: 1200, note: 9 };
 
-    expect(resultat.success).toBe(false);
-    expect(messagesParChamp(resultat)).toEqual({
+    expect(messagesParChamp(ouvrageSaisieSchema.safeParse(saisie))).toEqual({
       titre: 'Le titre est obligatoire',
       auteur: "L'auteur est obligatoire",
       annee: `Année comprise entre 1450 et ${anneeMax()}`,
       note: 'Note entre 0 et 5',
     });
+    expect(messagesParChamp(creerOuvrageSaisieSchema(en.validation).safeParse(saisie)).titre).toBe(
+      'The title is required',
+    );
   });
 
   it('refuses a year beyond next year', () => {

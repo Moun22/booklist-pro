@@ -11,13 +11,16 @@ afterEach(() => {
 
 describe('FicheOuvrage, suppression', () => {
   it('asks for confirmation, then schedules the deletion, closes and offers to undo', async () => {
-    jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation((entree) =>
-        Promise.resolve(
-          String(entree).endsWith('/notes') ? reponseJson([]) : reponseJson(ouvrageExemple),
-        ),
-      );
+    jest.spyOn(globalThis, 'fetch').mockImplementation((entree) => {
+      const url = String(entree);
+      if (url.endsWith('/notes')) {
+        return Promise.resolve(reponseJson([]));
+      }
+      if (url.includes('openlibrary.org')) {
+        return Promise.resolve(reponseJson({ numFound: 0, docs: [] }));
+      }
+      return Promise.resolve(reponseJson(ouvrageExemple));
+    });
     const onFermer = jest.fn();
 
     await renderWithProviders(
@@ -42,13 +45,16 @@ describe('FicheOuvrage, suppression', () => {
   });
 
   it('keeps the ouvrage when the librarian changes their mind', async () => {
-    jest
-      .spyOn(globalThis, 'fetch')
-      .mockImplementation((entree) =>
-        Promise.resolve(
-          String(entree).endsWith('/notes') ? reponseJson([]) : reponseJson(ouvrageExemple),
-        ),
-      );
+    jest.spyOn(globalThis, 'fetch').mockImplementation((entree) => {
+      const url = String(entree);
+      if (url.endsWith('/notes')) {
+        return Promise.resolve(reponseJson([]));
+      }
+      if (url.includes('openlibrary.org')) {
+        return Promise.resolve(reponseJson({ numFound: 0, docs: [] }));
+      }
+      return Promise.resolve(reponseJson(ouvrageExemple));
+    });
     const onFermer = jest.fn();
 
     await renderWithProviders(

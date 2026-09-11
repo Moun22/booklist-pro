@@ -2,22 +2,23 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { StateMessage } from '@/components/StateMessage';
 import { FicheOuvrage } from '@/features/books/FicheOuvrage';
+import { useTraduction } from '@/features/i18n/useTraduction';
 import { useModeOuvrage } from '@/hooks/useModeOuvrage';
 import { useNavigationOuvrages } from '@/hooks/useNavigationOuvrages';
-
-const labels = {
-  introuvable: 'Ouvrage introuvable',
-  hint: "L'adresse ne désigne aucun ouvrage du fonds.",
-};
 
 export default function OuvrageScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const mode = useModeOuvrage();
   const navigation = useNavigationOuvrages();
+  const t = useTraduction();
 
   if (typeof id !== 'string' || id.length === 0) {
     return (
-      <StateMessage icon="alert-circle" title={labels.introuvable} description={labels.hint} />
+      <StateMessage
+        icon="alert-circle"
+        title={t.ecran.introuvable}
+        description={t.ecran.introuvableDetail}
+      />
     );
   }
 

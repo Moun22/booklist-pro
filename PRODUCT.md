@@ -29,7 +29,7 @@ Contexte : projet d'évaluation finale React Native (M2) ; le responsable produi
 ## Operating Context
 
 - Cible d'exécution : navigateur, via `npx expo start --web`, sur les postes de caisse existants. iOS et Android suivront sur la même base de code ; Expo Go sur appareil physique est un bonus.
-- API fournie et figée, `api-books-v2/` (Express) : pagination et filtres côté serveur, versionnement des fiches (`If-Match`, 409), synchronisation par lot idempotente (`POST /sync`), JWT avec jeton d'accès de 120 s, mode dégradé (latence 1,5 s, 30 % de 503). La recette finale se déroule en mode `npm run final` : authentification et chaos combinés.
+- API fournie, `api-books-v2/` (Express), étendue en 2.1 pour les couvertures (routes `GET /covers/:fichier`, `POST` et `DELETE /books/:id/cover`, consignées dans son `CHANGELOG.md` et l'ADR 003) : pagination et filtres côté serveur, versionnement des fiches (`If-Match`, 409), synchronisation par lot idempotente (`POST /sync`), JWT avec jeton d'accès de 120 s, mode dégradé (latence 1,5 s, 30 % de 503). La recette finale se déroule en mode `npm run final` : authentification et chaos combinés.
 - Scénario de recette rejoué devant le jury : connexion, passage hors ligne, création et modification d'ouvrages hors ligne, modification concurrente côté serveur, expiration du jeton, retour du réseau. Attendu : rafraîchissement silencieux, aucun doublon, conflit détecté et résolu selon la stratégie annoncée, rien de perdu.
 - Évaluation : comité de recette de cinq minutes (démonstration, revue de code, questions), dépôt Git, README, ADR, IA.md, vidéo de démonstration.
 
@@ -41,7 +41,8 @@ Contexte : projet d'évaluation finale React Native (M2) ; le responsable produi
 - Exigences d'interface imposées par le sujet : quatre états sur chaque écran de données (chargement en squelette, erreur avec réessai, vide contextualisé, succès) ; suppression avec confirmation et annulation possible pendant cinq secondes ; mises à jour optimistes avec retour arrière visible ; indicateur de synchronisation permanent (en ligne, hors ligne, N modifications en attente, conflit à traiter) ; thème centralisé, aucune couleur ni chaîne visible en dur dans les composants ; bilingue à chaud avec formats de date et de nombre ; erreurs 422 affichées champ par champ, 503 avec réessai.
 - Le rôle lecteur ne voit aucune action d'écriture : masquée, jamais simplement désactivée.
 - Contraintes techniques : React Native (Expo SDK 57) rendu par react-native-web ; pas d'`Alert.alert`, pas d'API matérielle ; liste virtualisée pour 500 ouvrages ; aucun fichier de plus de 250 lignes ; architecture en couches `app/ components/ features/ hooks/ services/ domain/ theme/`.
-- Non décidé : présence et forme du nom du réseau dans l'interface ; stratégie de résolution des conflits (ADR 003 à écrire, fusion assistée visée).
+- Décidé (ADR 002) : en cas de conflit d'écriture, le serveur gagne et le libraire garde sa saisie pour arbitrer ; la fusion assistée est reportée aux champs longs. Le projet s'arrête au lot 3 : pas de comptes, pas de mode hors ligne, pas de file de mutations.
+- Non décidé : présence et forme du nom du réseau dans l'interface.
 
 ## Brand Commitments
 
@@ -52,7 +53,7 @@ Contexte : projet d'évaluation finale React Native (M2) ; le responsable produi
 
 ## Evidence on Hand
 
-- Données : 500 ouvrages générés par `api-books-v2/src/seed.js` (titres et auteurs de science-fiction francophone synthétiques ; éditeurs réels : Denoël, Le Bélial, Actes Sud, Gallimard, Bragelonne, Mnémos, Folio SF, La Volte, Albin Michel, Robert Laffont), 381 notes de lecture, deux comptes de test (`editeur@booklist.fr`, `lecteur@booklist.fr`). Aucune couverture : `couverture` vaut `null` partout et l'API livrée n'a pas de route de couverture.
+- Données : 500 ouvrages générés par `api-books-v2/src/seed.js` (titres et auteurs de science-fiction francophone synthétiques ; éditeurs réels : Denoël, Le Bélial, Actes Sud, Gallimard, Bragelonne, Mnémos, Folio SF, La Volte, Albin Michel, Robert Laffont), 381 notes de lecture, deux comptes de test (`editeur@booklist.fr`, `lecteur@booklist.fr`). Couvertures depuis l'API 2.1 : environ 80 % des ouvrages ont une couverture SVG générée par l'API (chemin relatif `/covers/:id.svg`), 10 % une URL externe OpenLibrary, 10 % aucune ; un libraire peut téléverser la sienne (png, jpeg, webp, 300 Ko décodés au plus) et revenir à l'origine.
 - Documents : le sujet et le support de cours, en PDF à la racine, non versionnés.
 - Absences à ne pas inventer : librairies réelles du réseau, témoignages, chiffres d'activité, logo.
 

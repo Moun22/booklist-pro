@@ -1,6 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
 
-import { anneeMax, ouvrageFormulaireSchema } from '@/domain/ouvrage';
+import { anneeMax, creerOuvrageFormulaireSchema } from '@/domain/ouvrage';
+import { fr } from '@/features/i18n/fr';
+
+const ouvrageFormulaireSchema = creerOuvrageFormulaireSchema(fr.validation);
 
 function messagesParChamp(resultat: {
   error?: { issues: { path: PropertyKey[]; message: string }[] };

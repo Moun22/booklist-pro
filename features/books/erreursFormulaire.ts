@@ -1,6 +1,6 @@
 import { ErreurValidation } from '@/domain/erreurs';
 import type { SaisieFormulaire } from '@/domain/ouvrage';
-import { messagePourErreur } from '@/features/erreurs/messages';
+import { messagePourErreur, type MessagesErreurs } from '@/features/erreurs/messages';
 
 export const CHAMPS_FORMULAIRE = ['titre', 'auteur', 'editeur', 'annee', 'lu'] as const;
 
@@ -15,9 +15,9 @@ function estChampFormulaire(nom: string): nom is ChampFormulaire {
   return (CHAMPS_FORMULAIRE as readonly string[]).includes(nom);
 }
 
-export function repartirErreur(erreur: unknown): ErreursFormulaire {
+export function repartirErreur(erreur: unknown, m: MessagesErreurs): ErreursFormulaire {
   if (!(erreur instanceof ErreurValidation)) {
-    const message = messagePourErreur(erreur);
+    const message = messagePourErreur(erreur, m);
     return { parChamp: {}, globale: `${message.titre}. ${message.detail}` };
   }
 

@@ -11,6 +11,8 @@ const ligne: LigneOuvrage = {
   note: '4/5',
   lu: true,
   coupDeCoeur: true,
+  couverture: { repli: true },
+  couvertureLabel: 'Couverture de La Cité des cendres',
   description: 'La Cité des cendres, Ursula Le Guin, 1987, lu, coup de coeur, note 4 sur 5',
 };
 

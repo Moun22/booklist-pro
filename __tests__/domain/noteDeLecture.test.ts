@@ -1,10 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
 
 import {
-  contenuNoteSchema,
+  creerContenuNoteSchema,
   LIMITES_NOTE_DE_LECTURE,
   noteDeLectureSchema,
 } from '@/domain/noteDeLecture';
+import { fr } from '@/features/i18n/fr';
+
+const contenuNoteSchema = creerContenuNoteSchema(fr.validation);
 
 const noteServie = {
   id: 'n1',

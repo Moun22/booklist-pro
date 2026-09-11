@@ -3,15 +3,10 @@ import type { RequeteFonds } from '@/services/api/ouvrages';
 
 export type Rubrique = 'tout' | 'lus' | 'nonLus' | 'coupsDeCoeur';
 
-export const RUBRIQUES: readonly { cle: Rubrique; libelle: string }[] = [
-  { cle: 'tout', libelle: 'Fonds' },
-  { cle: 'lus', libelle: 'Lus' },
-  { cle: 'nonLus', libelle: 'Non lus' },
-  { cle: 'coupsDeCoeur', libelle: 'Coups de coeur' },
-];
+export const RUBRIQUES: readonly Rubrique[] = ['tout', 'lus', 'nonLus', 'coupsDeCoeur'];
 
 export function estRubrique(valeur: string): valeur is Rubrique {
-  return RUBRIQUES.some((rubrique) => rubrique.cle === valeur);
+  return (RUBRIQUES as readonly string[]).includes(valeur);
 }
 
 export function versRequeteFonds(

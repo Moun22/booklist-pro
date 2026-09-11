@@ -4,18 +4,19 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { SuppressionProvider } from '@/features/books/SuppressionProvider';
+import { PreferencesProvider } from '@/features/preferences/PreferencesProvider';
 import { QueryProvider } from '@/features/query/QueryProvider';
-import { ThemeProvider, useTheme } from '@/theme/ThemeProvider';
+import { useTheme } from '@/theme/ThemeProvider';
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
+    <PreferencesProvider>
       <QueryProvider>
         <SuppressionProvider>
           <ThemedStack />
         </SuppressionProvider>
       </QueryProvider>
-    </ThemeProvider>
+    </PreferencesProvider>
   );
 }
 
