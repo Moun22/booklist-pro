@@ -1,7 +1,8 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, type View } from 'react-native';
 
 import { AppText } from './AppText';
 import { Icon, type IconName } from './Icon';
+import { useAutoFocus } from '@/hooks/useAutoFocus';
 import { layout, space } from '@/theme/tokens';
 
 type Props = {
@@ -10,16 +11,33 @@ type Props = {
   icon?: IconName;
   tone?: 'signal' | 'ink' | 'danger';
   disabled?: boolean;
+  autoFocus?: boolean;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
-export function TextButton({ label, onPress, icon, tone = 'signal', disabled = false }: Props) {
+export function TextButton({
+  label,
+  onPress,
+  icon,
+  tone = 'signal',
+  disabled = false,
+  autoFocus = false,
+  onFocus,
+  onBlur,
+}: Props) {
+  const bouton = useAutoFocus<View>(autoFocus);
+
   return (
     <Pressable
+      ref={bouton}
       role="button"
       aria-label={label}
       aria-disabled={disabled}
       disabled={disabled}
       onPress={onPress}
+      onFocus={onFocus}
+      onBlur={onBlur}
       style={({ pressed }) => [
         styles.button,
         pressed && styles.pressed,

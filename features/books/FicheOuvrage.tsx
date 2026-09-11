@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { CadreOuvrage, type ModeOuvrage } from './CadreOuvrage';
+import { useSuppression } from './SuppressionProvider';
 import { useOuvrage } from './useOuvrage';
 import { useRetoucheOuvrage } from './useRetoucheOuvrage';
 import { AppText } from '@/components/AppText';
+import { ConfirmInline } from '@/components/ConfirmInline';
 import { FieldRow } from '@/components/FieldRow';
 import { Skeleton } from '@/components/Skeleton';
 import { StateMessage } from '@/components/StateMessage';
@@ -28,6 +31,9 @@ const labels = {
   lu: 'Lu',
   nonLu: 'Non lu',
   modifier: 'Modifier',
+  supprimer: 'Supprimer',
+  confirmation: 'Supprimer cet ouvrage du fonds ?',
+  garder: 'Garder',
   reessayer: 'Réessayer',
   modificationAnnulee: 'Modification annulée :',
 };
@@ -42,11 +48,23 @@ type Props = {
   onModifier: () => void;
 };
 
+// After « Garder », focus goes back to the button that asked the question.
+type EtapeSuppression = 'repos' | 'question' | 'gardee';
+
 export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
   const fiche = useOuvrage(id);
   const retouche = useRetoucheOuvrage(id);
+  const suppression = useSuppression();
+  const [etape, setEtape] = useState<EtapeSuppression>('repos');
   const ouvrage = fiche.ouvrage;
   useEscape(onFermer, mode === 'volet');
+
+  const supprimer = () => {
+    if (ouvrage !== undefined) {
+      suppression.programmer(ouvrage);
+      onFermer();
+    }
+  };
 
   const basculerLu = () => {
     if (ouvrage !== undefined && !retouche.isPending) {
@@ -90,9 +108,28 @@ export function FicheOuvrage({ id, mode, onFermer, onModifier }: Props) {
               {labels.modificationAnnulee} {messagePourErreur(retouche.error).titre}
             </AppText>
           )}
-          <View style={styles.actions}>
-            <TextButton label={labels.modifier} icon="edit-2" tone="ink" onPress={onModifier} />
-          </View>
+          {etape === 'question' ? (
+            <View style={styles.actions}>
+              <ConfirmInline
+                message={labels.confirmation}
+                confirmLabel={labels.supprimer}
+                cancelLabel={labels.garder}
+                onConfirm={supprimer}
+                onCancel={() => setEtape('gardee')}
+              />
+            </View>
+          ) : (
+            <View style={[styles.actions, styles.rangee]}>
+              <TextButton
+                label={labels.supprimer}
+                icon="trash-2"
+                tone="danger"
+                autoFocus={etape === 'gardee'}
+                onPress={() => setEtape('question')}
+              />
+              <TextButton label={labels.modifier} icon="edit-2" tone="ink" onPress={onModifier} />
+            </View>
+          )}
         </ScrollView>
       ) : fiche.erreur !== null ? (
         <EtatErreur erreur={fiche.erreur} onReessayer={fiche.reessayer} />
@@ -140,7 +177,8 @@ const styles = StyleSheet.create({
   contenu: { padding: space.lg, gap: space.sm },
   auteur: { marginBottom: space.md },
   avertissement: { marginTop: space.md },
-  actions: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: space.lg },
+  actions: { marginTop: space.lg },
+  rangee: { flexDirection: 'row', justifyContent: 'flex-end', gap: space.sm },
   ligneSquelette: {
     flexDirection: 'row',
     alignItems: 'center',

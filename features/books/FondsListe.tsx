@@ -1,8 +1,9 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { FlatList, type ListRenderItemInfo } from 'react-native';
 
 import type { Rubrique } from './rubriques';
 import type { Fonds } from './useFonds';
+import { useRefugeDeListe } from './useRefugeDeListe';
 import { versLigne } from './versLigne';
 import { BookRow, type LigneOuvrage } from '@/components/BookRow';
 import { ListSkeleton } from '@/components/ListSkeleton';
@@ -55,12 +56,26 @@ export function FondsListe({
   onAjouter,
 }: Props) {
   const lignes = useMemo(() => fonds.ouvrages.map(versLigne), [fonds.ouvrages]);
+  const { enSortieId } = fonds;
+  const liste = useRef<FlatList<LigneOuvrage>>(null);
+  const { focusId, surFocusPris } = useRefugeDeListe(lignes, enSortieId, liste);
+  const etatLignes = useMemo(
+    () => ({ selectionId, enSortieId, focusId }),
+    [selectionId, enSortieId, focusId],
+  );
 
   const rendreLigne = useCallback(
     ({ item }: ListRenderItemInfo<LigneOuvrage>) => (
-      <BookRow ligne={item} selectionnee={item.id === selectionId} onPress={onSelection} />
+      <BookRow
+        ligne={item}
+        selectionnee={item.id === selectionId}
+        sortante={item.id === enSortieId}
+        autoFocus={item.id === focusId}
+        onAutoFocus={surFocusPris}
+        onPress={onSelection}
+      />
     ),
-    [selectionId, onSelection],
+    [selectionId, enSortieId, focusId, surFocusPris, onSelection],
   );
 
   if (fonds.chargementInitial) {
@@ -82,8 +97,9 @@ export function FondsListe({
 
   return (
     <FlatList
+      ref={liste}
       data={lignes}
-      extraData={selectionId}
+      extraData={etatLignes}
       keyExtractor={extraireCle}
       renderItem={rendreLigne}
       getItemLayout={disposition}

@@ -29,6 +29,23 @@ export function remplacerDansListe(donnees: DonneesListe, ouvrage: Ouvrage): Don
   };
 }
 
+export function retirerDesListes(donnees: DonneesListe, id: string): DonneesListe {
+  const pages = donnees.pages.map((page) => ({
+    ...page,
+    items: page.items.filter((item) => item.id !== id),
+  }));
+  const retire = pages.some(
+    (page, index) => page.items.length !== donnees.pages[index]?.items.length,
+  );
+  if (!retire) {
+    return donnees;
+  }
+  return {
+    ...donnees,
+    pages: pages.map((page) => ({ ...page, total: Math.max(0, page.total - 1) })),
+  };
+}
+
 export function propagerOuvrage(client: QueryClient, ouvrage: Ouvrage): void {
   client.setQueryData(clesOuvrages.detail(ouvrage.id), ouvrage);
   client.setQueriesData<DonneesListe>({ queryKey: clesOuvrages.listes() }, (donnees) =>
